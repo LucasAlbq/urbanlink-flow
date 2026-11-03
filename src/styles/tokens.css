@@ -160,4 +160,11 @@
   --pacote-recuo-404: 200px;      /* o pacote para 200 px antes do fim do asfalto */
   --acoes-404: clamp(48px, 6vw, 72px);
   --retorno-sobra: 2px;           /* a placa Retorno passa 2 px do fim do asfalto */
+
+  /* política de privacidade (docs/referencia/Politica.html) */
+  --h2-texto: clamp(1.5rem, 2.2vw, 1.875rem);
+  --indice-largura: 240px;
+  --gap-indice: clamp(32px, 6vw, 96px);
+  --lacuna: #FBE8BF;     /* fundo dos trechos que o grupo ainda vai preencher */
+  --r-lacuna: 4px;
 }
