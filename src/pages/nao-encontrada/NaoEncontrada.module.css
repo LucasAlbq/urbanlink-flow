@@ -1,0 +1,131 @@
+/* Página não encontrada (prancha Pagina-404). */
+
+/* ---- Topo: continua o Marinho do Header ---- */
+.topo {
+  color: var(--branco);
+  background: var(--marinho);
+}
+
+.topo :focus-visible {
+  outline-color: var(--amarelo);
+}
+
+.topoDentro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-16);
+  max-width: var(--largura);
+  margin: 0 auto;
+  padding: var(--topo-pagina) var(--margem) var(--topo-pagina-fim);
+}
+
+.h1 {
+  font-size: var(--h1);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: var(--aperto);
+}
+
+.apoio {
+  max-width: 46ch;
+  font-size: var(--corpo);
+  line-height: 1.55;
+  color: var(--texto-2);
+  text-wrap: pretty;
+}
+
+/* ---- Corpo ---- */
+.corpo {
+  color: var(--noite);
+  background: var(--nevoa);
+}
+
+.dentro {
+  max-width: var(--largura);
+  margin: 0 auto;
+  padding: var(--secao) var(--margem);
+}
+
+/* ---- Estrada: trecho até a placa (3fr) e o contorno do que não existe (2fr) ---- */
+.estrada {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  align-items: end;
+}
+
+.trecho {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.poste {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: calc(-1 * var(--retorno-sobra));
+}
+
+.haste {
+  width: var(--poste-largura);
+  height: var(--poste-altura);
+  background: var(--noite);
+}
+
+.asfalto {
+  position: relative;
+  align-self: stretch;
+  height: var(--estrada);
+  background: var(--noite);
+}
+
+.faixa {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc((var(--estrada) - var(--faixa)) / 2);
+  height: var(--faixa);
+  background: repeating-linear-gradient(
+    90deg,
+    var(--amarelo) 0 var(--faixa-traco),
+    transparent var(--faixa-traco) var(--faixa-ciclo)
+  );
+}
+
+.pacote {
+  position: absolute;
+  top: 50%;
+  left: max(0px, calc(100% - var(--pacote-recuo-404)));
+  width: var(--pacote);
+  height: var(--pacote);
+  border-radius: 50%;
+  background: var(--amarelo);
+  box-shadow:
+    0 0 0 var(--pacote-aro) var(--noite),
+    0 0 0 var(--pacote-halo) var(--halo-pacote);
+  transform: translateY(-50%);
+}
+
+.semSaida {
+  height: var(--estrada);
+  border: var(--tracejado) dashed var(--estrada-futura);
+  border-left: 0;
+}
+
+/* ---- Ações ---- */
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-12) var(--e-28);
+  margin-top: var(--acoes-404);
+}
+
+.voltar {
+  font-size: var(--t-18);
+}
+
+.link {
+  font-weight: 600;
+}

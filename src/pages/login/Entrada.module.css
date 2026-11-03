@@ -1,0 +1,106 @@
+/* Telas de entrada (pranchas Login, Recuperar-Senha, Recuperar-Senha-Enviado e Nova-Senha).
+   O molde (cidade + barra) fica em MolduraLogin; aqui fica a coluna do formulário. */
+
+.coluna {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-22);
+  width: 100%;
+  max-width: var(--form-estreito);
+}
+
+/* Formulário dentro da coluna, quando a coluna tem mais coisa além dele. */
+.campos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-22);
+  margin: 0;
+}
+
+.cabeca {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-12);
+  margin-bottom: var(--e-6);
+}
+
+.h1 {
+  font-size: var(--h1-login);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: var(--aperto-2);
+}
+
+.apoio {
+  font-size: var(--t-17);
+  line-height: 1.55;
+  color: var(--marinho);
+}
+
+/* Nas telas de senha o apoio quebra a linha com text-wrap: pretty (no login, não). */
+.equilibrado {
+  text-wrap: pretty;
+}
+
+/* Manter conectado + Esqueci minha senha */
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-8) var(--e-16);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--alvo);
+  font-size: var(--t-16);
+  font-weight: 600;
+  line-height: normal;
+  color: var(--noite);
+  text-underline-offset: var(--sublinhado-recuo-curto);
+}
+
+.link:hover {
+  color: var(--marinho);
+}
+
+/* Link sozinho numa linha (ex.: "Pedir outro link"): só do tamanho do texto. */
+.sozinho {
+  align-self: flex-start;
+}
+
+.botao {
+  width: 100%;
+  font-size: var(--t-18);
+}
+
+.texto {
+  font-size: var(--t-16);
+  line-height: 1.55;
+  color: var(--marinho);
+}
+
+.acesso {
+  font-size: var(--t-16);
+  line-height: 1.5;
+  color: var(--marinho);
+}
+
+/* Na senha nova a ajuda do campo usa altura de linha normal (na busca da landing é 1,5). */
+.ajudaCurta p {
+  line-height: normal;
+}
+
+/* No login a frase de baixo fica 6 px mais longe do botão. */
+.respiro {
+  margin-top: var(--e-6);
+}
+
+/* No meio da frase o link não precisa de caixa de 44 px: segue a linha do texto. */
+.acesso .link {
+  display: inline;
+  min-height: 0;
+  line-height: inherit;
+}

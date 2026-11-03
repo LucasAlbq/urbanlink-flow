@@ -1,0 +1,165 @@
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-8);
+  min-width: 0;
+}
+
+.label {
+  font-size: var(--t-15);
+  font-weight: 600;
+  line-height: normal;
+  color: var(--noite);
+}
+
+/* Campo grande (busca): label e respiro maiores, como na prancha da landing. */
+.campoGrande {
+  gap: var(--e-10);
+}
+
+.campoGrande .label {
+  font-size: var(--t-16);
+}
+
+.opcional {
+  font-weight: 400;
+  color: var(--cinza);
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-12);
+}
+
+.entrada {
+  flex: 1 1 var(--campo-base);
+  min-width: 0;
+  box-sizing: border-box;
+  min-height: var(--campo-altura);
+  padding: 0 var(--e-14);
+  font-size: var(--t-17);
+  color: var(--noite);
+  background: var(--branco);
+  border: var(--campo-borda) solid var(--cinza);
+  border-radius: var(--r-campo);
+}
+
+.entrada::placeholder {
+  color: var(--cinza);
+}
+
+.entrada:hover {
+  border-color: var(--noite);
+}
+
+.entrada:focus-visible {
+  border-color: var(--noite);
+  outline: var(--sublinhado) solid var(--noite);
+  outline-offset: var(--sublinhado);
+}
+
+.area {
+  min-height: var(--area-texto);
+  padding: var(--e-14);
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.grande {
+  min-height: var(--alvo-grande);
+  font-size: var(--t-18);
+  letter-spacing: 0.02em;
+}
+
+.ajuda,
+.erro {
+  margin: 0;
+  font-size: var(--t-15);
+  line-height: 1.5;
+  color: var(--cinza);
+}
+
+.erro {
+  font-weight: 600;
+  color: var(--noite);
+}
+
+/* Senha com o botão de olho dentro da caixa */
+.caixaOlho {
+  position: relative;
+  display: flex;
+  flex: 1 1 var(--campo-base);
+  min-width: 0;
+}
+
+.comOlho {
+  padding-right: var(--campo-com-botao);
+}
+
+.olho {
+  position: absolute;
+  top: var(--e-4);
+  right: var(--e-4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--alvo);
+  height: var(--alvo);
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: var(--r-botao);
+  cursor: pointer;
+}
+
+.olho svg {
+  width: var(--e-22);
+  height: var(--e-22);
+  fill: none;
+  stroke: var(--noite);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Caixa de marcar (ex.: concordar com a Política) */
+.marcar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-10);
+  min-height: var(--alvo);
+  font-size: var(--t-16);
+  line-height: normal;
+  color: var(--noite);
+  cursor: pointer;
+}
+
+.caixa {
+  flex: none;
+  width: var(--marcar);
+  height: var(--marcar);
+  margin: 0;
+  accent-color: var(--noite);
+}
+
+/* Sobre fundo escuro */
+.escuro .label {
+  color: var(--branco);
+}
+
+.escuro .entrada {
+  border-color: transparent;
+}
+
+.escuro .entrada:focus-visible {
+  outline-color: var(--amarelo);
+}
+
+.escuro .ajuda {
+  color: var(--texto-2);
+}
+
+.escuro .erro {
+  color: var(--amarelo);
+}

@@ -1,0 +1,136 @@
+/* Mensagem enviada (prancha Contato-Enviado). */
+
+.corpo {
+  color: var(--noite);
+  background: var(--nevoa);
+}
+
+.dentro {
+  max-width: var(--largura);
+  margin: 0 auto;
+  padding: var(--secao) var(--margem);
+}
+
+/* Na prancha os 720 px são só do conteúdo (sem box-sizing global). */
+.cartao {
+  box-sizing: content-box;
+  max-width: var(--cartao-estreito);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-28);
+  padding: var(--cartao-respiro-grande);
+  background: var(--branco);
+  border: var(--borda-botao) solid var(--noite);
+  border-radius: var(--r-cartao);
+}
+
+/* ---- Título ---- */
+.titulo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-14);
+}
+
+.h1 {
+  font-size: var(--h1-cartao);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: var(--aperto);
+}
+
+.apoio {
+  max-width: 46ch;
+  font-size: var(--t-18);
+  line-height: 1.55;
+  color: var(--marinho);
+  text-wrap: pretty;
+}
+
+/* ---- Caixa do protocolo ---- */
+/* "Copiar protocolo" à direita do número; o aviso embaixo dele, na linha da nota. */
+.protocolo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'rotulo .'
+    'numero copiar'
+    'nota copiar';
+  gap: var(--e-6) var(--e-24);
+  padding: var(--e-20) var(--e-24);
+  background: var(--nevoa);
+  border-radius: var(--r-placa);
+}
+
+.rotulo {
+  grid-area: rotulo;
+  font-size: var(--t-16);
+  font-weight: 600;
+  line-height: normal;
+}
+
+.numero {
+  grid-area: numero;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: var(--t-protocolo);
+  font-weight: 800;
+  line-height: normal;
+  letter-spacing: 0.04em;
+}
+
+.copiar {
+  grid-area: copiar;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--e-6);
+}
+
+.aviso {
+  font-size: var(--t-16);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.nota {
+  grid-area: nota;
+  font-size: var(--t-16);
+  line-height: 1.5;
+  color: var(--marinho);
+}
+
+/* ---- Ações ---- */
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-12) var(--e-28);
+}
+
+.voltar {
+  font-size: var(--t-18);
+}
+
+.link {
+  font-weight: 600;
+}
+
+/* No celular o botão desce pra baixo do número; o aviso vem do lado (ou embaixo, se não couber). */
+@media (max-width: 600px) {
+  .protocolo {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'rotulo'
+      'numero'
+      'copiar'
+      'nota';
+  }
+
+  .copiar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 var(--e-16);
+  }
+}

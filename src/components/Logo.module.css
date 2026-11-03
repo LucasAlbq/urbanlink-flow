@@ -1,0 +1,27 @@
+.logo {
+  display: block;
+  height: auto;
+  aspect-ratio: 739 / 118;
+}
+
+.letra {
+  fill: var(--branco);
+}
+
+.claro .letra {
+  fill: var(--marinho);
+}
+
+.ouro {
+  fill: var(--ouro);
+}
+
+.umaCor .letra,
+.umaCor .ouro {
+  fill: var(--branco);
+}
+
+.claro.umaCor .letra,
+.claro.umaCor .ouro {
+  fill: var(--noite);
+}

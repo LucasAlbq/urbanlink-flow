@@ -1,0 +1,239 @@
+/* Rastreamento (prancha Rastreamento e Rastreamento-Nao-Encontrado). */
+
+/* ---- Topo: continua o Marinho do Header ---- */
+.topo {
+  color: var(--branco);
+  background: var(--marinho);
+}
+
+.topo :focus-visible {
+  outline-color: var(--amarelo);
+}
+
+.topoDentro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--e-32) var(--e-64);
+  max-width: var(--largura);
+  margin: 0 auto;
+  padding: var(--topo-pagina) var(--margem) var(--topo-pagina-fim);
+}
+
+.topoTexto {
+  flex: 1 1 420px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-16);
+}
+
+.h1 {
+  font-size: var(--h1-pagina);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: var(--aperto);
+}
+
+.apoio {
+  max-width: 40ch;
+  font-size: var(--corpo);
+  line-height: 1.55;
+  color: var(--texto-2);
+  text-wrap: pretty;
+}
+
+.busca {
+  flex: 1 1 460px;
+  min-width: 0;
+  margin: 0;
+}
+
+/* ---- Resultado ---- */
+.resultado {
+  color: var(--noite);
+  background: var(--nevoa);
+}
+
+.dentro {
+  max-width: var(--largura);
+  margin: 0 auto;
+  padding: var(--secao) var(--margem);
+}
+
+.cabeca {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--e-16) var(--e-40);
+  margin-bottom: var(--titulo-secao-2);
+}
+
+.cabecaTexto {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-10);
+}
+
+.cheia {
+  flex: 1 1 100%;
+}
+
+.codigo {
+  font-size: var(--t-17);
+  line-height: normal;
+  color: var(--marinho);
+}
+
+.codigo strong {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--noite);
+}
+
+.h2 {
+  font-size: var(--h2-status);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: var(--aperto-2);
+}
+
+.previsao {
+  font-size: var(--t-18);
+  line-height: 1.5;
+}
+
+.previsao strong {
+  font-weight: 700;
+}
+
+.explica {
+  max-width: 52ch;
+  margin-top: var(--e-6);
+  font-size: var(--t-18);
+  line-height: 1.55;
+  color: var(--marinho);
+  text-wrap: pretty;
+}
+
+.semCodigo {
+  margin: 0 0 var(--titulo-secao-2);
+}
+
+.etapaTexto {
+  font-size: var(--t-17);
+  line-height: 1.5;
+  color: var(--marinho);
+}
+
+.etapaTexto strong {
+  font-weight: 700;
+  color: var(--noite);
+}
+
+/* ---- Mapa ---- */
+.mapa {
+  margin-top: var(--titulo-secao);
+  overflow: hidden;
+  background: var(--branco);
+  border: var(--borda-botao) solid var(--noite);
+  border-radius: var(--r-cartao);
+}
+
+.mapaBarra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-8) var(--e-24);
+  /* na prancha os 56 px são só do conteúdo: somam o respiro e a linha */
+  min-height: calc(var(--barra-mapa) + 2 * var(--e-8) + var(--linha));
+  padding: var(--e-8) var(--e-20);
+  border-bottom: var(--linha) solid var(--mapa-quadra);
+}
+
+.mapaTitulo {
+  font-size: var(--t-18);
+  font-weight: 700;
+}
+
+.mapaNota {
+  font-size: var(--t-15);
+  color: var(--cinza);
+}
+
+.mapaCaixa {
+  position: relative;
+  height: var(--mapa-caixa);
+}
+
+.mapaSvg {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---- Ajuda ---- */
+.ajuda {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-20) var(--e-40);
+  margin-top: var(--titulo-secao-2);
+  padding: var(--e-28) var(--cartao-margem);
+  background: var(--branco);
+  border-radius: var(--r-cartao);
+  box-shadow: inset 0 0 0 var(--borda-botao) var(--mapa-quadra);
+}
+
+.ajudaTexto {
+  flex: 1 1 360px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-4);
+}
+
+.ajudaTitulo {
+  font-size: var(--t-22);
+  font-weight: 800;
+}
+
+.ajudaApoio {
+  font-size: var(--t-17);
+  line-height: 1.5;
+  color: var(--marinho);
+}
+
+/* ---- Ações ---- */
+.acoes,
+.acoesErro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-12) var(--e-28);
+  margin-top: var(--titulo-secao-2);
+}
+
+.acoesErro {
+  margin-top: 0;
+}
+
+.botaoNoite {
+  font-size: var(--t-18);
+}
+
+.link {
+  font-weight: 600;
+  text-underline-offset: var(--sublinhado-recuo);
+}
+
+@media (max-width: 760px) {
+  .mapaCaixa {
+    height: auto;
+    aspect-ratio: 960 / 560;
+  }
+}

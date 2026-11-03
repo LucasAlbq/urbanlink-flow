@@ -1,0 +1,19 @@
+.carregando {
+  --tamanho: var(--carregando-a);
+  display: flex;
+  align-items: center;
+  gap: var(--e-14);
+  min-height: var(--alvo-grande);
+}
+
+.a {
+  flex: none;
+  width: var(--tamanho);
+  height: var(--tamanho);
+  fill: var(--ouro);
+}
+
+.texto {
+  font-size: var(--t-18);
+  font-weight: 600;
+}

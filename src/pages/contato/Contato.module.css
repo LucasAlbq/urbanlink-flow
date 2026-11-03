@@ -1,0 +1,132 @@
+/* Fale com a gente (prancha Contato). */
+
+/* ---- Topo: continua o Marinho do Header ---- */
+.topo {
+  color: var(--branco);
+  background: var(--marinho);
+}
+
+.topo :focus-visible {
+  outline-color: var(--amarelo);
+}
+
+.topoDentro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-16);
+  max-width: var(--largura);
+  margin: 0 auto;
+  padding: var(--topo-pagina) var(--margem) var(--topo-pagina-fim);
+}
+
+.h1 {
+  font-size: var(--h1-pagina);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: var(--aperto);
+}
+
+.apoio {
+  max-width: 46ch;
+  font-size: var(--corpo);
+  line-height: 1.55;
+  color: var(--texto-2);
+  text-wrap: pretty;
+}
+
+/* ---- Corpo: formulário (7fr) e contratação (5fr) ---- */
+.corpo {
+  color: var(--noite);
+  background: var(--nevoa);
+}
+
+.dentro {
+  max-width: var(--largura);
+  margin: 0 auto;
+  padding: var(--secao) var(--margem);
+}
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: var(--gap-split);
+  align-items: start;
+}
+
+.h2 {
+  font-size: var(--h2-cartao);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+/* ---- Cartão do formulário ---- */
+.cartao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-22);
+  margin: 0;
+  padding: var(--cartao-respiro);
+  background: var(--branco);
+  border: var(--borda-botao) solid var(--noite);
+  border-radius: var(--r-cartao);
+}
+
+.h2Cartao {
+  margin-bottom: var(--e-4);
+}
+
+.dois {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--e-20);
+}
+
+.linkPolitica {
+  font-weight: 600;
+  text-underline-offset: var(--e-4);
+}
+
+.linkPolitica:hover {
+  color: var(--marinho);
+}
+
+.enviar {
+  font-size: var(--t-18);
+}
+
+/* ---- Como funciona a contratação ---- */
+.lado {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-28);
+  padding-top: var(--e-8);
+}
+
+.ladoCabeca {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-10);
+}
+
+.ladoApoio,
+.etapaTexto {
+  font-size: var(--t-17);
+  line-height: 1.55;
+  color: var(--marinho);
+}
+
+.etapaTexto {
+  max-width: 30ch;
+}
+
+@media (max-width: 900px) {
+  .split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .dois {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

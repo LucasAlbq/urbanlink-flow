@@ -30,4 +30,142 @@
   /* acessibilidade: anel de foco (02-efeitos.md, micro-interações) e alvo de toque */
   --anel: 3px;
   --alvo: 44px;
+
+  /* ---- Valores tirados das pranchas (docs/referencia/*.html) ---- */
+
+  /* cores de apoio da ilustração e das bordas */
+  --mapa-quadra: #D6DCEA;  /* quadras do mapa e linhas finas em fundo claro */
+  --mapa-parque: #C9DCCF;
+  --mapa-rio: #B9C8E6;
+  --borda-escura: rgba(255, 255, 255, 0.55); /* contorno de botão em fundo escuro */
+  --brilho: rgba(255, 255, 255, 0.14);       /* hover dos botões e linha do rodapé */
+  --halo-pacote: rgba(255, 215, 69, 0.45);
+
+  /* tipo */
+  --lead: clamp(1.125rem, 1.4vw, 1.3125rem);     /* texto de apoio do hero e da chamada */
+  --h2-chamada: clamp(2.5rem, 5vw, 4.5rem);
+  --t-placa: clamp(1.5rem, 2.1vw, 2rem);
+  --t-sobre: clamp(1.0625rem, 1.3vw, 1.1875rem);
+  --t-15: 0.9375rem; --t-16: 1rem; --t-17: 1.0625rem; --t-18: 1.125rem;
+  --t-19: 1.1875rem; --t-22: 1.375rem;
+  --aperto: -0.025em;   /* letter-spacing dos títulos */
+  --aperto-2: -0.02em;
+
+  /* espaços */
+  --e-4: 4px;   --e-6: 6px;   --e-8: 8px;   --e-10: 10px; --e-12: 12px; --e-14: 14px;
+  --e-16: 16px; --e-18: 18px; --e-20: 20px; --e-22: 22px; --e-24: 24px;
+  --e-28: 28px; --e-30: 30px; --e-32: 32px; --e-40: 40px; --e-44: 44px;
+  --e-48: 48px; --e-56: 56px; --e-64: 64px;
+  --hero-topo: clamp(32px, 5vw, 72px);
+  --titulo-secao: clamp(48px, 6vw, 80px);   /* entre o título da seção e o conteúdo */
+  --titulo-secao-2: clamp(40px, 5vw, 64px);
+  --gap-split: clamp(32px, 5vw, 72px);
+
+  /* peças */
+  --alvo-grande: 56px;   /* botões e campo grandes */
+  --botao-menu: 48px;
+  --borda-botao: 2px;
+  --estrada: 22px;       /* largura do asfalto */
+  --poste-largura: 8px;
+  --poste-altura: 44px;
+  --faixa: 4px;          /* faixa amarela da estrada */
+  --faixa-traco: 26px;
+  --faixa-ciclo: 50px;
+  --pacote: 26px;
+  --pacote-aro: 4px;     /* contorno Noite do pacote */
+  --pacote-halo: 10px;
+  --placa-numero: 34px;
+  --placa-aro: 5px;      /* aro da cor da placa antes da borda Noite */
+  --placa-borda: 8px;    /* aro + borda Noite */
+  --linha: 1px;          /* linhas finas e divisórias */
+  --logo-topo: 188px;
+  --logo-rodape: 163px;
+  --logo-app: 125px;
+  --app-menu: 232px;     /* menu lateral da ilustração da plataforma */
+  --app-menu-celular: 60px;
+  --mapa-altura: clamp(300px, 38vw, 520px);
+  --a-sangra: clamp(0px, (100vw - 600px) * 0.12, 110px); /* o A da chamada passa da margem */
+  --a-max: 640px;
+  --a-max-celular: 250px;
+  --campo-base: 260px;   /* largura mínima do campo antes de quebrar a linha */
+  --campo-altura: 52px;
+  --campo-borda: 1.5px;
+  --glifo-largura: 26px;
+  --fim-largura: 48px;   /* seta do fim da estrada */
+  --fim-altura: 46px;
+  --fim-recuo: 6px;      /* a seta passa um pouco do asfalto */
+  --sublinhado: 2px;
+  --sublinhado-forte: 3px;
+  --sublinhado-recuo: 6px;
+  --hero-min: 808px;     /* 900 da prancha menos o topo */
+  --hero-base: 330px;    /* espaço da cidade embaixo do texto do hero */
+  --cidade-altura: 520px;
+  --cidade-altura-celular: 300px;
+  --cidade-sobe-celular: 110px; /* no celular a cidade sobe por baixo dos botões */
+
+  /* rastreamento (docs/referencia/Rastreamento.html) */
+  --h1-pagina: clamp(2.5rem, 5vw, 4.5rem);
+  --h2-status: clamp(2rem, 3.8vw, 3.25rem);
+  --t-placa-pequena: clamp(1.25rem, 1.6vw, 1.5rem);
+  --topo-pagina: clamp(24px, 4vw, 48px);
+  --topo-pagina-fim: clamp(56px, 7vw, 96px);
+  --mapa-caixa: clamp(320px, 46vw, 640px);
+  --cartao-margem: clamp(20px, 3vw, 36px);
+  --barra-mapa: 56px;
+  --carregando-a: 32px;
+  --espera-carregando: 300ms;
+
+  /* contato (docs/referencia/Contato.html) */
+  --h2-cartao: clamp(1.5rem, 2.2vw, 2rem);      /* título do cartão do formulário e da coluna */
+  --cartao-respiro: clamp(24px, 3.4vw, 44px);   /* padding do cartão do formulário */
+  --area-texto: 140px;   /* altura mínima da caixa de mensagem */
+  --marcar: 20px;        /* caixa de marcar */
+
+  /* mensagem enviada (docs/referencia/Contato-Enviado.html) */
+  --h1-cartao: clamp(2.25rem, 4.4vw, 3.5rem);        /* h1 dentro de um cartão */
+  --t-protocolo: clamp(1.75rem, 3vw, 2.25rem);
+  --cartao-estreito: 720px;                          /* largura do conteúdo do cartão */
+  --cartao-respiro-grande: clamp(28px, 4vw, 56px);
+  --mini-estrada: 360px;
+  --mini-estrada-pequena: 300px;   /* a do link enviado (recuperar senha) */
+  --aviso-copiado: 2000ms;  /* "Protocolo copiado" fica 2 s na tela */
+
+  /* login e telas de senha (docs/referencia/Login.html) */
+  --login-altura: 900px;
+  --login-arte-margem: clamp(24px, 4vw, 56px);
+  --login-frase-topo: clamp(48px, 9vh, 120px);
+  --t-frase-login: clamp(2.25rem, 3.6vw, 3.5rem);
+  --cidade-login: 460px;
+  --login-lado-margem: clamp(20px, 5vw, 72px);
+  --login-centro: clamp(32px, 6vh, 64px);
+  --form-estreito: 420px;
+  --h1-login: clamp(2rem, 3vw, 2.75rem);
+  --logo-celular: 150px;
+  --campo-com-botao: 60px;  /* respiro da caixa com o botão de olho */
+  --sublinhado-recuo-curto: 5px;
+
+  /* menu do celular (docs/referencia/Menu-Celular.html) */
+  --menu-link: 72px;
+  --t-menu: 1.75rem;
+  --aperto-menu: -0.015em;
+  --faixa-traco-menu: 22px;
+  --faixa-ciclo-menu: 42px;
+  --parada: 12px;          /* ponto das paradas sem o pacote */
+  --fim-menu-largura: 44px;
+  --fim-menu-altura: 42px;
+  --fim-menu-recuo: 24px;
+  --z-menu: 80;            /* a faixa de exemplos fica em 90 */
+
+  /* página 404 (docs/referencia/Pagina-404.html) */
+  --tracejado: 3px;               /* contorno do trecho que não existe */
+  --pacote-recuo-404: 200px;      /* o pacote para 200 px antes do fim do asfalto */
+  --acoes-404: clamp(48px, 6vw, 72px);
+  --retorno-sobra: 2px;           /* a placa Retorno passa 2 px do fim do asfalto */
+
+  /* política de privacidade (docs/referencia/Politica.html) */
+  --h2-texto: clamp(1.5rem, 2.2vw, 1.875rem);
+  --indice-largura: 240px;
+  --gap-indice: clamp(32px, 6vw, 96px);
+  --lacuna: #FBE8BF;     /* fundo dos trechos que o grupo ainda vai preencher */
+  --r-lacuna: 4px;
 }

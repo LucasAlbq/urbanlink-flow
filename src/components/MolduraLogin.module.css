@@ -1,0 +1,123 @@
+/* Molde do login e das telas de senha (prancha Login). */
+.moldura {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  /* a prancha tem 900 px; numa janela mais alta a tela ocupa tudo */
+  min-height: max(var(--login-altura), 100vh);
+}
+
+/* ---- Arte: a cidade ---- */
+.arte {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: var(--e-32) var(--login-arte-margem);
+  color: var(--branco);
+  background: var(--marinho);
+}
+
+.arte :focus-visible {
+  outline-color: var(--amarelo);
+}
+
+.logo {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  min-height: var(--alvo);
+}
+
+.logoArte {
+  width: var(--logo-topo);
+}
+
+.frase {
+  position: relative;
+  z-index: 1;
+  max-width: 16ch;
+  margin-top: var(--login-frase-topo);
+  font-size: var(--t-frase-login);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: var(--aperto);
+}
+
+.cidade {
+  --skyline-altura: var(--cidade-login);
+}
+
+/* ---- Lado do formulário ---- */
+.lado {
+  display: flex;
+  flex-direction: column;
+  padding: var(--e-32) var(--login-lado-margem);
+  color: var(--noite);
+  background: var(--branco);
+}
+
+.barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-16);
+}
+
+.logoCelular {
+  display: none;
+}
+
+.logoCelularSvg {
+  width: var(--logo-celular);
+}
+
+.voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-6);
+  min-height: var(--alvo);
+  margin-left: auto;
+  font-size: var(--t-16);
+  font-weight: 600;
+  line-height: normal;
+  text-decoration: none;
+}
+
+.voltar:hover {
+  color: var(--marinho);
+}
+
+.voltar svg {
+  width: var(--e-18);
+  height: var(--e-18);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.centro {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--login-centro) 0;
+}
+
+@media (max-width: 900px) {
+  .moldura {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .arte {
+    display: none;
+  }
+
+  .logoCelular {
+    display: flex;
+  }
+}

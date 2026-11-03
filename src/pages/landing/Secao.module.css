@@ -1,0 +1,52 @@
+/* Peças comuns das seções da landing. */
+.dentro {
+  max-width: var(--largura);
+  margin: 0 auto;
+  padding: var(--secao) var(--margem);
+}
+
+.h2 {
+  margin: 0;
+  font-size: var(--h2);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: var(--aperto);
+}
+
+.apoio {
+  margin: 0;
+  font-size: var(--corpo);
+  line-height: 1.55;
+  color: var(--marinho);
+  text-wrap: pretty;
+}
+
+.escuro {
+  color: var(--branco);
+  background: var(--marinho);
+}
+
+.escuro :focus-visible {
+  outline-color: var(--amarelo);
+}
+
+.escuro .apoio {
+  color: var(--texto-2);
+}
+
+.nevoa {
+  color: var(--noite);
+  background: var(--nevoa);
+}
+
+.branco {
+  color: var(--noite);
+  background: var(--branco);
+}
+
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-12) var(--e-28);
+}

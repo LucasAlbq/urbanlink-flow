@@ -1,0 +1,47 @@
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: var(--hero-min);
+  overflow: hidden;
+}
+
+.texto {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-28);
+  width: 100%;
+  max-width: var(--largura);
+  margin: 0 auto;
+  padding: var(--hero-topo) var(--margem) var(--hero-base);
+}
+
+.titulo {
+  margin: 0;
+  font-size: var(--h1);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: var(--aperto);
+  text-wrap: balance;
+}
+
+.lead {
+  margin: 0;
+  max-width: 44ch;
+  font-size: var(--lead);
+  line-height: 1.55;
+  color: var(--texto-2);
+  text-wrap: pretty;
+}
+
+@media (max-width: 760px) {
+  .hero {
+    min-height: 0;
+  }
+
+  .texto {
+    padding-bottom: 0;
+  }
+}
