@@ -243,3 +243,52 @@
     transform: translateX(-50%) rotate(90deg);
   }
 }
+
+/* Paradas sem o pacote (menu do celular). */
+.parada {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--parada);
+  height: var(--parada);
+  border-radius: 50%;
+  background: var(--texto-2);
+  transform: translate(-50%, -50%);
+}
+
+/* Menu do celular: asfalto Marinho, faixas mais curtas, pacote sem halo no meio da parada,
+   texto sem respiro (o link já tem 72 px) e uma seta menor. Sempre vertical. */
+.menu {
+  --faixa-traco: var(--faixa-traco-menu);
+  --faixa-ciclo: var(--faixa-ciclo-menu);
+}
+
+.menu .etapa {
+  column-gap: var(--e-22);
+}
+
+.menu .asfalto {
+  background: var(--marinho);
+}
+
+.menu .faixa {
+  opacity: 0.85;
+}
+
+/* O texto (o link) ocupa a linha toda: a área de toque é a parada inteira. */
+.menu .texto {
+  justify-self: stretch;
+  padding: 0;
+}
+
+.menu .pacote {
+  top: 50%;
+  box-shadow: 0 0 0 var(--pacote-aro) var(--noite);
+  transform: translate(-50%, -50%);
+}
+
+.menu .fim {
+  bottom: calc(-1 * var(--fim-menu-recuo));
+  width: var(--fim-menu-largura);
+  height: var(--fim-menu-altura);
+}

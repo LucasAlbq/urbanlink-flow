@@ -142,4 +142,16 @@
   --logo-celular: 150px;
   --campo-com-botao: 60px;  /* respiro da caixa com o botão de olho */
   --sublinhado-recuo-curto: 5px;
+
+  /* menu do celular (docs/referencia/Menu-Celular.html) */
+  --menu-link: 72px;
+  --t-menu: 1.75rem;
+  --aperto-menu: -0.015em;
+  --faixa-traco-menu: 22px;
+  --faixa-ciclo-menu: 42px;
+  --parada: 12px;          /* ponto das paradas sem o pacote */
+  --fim-menu-largura: 44px;
+  --fim-menu-altura: 42px;
+  --fim-menu-recuo: 24px;
+  --z-menu: 80;            /* a faixa de exemplos fica em 90 */
 }

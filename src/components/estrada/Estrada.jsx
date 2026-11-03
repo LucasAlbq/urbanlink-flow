@@ -6,12 +6,32 @@ import css from './Estrada.module.css'
 // orientacao: auto (horizontal, vira vertical abaixo de 760 px) · vertical.
 // inicio: ponto amarelo no começo. fim: seta no fim (Ouro, ou clara se o último trecho for futuro).
 // pacoteEm: índice da etapa com o pacote, ou 'fim' (pacote na seta).
-export function Estrada({ etapas, orientacao = 'auto', inicio = true, fim = true, pacoteEm, className = '', ...resto }) {
+// variante="menu": a estrada do menu do celular (asfalto Marinho, pacote no meio da parada).
+// paradas: ponto no asfalto das etapas sem o pacote.
+export function Estrada({
+  etapas,
+  orientacao = 'auto',
+  variante = 'normal',
+  inicio = true,
+  fim = true,
+  pacoteEm,
+  paradas = false,
+  className = '',
+  ...resto
+}) {
   const ultima = etapas.length - 1
+  const classes = [
+    css.estrada,
+    orientacao === 'vertical' ? css.vertical : css.auto,
+    variante === 'menu' && css.menu,
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   return (
     <ol
-      className={`${css.estrada} ${orientacao === 'vertical' ? css.vertical : css.auto} ${className}`}
+      className={classes}
       style={{ '--etapas': etapas.length }}
       data-estrada=""
       {...resto}
@@ -24,6 +44,7 @@ export function Estrada({ etapas, orientacao = 'auto', inicio = true, fim = true
           inicio={inicio && i === 0}
           fim={fim && i === ultima}
           pacote={pacoteEm === i || (pacoteEm === 'fim' && i === ultima && 'fim')}
+          parada={paradas}
         >
           {etapa.conteudo}
         </Etapa>
