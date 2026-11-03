@@ -142,4 +142,10 @@
   --logo-celular: 150px;
   --campo-com-botao: 60px;  /* respiro da caixa com o botão de olho */
   --sublinhado-recuo-curto: 5px;
+
+  /* página 404 (docs/referencia/Pagina-404.html) */
+  --tracejado: 3px;               /* contorno do trecho que não existe */
+  --pacote-recuo-404: 200px;      /* o pacote para 200 px antes do fim do asfalto */
+  --acoes-404: clamp(48px, 6vw, 72px);
+  --retorno-sobra: 2px;           /* a placa Retorno passa 2 px do fim do asfalto */
 }
