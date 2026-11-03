@@ -114,4 +114,10 @@
   --barra-mapa: 56px;
   --carregando-a: 32px;
   --espera-carregando: 300ms;
+
+  /* contato (docs/referencia/Contato.html) */
+  --h2-cartao: clamp(1.5rem, 2.2vw, 2rem);      /* título do cartão do formulário e da coluna */
+  --cartao-respiro: clamp(24px, 3.4vw, 44px);   /* padding do cartão do formulário */
+  --area-texto: 140px;   /* altura mínima da caixa de mensagem */
+  --marcar: 20px;        /* caixa de marcar */
 }
