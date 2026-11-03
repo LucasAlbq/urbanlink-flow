@@ -21,7 +21,8 @@ export function Header() {
             <NavLink to="/rastreamento" className={css.link}>
               Rastrear entrega
             </NavLink>
-            <NavLink to="/contato" className={css.link}>
+            {/* end: em /contato/enviado nenhum link fica marcado (prancha Contato-Enviado) */}
+            <NavLink to="/contato" end className={css.link}>
               Fale com a gente
             </NavLink>
           </nav>
