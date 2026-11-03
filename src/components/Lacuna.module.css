@@ -1,0 +1,7 @@
+.lacuna {
+  padding: 0 var(--e-6);
+  font-weight: 600;
+  color: var(--noite);
+  background: var(--lacuna);
+  border-radius: var(--r-lacuna);
+}
