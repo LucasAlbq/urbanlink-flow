@@ -1,0 +1,57 @@
+.placa {
+  --cor-placa: var(--ouro);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-14);
+  padding: var(--e-16) var(--e-22) var(--e-16) var(--e-16);
+  border-radius: var(--r-placa);
+  color: var(--noite);
+  background: var(--cor-placa);
+  /* aro da própria cor + borda Noite: o desenho da placa de estrada */
+  box-shadow:
+    inset 0 0 0 var(--placa-aro) var(--cor-placa),
+    inset 0 0 0 var(--placa-borda) var(--noite);
+}
+
+.atual {
+  --cor-placa: var(--amarelo);
+}
+
+.numero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--placa-numero);
+  height: var(--placa-numero);
+  border-radius: var(--r-botao);
+  font-size: var(--t-19);
+  font-weight: 800;
+  color: var(--amarelo);
+  background: var(--noite);
+}
+
+.nome {
+  font-size: var(--t-placa);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: var(--aperto-2);
+  white-space: nowrap;
+}
+
+.seta {
+  flex: none;
+  width: var(--e-24);
+  height: var(--e-22);
+  fill: var(--noite);
+}
+
+.desvio {
+  flex: none;
+  width: var(--glifo-largura);
+  height: var(--e-22);
+  fill: none;
+  stroke: var(--noite);
+  stroke-width: 3.2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}

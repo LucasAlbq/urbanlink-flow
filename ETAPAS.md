@@ -64,7 +64,7 @@ Fechadas em 03/11/2026:
 
 Feita pelo Claude Code seguindo o `COMECE-AQUI.md`: projeto Vite criado, kit no lugar (`CLAUDE.md`, este arquivo, `docs/plano/`, `docs/referencia/`, skill do projeto), bibliotecas instaladas, `.env.exemplo`, Git com `main` e `dev`, skills do GSAP.
 
-### [ ] Fase 0: base do projeto (tag `v0.1.0`)
+### [x] Fase 0: base do projeto (tag `v0.1.0`)
 
 ```text
 Leia CLAUDE.md e docs/plano/01-plano.md (Stack, Rotas, Tokens).

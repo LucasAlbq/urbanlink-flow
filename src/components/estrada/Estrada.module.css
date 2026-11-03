@@ -1,0 +1,217 @@
+/* Estrada horizontal: placa no poste, asfalto, texto. */
+.estrada {
+  display: grid;
+  grid-template-columns: repeat(var(--etapas, 4), minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.etapa {
+  display: grid;
+  grid-template-areas: 'poste' 'asfalto' 'texto';
+  grid-template-rows: auto var(--estrada) auto;
+  justify-items: start;
+  align-content: start;
+}
+
+.poste {
+  grid-area: poste;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-right: var(--e-16);
+}
+
+.haste {
+  width: var(--poste-largura);
+  height: var(--poste-altura);
+  background: var(--noite);
+}
+
+.asfalto {
+  grid-area: asfalto;
+  justify-self: stretch;
+  position: relative;
+  background: var(--noite);
+}
+
+.futuro {
+  background: var(--estrada-futura);
+}
+
+.faixa {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc((var(--estrada) - var(--faixa)) / 2);
+  height: var(--faixa);
+  background: repeating-linear-gradient(
+    90deg,
+    var(--amarelo) 0 var(--faixa-traco),
+    transparent var(--faixa-traco) var(--faixa-ciclo)
+  );
+}
+
+.inicio,
+.pacote {
+  position: absolute;
+  top: 50%;
+  width: var(--pacote);
+  height: var(--pacote);
+  border-radius: 50%;
+  background: var(--amarelo);
+  box-shadow: 0 0 0 var(--pacote-aro) var(--noite);
+  transform: translateY(-50%);
+}
+
+.inicio {
+  left: 0;
+}
+
+.pacote {
+  left: var(--e-22);
+  box-shadow:
+    0 0 0 var(--pacote-aro) var(--noite),
+    0 0 0 var(--pacote-halo) var(--halo-pacote);
+}
+
+.fim {
+  position: absolute;
+  right: calc(-1 * var(--fim-recuo));
+  top: 50%;
+  width: var(--fim-largura);
+  height: var(--fim-altura);
+  fill: var(--ouro);
+  transform: translateY(-50%);
+}
+
+.texto {
+  grid-area: texto;
+  padding: var(--e-32) var(--e-28) 0 0;
+}
+
+/* Estrada vertical: asfalto à esquerda, placa e texto à direita, sem poste. */
+.vertical {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.vertical .etapa {
+  grid-template-areas: 'asfalto poste' 'asfalto texto';
+  grid-template-columns: var(--estrada) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: var(--e-20);
+}
+
+.vertical .haste {
+  display: none;
+}
+
+.vertical .poste {
+  padding-right: 0;
+}
+
+.vertical .asfalto {
+  align-self: stretch;
+}
+
+.vertical .faixa {
+  left: calc((var(--estrada) - var(--faixa)) / 2);
+  right: auto;
+  top: 0;
+  bottom: 0;
+  width: var(--faixa);
+  height: auto;
+  background: repeating-linear-gradient(
+    180deg,
+    var(--amarelo) 0 var(--faixa-traco),
+    transparent var(--faixa-traco) var(--faixa-ciclo)
+  );
+}
+
+.vertical .texto {
+  padding: var(--e-16) 0 var(--e-44) 0;
+}
+
+.vertical .inicio {
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.vertical .pacote {
+  top: var(--e-22);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.vertical .fim {
+  right: auto;
+  left: 50%;
+  top: auto;
+  bottom: calc(-1 * var(--fim-recuo));
+  transform: translateX(-50%) rotate(90deg);
+}
+
+@media (max-width: 760px) {
+  .auto {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .auto .etapa {
+    grid-template-areas: 'asfalto poste' 'asfalto texto';
+    grid-template-columns: var(--estrada) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    column-gap: var(--e-20);
+  }
+
+  .auto .haste {
+    display: none;
+  }
+
+  .auto .poste {
+    padding-right: 0;
+  }
+
+  .auto .asfalto {
+    align-self: stretch;
+  }
+
+  .auto .faixa {
+    left: calc((var(--estrada) - var(--faixa)) / 2);
+    right: auto;
+    top: 0;
+    bottom: 0;
+    width: var(--faixa);
+    height: auto;
+    background: repeating-linear-gradient(
+      180deg,
+      var(--amarelo) 0 var(--faixa-traco),
+      transparent var(--faixa-traco) var(--faixa-ciclo)
+    );
+  }
+
+  .auto .texto {
+    padding: var(--e-18) 0 var(--e-56) 0;
+  }
+
+  .auto .inicio {
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+  }
+
+  .auto .pacote {
+    top: var(--e-22);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .auto .fim {
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: calc(-1 * var(--fim-recuo));
+    transform: translateX(-50%) rotate(90deg);
+  }
+}

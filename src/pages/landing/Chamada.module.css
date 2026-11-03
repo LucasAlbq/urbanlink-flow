@@ -1,0 +1,63 @@
+.chamada {
+  overflow: hidden;
+  background: var(--noite);
+}
+
+.dentro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--e-48) var(--e-40);
+  max-width: var(--largura);
+  margin: 0 auto;
+  padding: var(--secao) var(--margem) 0;
+}
+
+.texto {
+  flex: 1 1 520px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--e-28);
+  padding-bottom: var(--secao);
+}
+
+.titulo {
+  margin: 0;
+  font-size: var(--h2-chamada);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: var(--aperto);
+  text-wrap: balance;
+}
+
+.apoio {
+  max-width: 38ch;
+  font-size: var(--lead);
+}
+
+.arte {
+  flex: 1 1 360px;
+  min-width: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-self: flex-end;
+}
+
+/* O A passa da margem direita e encosta no pé da seção. */
+.a {
+  display: block;
+  width: calc(100% + var(--a-sangra));
+  max-width: var(--a-max);
+  height: auto;
+  margin-right: calc(-1 * var(--a-sangra));
+  margin-bottom: -2px;
+  fill: var(--ouro);
+}
+
+@media (max-width: 760px) {
+  .a {
+    max-width: var(--a-max-celular);
+  }
+}

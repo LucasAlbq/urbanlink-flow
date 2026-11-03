@@ -1,0 +1,32 @@
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: var(--gap-split);
+  align-items: start;
+}
+
+.texto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-18);
+  font-size: var(--t-sobre);
+  line-height: 1.6;
+  color: var(--marinho);
+}
+
+.texto p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.link {
+  align-self: flex-start;
+  font-weight: 600;
+  color: var(--noite);
+}
+
+@media (max-width: 900px) {
+  .split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

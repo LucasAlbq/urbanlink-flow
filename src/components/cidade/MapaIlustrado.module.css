@@ -1,0 +1,48 @@
+.mapa {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.chao {
+  fill: var(--nevoa);
+}
+
+.quadra {
+  fill: var(--mapa-quadra);
+}
+
+.parque {
+  fill: var(--mapa-parque);
+}
+
+.rio {
+  fill: none;
+  stroke: var(--mapa-rio);
+  stroke-width: 34;
+  stroke-linecap: round;
+}
+
+.avenida {
+  fill: none;
+  stroke: var(--nevoa);
+  stroke-width: 26;
+}
+
+.rota {
+  fill: none;
+  stroke: var(--ouro);
+  stroke-width: 10;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.inicio {
+  fill: var(--nevoa);
+  stroke: var(--noite);
+  stroke-width: 6;
+}
+
+.fim {
+  fill: var(--noite);
+}
