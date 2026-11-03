@@ -127,6 +127,7 @@
   --cartao-estreito: 720px;                          /* largura do conteúdo do cartão */
   --cartao-respiro-grande: clamp(28px, 4vw, 56px);
   --mini-estrada: 360px;
+  --mini-estrada-pequena: 300px;   /* a do link enviado (recuperar senha) */
   --aviso-copiado: 2000ms;  /* "Protocolo copiado" fica 2 s na tela */
 
   /* login e telas de senha (docs/referencia/Login.html) */

@@ -25,34 +25,6 @@
   border-radius: var(--r-cartao);
 }
 
-/* ---- Mini estrada ---- */
-.mini {
-  width: 100%;
-  max-width: var(--mini-estrada);
-  height: auto;
-}
-
-.asfalto {
-  fill: var(--noite);
-}
-
-.faixa {
-  fill: none;
-  stroke: var(--amarelo);
-  stroke-width: 4;
-  stroke-dasharray: 26 24;
-}
-
-.pacote {
-  fill: var(--amarelo);
-  stroke: var(--noite);
-  stroke-width: 4;
-}
-
-.seta {
-  fill: var(--ouro);
-}
-
 /* ---- Título ---- */
 .titulo {
   display: flex;
