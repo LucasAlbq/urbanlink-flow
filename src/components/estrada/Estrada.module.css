@@ -89,6 +89,8 @@
   right: calc(-1 * var(--fim-recuo));
   top: 50%;
   width: var(--fim-largura);
+  /* na vertical o asfalto tem 22 px: sem isto o max-width global do svg espreme a seta */
+  max-width: none;
   height: var(--fim-altura);
   fill: var(--ouro);
   transform: translateY(-50%);
