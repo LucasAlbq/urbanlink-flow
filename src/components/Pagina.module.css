@@ -1,0 +1,5 @@
+.pagina {
+  max-width: var(--largura);
+  margin: 0 auto;
+  padding: var(--secao) var(--margem);
+}

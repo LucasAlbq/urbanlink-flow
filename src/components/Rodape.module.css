@@ -1,0 +1,33 @@
+.rodape {
+  color: var(--texto-2);
+  background: var(--noite);
+}
+
+.rodape :focus-visible {
+  outline-color: var(--amarelo);
+}
+
+.dentro {
+  max-width: var(--largura);
+  margin: 0 auto;
+  padding: var(--margem);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--margem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--alvo);
+}
+
+.link:hover {
+  color: var(--branco);
+}

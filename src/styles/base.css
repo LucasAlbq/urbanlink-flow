@@ -1,0 +1,102 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--fonte);
+  font-size: var(--corpo);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--noite);
+  background: var(--branco);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: var(--h1);
+  font-weight: 800;
+  line-height: 1;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+/* Foco sempre visível: anel Noite no claro, Amarelo no escuro. */
+:focus-visible {
+  outline: var(--anel) solid var(--noite);
+  outline-offset: var(--anel);
+}
+
+.escuro :focus-visible {
+  outline-color: var(--amarelo);
+}
+
+/* Títulos que recebem foco por código (troca de rota) não mostram anel no clique. */
+[tabindex='-1']:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Só pra leitor de tela. */
+.so-leitor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Link "Pular para o conteúdo": escondido até receber foco. */
+.pular {
+  position: absolute;
+  top: var(--anel);
+  left: var(--margem);
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--alvo);
+  padding: 0 var(--margem);
+  font-weight: 600;
+  color: var(--noite);
+  background: var(--amarelo);
+  border-radius: var(--r-botao);
+  transform: translateY(-200%);
+}
+
+.pular:focus-visible {
+  transform: none;
+}

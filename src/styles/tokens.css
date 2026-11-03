@@ -1,0 +1,33 @@
+/* Tokens do UrbanLink Flow. Valores em docs/plano/01-plano.md.
+   Nenhuma cor, tamanho ou tempo fora deste arquivo. */
+:root {
+  /* cores da marca (manual) */
+  --noite: #1A223C;   --marinho: #242F62;  --ouro: #E7AC29;
+  --amarelo: #FFD745; --azul: #3563AD;     --nevoa: #EDF0F7;
+  --branco: #FFFFFF;
+  /* apoio */
+  --texto-2: #C5CBE3;      /* texto secundário em fundo escuro */
+  --cinza: #5A6285;        /* texto secundário e borda em fundo claro */
+  --estrada-futura: #C5CBE3;
+  --predio-fundo: #1F2853; --predio-frente: #121830;
+
+  /* tipo */
+  --fonte: 'Fira Sans', system-ui, sans-serif;
+  --h1: clamp(2.75rem, 5.6vw, 5.5rem);
+  --h2: clamp(2.25rem, 4.6vw, 4rem);
+  --corpo: clamp(1.0625rem, 1.3vw, 1.25rem);
+
+  /* layout */
+  --largura: 1280px;
+  --margem: clamp(20px, 5vw, 48px);
+  --secao: clamp(72px, 10vw, 140px);
+  --r-botao: 6px; --r-campo: 8px; --r-placa: 10px; --r-cartao: 14px;
+
+  /* movimento */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --rapido: 180ms; --medio: 260ms;
+
+  /* acessibilidade: anel de foco (02-efeitos.md, micro-interações) e alvo de toque */
+  --anel: 3px;
+  --alvo: 44px;
+}
