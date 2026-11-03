@@ -88,6 +88,11 @@
   color: var(--marinho);
 }
 
+/* Na senha nova a ajuda do campo usa altura de linha normal (na busca da landing é 1,5). */
+.ajudaCurta p {
+  line-height: normal;
+}
+
 /* No login a frase de baixo fica 6 px mais longe do botão. */
 .respiro {
   margin-top: var(--e-6);
