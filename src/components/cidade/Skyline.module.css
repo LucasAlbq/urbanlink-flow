@@ -3,7 +3,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: var(--cidade-altura);
+  height: var(--skyline-altura, var(--cidade-altura));
   overflow: hidden;
 }
 

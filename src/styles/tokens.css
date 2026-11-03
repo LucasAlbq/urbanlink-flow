@@ -128,4 +128,18 @@
   --cartao-respiro-grande: clamp(28px, 4vw, 56px);
   --mini-estrada: 360px;
   --aviso-copiado: 2000ms;  /* "Protocolo copiado" fica 2 s na tela */
+
+  /* login e telas de senha (docs/referencia/Login.html) */
+  --login-altura: 900px;
+  --login-arte-margem: clamp(24px, 4vw, 56px);
+  --login-frase-topo: clamp(48px, 9vh, 120px);
+  --t-frase-login: clamp(2.25rem, 3.6vw, 3.5rem);
+  --cidade-login: 460px;
+  --login-lado-margem: clamp(20px, 5vw, 72px);
+  --login-centro: clamp(32px, 6vh, 64px);
+  --form-estreito: 420px;
+  --h1-login: clamp(2rem, 3vw, 2.75rem);
+  --logo-celular: 150px;
+  --campo-com-botao: 60px;  /* respiro da caixa com o botão de olho */
+  --sublinhado-recuo-curto: 5px;
 }
