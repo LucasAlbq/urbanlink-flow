@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { Link, useLocation } from 'react-router'
 import { useLenis } from 'lenis/react'
 
+import { pararRolagem } from '../motion/pararRolagem.js'
 import { Botao } from './Botao.jsx'
 import { Logo } from './Logo.jsx'
 import { Estrada } from './estrada/Estrada.jsx'
@@ -36,10 +37,10 @@ export function MenuCelular({ id, aberto, aoFechar }) {
 
   // Com o menu aberto, a página de trás não rola (03-telas-e-estados.md).
   // O painel leva data-lenis-prevent pra continuar rolando sozinho em tela baixa.
+  // A abertura também para a rolagem: quem soltar por último destrava.
   useEffect(() => {
     if (!aberto || !lenis) return
-    lenis.stop()
-    return () => lenis.start()
+    return pararRolagem(lenis)
   }, [aberto, lenis])
 
   useEffect(() => {
