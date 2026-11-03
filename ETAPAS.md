@@ -60,7 +60,7 @@ Fechadas em 03/11/2026:
 
 ## Parte 2: código do site (Claude Code, uma sessão nova por fase)
 
-### [ ] Preparação
+### [x] Preparação
 
 Feita pelo Claude Code seguindo o `COMECE-AQUI.md`: projeto Vite criado, kit no lugar (`CLAUDE.md`, este arquivo, `docs/plano/`, `docs/referencia/`, skill do projeto), bibliotecas instaladas, `.env.exemplo`, Git com `main` e `dev`, skills do GSAP.
 
