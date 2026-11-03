@@ -1,0 +1,58 @@
+.skyline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--cidade-altura);
+  overflow: hidden;
+}
+
+.camada {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.fundo {
+  fill: var(--predio-fundo);
+}
+
+.meio {
+  fill: var(--noite);
+}
+
+.frente {
+  fill: var(--predio-frente);
+}
+
+.rota {
+  fill: none;
+  stroke: var(--ouro);
+  stroke-width: 12;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.seta {
+  fill: var(--ouro);
+}
+
+.halo {
+  fill: none;
+  stroke: var(--amarelo);
+  stroke-width: 3;
+  opacity: 0.45;
+}
+
+.pacote {
+  fill: var(--amarelo);
+}
+
+@media (max-width: 760px) {
+  .skyline {
+    position: relative;
+    height: var(--cidade-altura-celular);
+    margin-top: calc(-1 * var(--cidade-sobe-celular));
+  }
+}
