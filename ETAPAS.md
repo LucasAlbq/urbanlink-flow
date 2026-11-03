@@ -92,7 +92,12 @@ docs/referencia/<Tela>-1440.png e <Tela>-390.png. Liste as diferenças e corrija
 
 **Pronto quando:** cada rota bate com a prancha em 1440 e 390 px.
 
-### [ ] Fase 2: navegação e formulários (tag `v0.3.0`)
+### [x] Fase 2: navegação e formulários (tag `v0.3.0`)
+
+- Feita em 03/11/2026: validação e envio do Fale com a gente, estados do login, recuperar senha e senha nova pela API (com os exemplos), e a revisão de acessibilidade. Detalhes em `docs/handoff/fase-2-formularios.md`.
+- O menu do celular só foi conferido (abrir, fechar, foco preso e devolvido já vinham da fase 1).
+- **Pro grupo aprovar:** os textos que não estavam no plano e as decisões fora do plano (as duas listas estão no handoff).
+- **Fica pra depois:** a área `/app` conferir a sessão (`GET /auth/eu`) e o botão Sair.
 
 ```text
 Implemente o menu do celular, a validação do Fale com a gente e os estados do
