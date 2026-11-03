@@ -33,6 +33,11 @@ const REGRAS = {
 export function NovaSenha() {
   useTituloAba('Criar senha nova · UrbanLink Flow')
   const { token } = useParams()
+  // Outro token é outro link: a tela começa do zero (inclusive o "link vencido").
+  return <SenhaNova key={token} token={token} />
+}
+
+function SenhaNova({ token }) {
   const navegar = useNavigate()
   const formulario = useRef(null)
   const titulo = useRef(null)
@@ -139,6 +144,7 @@ export function NovaSenha() {
             autoComplete="new-password"
             minLength={MINIMO}
             mostrarSenha
+            rotuloOlho="Mostrar senha nova"
             obrigatorio
             ajuda={erros.senha ? undefined : 'Pelo menos 8 caracteres.'}
             erro={erros.senha}
@@ -150,6 +156,7 @@ export function NovaSenha() {
             tipo="password"
             autoComplete="new-password"
             mostrarSenha
+            rotuloOlho="Mostrar senha repetida"
             obrigatorio
             erro={erros.repeticao}
             {...ligar('repeticao')}
