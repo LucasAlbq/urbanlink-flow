@@ -1,0 +1,51 @@
+.header {
+  color: var(--branco);
+  background: var(--marinho);
+}
+
+.header :focus-visible {
+  outline-color: var(--amarelo);
+}
+
+.dentro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--anel) var(--margem);
+  max-width: var(--largura);
+  margin: 0 auto;
+  padding: 0 var(--margem);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--margem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.logo,
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--alvo);
+  text-decoration: none;
+}
+
+.logo {
+  font-weight: 800;
+}
+
+.link {
+  font-weight: 500;
+  color: var(--texto-2);
+}
+
+.link:hover,
+.link[aria-current='page'] {
+  color: var(--branco);
+  text-decoration: underline;
+}
