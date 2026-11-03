@@ -7,6 +7,7 @@ import css from './Campo.module.css'
 // fundo="escuro": campo sem borda sobre Marinho. tamanho="grande": 56 px, label maior (busca).
 // `depois` entra ao lado do campo (ex.: o botão "Rastrear").
 // mostrarSenha (com tipo="password"): botão de olho dentro da caixa que mostra e esconde a senha.
+// rotuloOlho: o nome do olho, quando a tela tem dois (ex.: "Mostrar senha nova").
 // aria-describedby: ids de fora (ex.: o aviso do formulário), lidos depois do erro e da ajuda.
 export function Campo({
   label,
@@ -19,6 +20,7 @@ export function Campo({
   tamanho = 'normal',
   depois,
   mostrarSenha = false,
+  rotuloOlho = 'Mostrar senha',
   className = '',
   children,
   'aria-describedby': descritoPor,
@@ -94,7 +96,9 @@ export function Campo({
     </Elemento>
   )
 
-  // O olho fica dentro da caixa, à direita. O plano pede aria-pressed e o aria-label trocando juntos.
+  // O olho fica dentro da caixa, à direita. É um botão de alternar: o nome fica sempre
+  // "Mostrar senha" e o aria-pressed diz se ela está à mostra. Trocar o nome junto faria o
+  // leitor de tela dizer "Esconder senha, pressionado", que se contradiz (revisão da fase 2).
   if (comOlho) {
     entrada = (
       <div className={css.caixaOlho}>
@@ -102,7 +106,7 @@ export function Campo({
         <button
           type="button"
           className={css.olho}
-          aria-label={senhaVisivel ? 'Esconder senha' : 'Mostrar senha'}
+          aria-label={rotuloOlho}
           aria-pressed={senhaVisivel}
           aria-controls={id}
           onClick={() => setSenhaVisivel((v) => !v)}
