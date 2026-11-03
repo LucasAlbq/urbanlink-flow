@@ -13,6 +13,12 @@
   fill: var(--ouro);
 }
 
+/* Dentro do botão, antes do texto da espera. */
+.noBotao {
+  --tamanho: var(--carregando-a-botao);
+  margin-right: var(--e-10);
+}
+
 .texto {
   font-size: var(--t-18);
   font-weight: 600;

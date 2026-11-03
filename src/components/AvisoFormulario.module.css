@@ -1,0 +1,17 @@
+.aviso {
+  margin: 0;
+  padding: var(--e-14) var(--e-16);
+  font-size: var(--t-16);
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--noite);
+  background: var(--nevoa);
+  border-radius: var(--r-campo);
+}
+
+/* Vazio: sai do fluxo (não vira item da coluna nem soma o gap), mas continua na árvore de
+   acessibilidade, pra região de status já existir quando o texto chegar. */
+.aviso:empty {
+  position: absolute;
+  padding: 0;
+}

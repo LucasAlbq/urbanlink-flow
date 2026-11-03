@@ -25,6 +25,24 @@
   opacity: 0.6;
 }
 
+/* Carregando: o texto da espera continua com contraste cheio; só some o hover e o aperto. */
+.botao[aria-disabled='true'] {
+  cursor: progress;
+}
+
+.botao[aria-disabled='true']:hover {
+  box-shadow: none;
+}
+
+.botao[aria-disabled='true']:active {
+  transform: none;
+}
+
+/* O A da espera dentro do botão: Ouro no botão Noite, Noite no botão Ouro. */
+.ouro [data-carregando-a] {
+  fill: var(--noite);
+}
+
 .grande {
   min-height: var(--alvo-grande);
   padding: 0 var(--e-30);
