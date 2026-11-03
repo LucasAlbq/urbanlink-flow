@@ -154,4 +154,10 @@
   --fim-menu-altura: 42px;
   --fim-menu-recuo: 24px;
   --z-menu: 80;            /* a faixa de exemplos fica em 90 */
+
+  /* página 404 (docs/referencia/Pagina-404.html) */
+  --tracejado: 3px;               /* contorno do trecho que não existe */
+  --pacote-recuo-404: 200px;      /* o pacote para 200 px antes do fim do asfalto */
+  --acoes-404: clamp(48px, 6vw, 72px);
+  --retorno-sobra: 2px;           /* a placa Retorno passa 2 px do fim do asfalto */
 }

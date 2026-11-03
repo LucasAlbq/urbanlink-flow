@@ -17,6 +17,11 @@
   --cor-placa: var(--amarelo);
 }
 
+/* Sem o quadrinho do número, o respiro fica igual dos dois lados. */
+.semNumero {
+  padding-left: var(--e-22);
+}
+
 /* Etapa que ainda não chegou: sem fundo, contorno tracejado e texto em cinza.
    O contorno é um outline pra dentro: não muda o tamanho da placa (que não recebe foco). */
 .proximo {
@@ -69,6 +74,17 @@
   flex: none;
   width: var(--glifo-largura);
   height: var(--e-22);
+  fill: none;
+  stroke: var(--noite);
+  stroke-width: 3.2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.retorno {
+  flex: none;
+  width: var(--glifo-largura);
+  height: var(--e-24);
   fill: none;
   stroke: var(--noite);
   stroke-width: 3.2;
