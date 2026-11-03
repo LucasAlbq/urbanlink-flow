@@ -113,6 +113,7 @@
   --cartao-margem: clamp(20px, 3vw, 36px);
   --barra-mapa: 56px;
   --carregando-a: 32px;
+  --carregando-a-botao: 24px;  /* o A da espera dentro de um botão de 56 px */
   --espera-carregando: 300ms;
 
   /* contato (docs/referencia/Contato.html) */

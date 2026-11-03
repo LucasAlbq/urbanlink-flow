@@ -7,6 +7,7 @@ import css from './Campo.module.css'
 // fundo="escuro": campo sem borda sobre Marinho. tamanho="grande": 56 px, label maior (busca).
 // `depois` entra ao lado do campo (ex.: o botão "Rastrear").
 // mostrarSenha (com tipo="password"): botão de olho dentro da caixa que mostra e esconde a senha.
+// aria-describedby: ids de fora (ex.: o aviso do formulário), lidos depois do erro e da ajuda.
 export function Campo({
   label,
   tipo = 'text',
@@ -20,13 +21,14 @@ export function Campo({
   mostrarSenha = false,
   className = '',
   children,
+  'aria-describedby': descritoPor,
   ...resto
 }) {
   const id = useId()
   const [senhaVisivel, setSenhaVisivel] = useState(false)
   const idAjuda = ajuda ? `${id}-ajuda` : undefined
   const idErro = erro ? `${id}-erro` : undefined
-  const descritores = [idErro, idAjuda].filter(Boolean).join(' ') || undefined
+  const descritores = [idErro, idAjuda, descritoPor].filter(Boolean).join(' ') || undefined
 
   const ligacao = {
     id,
