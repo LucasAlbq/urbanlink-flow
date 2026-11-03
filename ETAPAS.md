@@ -75,9 +75,13 @@ páginas só com o título. Me mostre o plano antes de escrever código.
 
 **Pronto quando:** `npm run dev` abre todas as rotas com topo e rodapé.
 
-### [ ] Fase 1: telas paradas (tag `v0.2.0`)
+### [x] Fase 1: telas paradas (tag `v0.2.0`)
 
 Uma tela por sessão, nesta ordem: Landing → Rastreamento → Fale com a gente → Mensagem enviada → Login → Menu do celular → 404.
+
+- Feita em 03/11/2026: as sete telas da lista e também Política, Recuperar senha e Senha nova, pra toda rota bater com a sua prancha. Handoffs em `docs/handoff/`.
+- O menu do celular já abre, fecha e prende o foco (sem isso não passava no teste de teclado); a animação fica pra fase 3.
+- **Pro grupo preencher:** as lacunas da Política ([data], [prazo a definir pelo grupo], [e-mail do responsável pelos dados]) e o [tempo a definir] do link de senha.
 
 ```text
 Use a skill design:design-handoff na prancha docs/referencia/<Tela>.html e depois
