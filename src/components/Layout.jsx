@@ -1,12 +1,13 @@
 import { useEffect, useRef } from 'react'
 import { Outlet, ScrollRestoration, useLocation, useMatches } from 'react-router'
 
+import { ScrollSuave } from '../motion/ScrollSuave.jsx'
 import { FaixaExemplos } from './FaixaExemplos.jsx'
 import { Header } from './Header.jsx'
 import { Rodape } from './Rodape.jsx'
 
-// Leva o foco pra uma âncora, como #como-funciona. Quem rola até ela é o ScrollRestoration
-// (preventScroll), senão o foco desfazia a posição dele.
+// Leva o foco pra uma âncora, como #como-funciona. Quem rola é o ScrollRestoration
+// ou o ScrollSuave (preventScroll), senão o foco desfazia a posição deles.
 function irParaAncora(hash) {
   const alvo = document.getElementById(decodeURIComponent(hash.slice(1)))
   if (!alvo) return false
@@ -32,8 +33,9 @@ export function Layout() {
     if (mudouRota) document.querySelector('#conteudo h1')?.focus({ preventScroll: true })
   }, [pathname, hash, key])
 
+  // O ScrollRestoration fica dentro do ScrollSuave: o Lenis precisa saber pra onde ele rolou.
   return (
-    <>
+    <ScrollSuave>
       <a className="pular" href="#conteudo">
         Pular para o conteúdo
       </a>
@@ -44,6 +46,6 @@ export function Layout() {
       {!soConteudo && <Rodape />}
       <FaixaExemplos />
       <ScrollRestoration />
-    </>
+    </ScrollSuave>
   )
 }
