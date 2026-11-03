@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { Link, useLocation } from 'react-router'
+import { useLenis } from 'lenis/react'
 
 import { Botao } from './Botao.jsx'
 import { Logo } from './Logo.jsx'
@@ -31,6 +32,15 @@ const SO_CELULAR = '(max-width: 1100px)'
 export function MenuCelular({ id, aberto, aoFechar }) {
   const { pathname } = useLocation()
   const fechar = useRef(null)
+  const lenis = useLenis()
+
+  // Com o menu aberto, a página de trás não rola (03-telas-e-estados.md).
+  // O painel leva data-lenis-prevent pra continuar rolando sozinho em tela baixa.
+  useEffect(() => {
+    if (!aberto || !lenis) return
+    lenis.stop()
+    return () => lenis.start()
+  }, [aberto, lenis])
 
   useEffect(() => {
     if (!aberto) return
@@ -77,7 +87,14 @@ export function MenuCelular({ id, aberto, aoFechar }) {
   const pacoteEm = LINKS.findIndex((link) => link.id === atual)
 
   return createPortal(
-    <div id={id} className={css.painel} role="dialog" aria-modal="true" aria-label="Menu">
+    <div
+      id={id}
+      className={css.painel}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Menu"
+      data-lenis-prevent
+    >
       <div className={css.dentro}>
         <div className={css.barra}>
           <Link to="/" className={css.logo} aria-label="UrbanLink, início" onClick={aoFechar}>
