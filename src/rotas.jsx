@@ -21,6 +21,7 @@ export const rotas = createBrowserRouter([
       { path: '/rastreamento', element: <Rastreamento /> },
       { path: '/rastreamento/:codigo', element: <Rastreamento /> },
       { path: '/contato', element: <Contato /> },
+      { path: '/contato/enviado', element: <Enviado /> },
       { path: '/contato/enviado/:protocolo', element: <Enviado /> },
       { path: '/login', element: <Login /> },
       { path: '/privacidade', element: <Politica /> },
