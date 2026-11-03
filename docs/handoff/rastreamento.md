@@ -43,7 +43,7 @@ A pessoa digita o código e vê em que ponto do caminho a entrega está: a estra
 | `BuscaRastreio` (novo, extraído da landing) | Formulário do topo e da seção Rastrear da landing | Mesma regra: tira espaços, maiúsculas, vai pra `/rastreamento/CODIGO`; vazio mostra "Digite o código de rastreio." |
 | `Campo` | Campo escuro grande com o botão "Rastrear" ao lado | Nenhuma |
 | `Estrada` / `Etapa` | Etapas da entrega | `pacoteEm` aceita `'fim'` (entregue); poste e seta ficam claros no trecho `futuro` |
-| `Placa` | 4 placas | Estados novos `feito` (Ouro + check) e `proximo` (contorno `--cinza`); glifo `check`; `tamanho="pequeno"`; glifo opcional |
+| `Placa` | 4 placas | Estados novos `feito` (Ouro + check) e `proximo` (contorno tracejado `--cinza`); glifo `check`; `tamanho="pequeno"`; glifo opcional |
 | `MapaIlustrado` | Mapa da entrega | Prop `progresso` (0 a 1): trecho feito em Ouro, resto pontilhado Noite, pacote no ponto |
 | `CarregandoA` (novo, parado) | Estado carregando | O A da logo + texto em `aria-live`; só aparece depois de 300 ms. A animação entra na fase 3 |
 | `Botao` | `ouro` (Rastrear), `noite` (Tentar outro código / Tentar de novo), `link` (Falar com a gente) | Nenhuma |
@@ -84,7 +84,7 @@ Mapa de placas por status: tabela de `04-api-e-dados.md`. Texto embaixo de cada 
 ## Decisões fora da prancha
 
 - **"Receber atualizações por e-mail" sai** (03-telas-e-estados.md: sem endpoint, o botão sai). Junto sai a frase "Ou receba cada mudança de etapa no seu e-mail."
-- **Placa próxima com contorno sólido**, igual ao print. O plano fala em "tracejado"; fica pra confirmar.
+- **Placa próxima com contorno tracejado**, como o plano pede (o print mostra sólido). Decidido em 03/11/2026. O quadrinho do número continua sólido. O contorno é um `outline` pra dentro, então a placa tem o mesmo tamanho da prancha.
 - **Pacote no mapa desenhado:** o mapa não é geográfico, então o ponto vem do status (Postado no início, Em trânsito na 2ª curva, Em rota onde a prancha mostra, Entregue no fim). O `MapaReal` da fase 4 usa `rota` e `posicaoAtual` da API.
 
 ## Efeitos (fase 3, não entram agora)

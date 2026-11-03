@@ -17,11 +17,14 @@
   --cor-placa: var(--amarelo);
 }
 
-/* Etapa que ainda não chegou: sem fundo, contorno e texto em cinza. */
+/* Etapa que ainda não chegou: sem fundo, contorno tracejado e texto em cinza.
+   O contorno é um outline pra dentro: não muda o tamanho da placa (que não recebe foco). */
 .proximo {
   color: var(--cinza);
   background: transparent;
-  box-shadow: inset 0 0 0 var(--borda-botao) var(--cinza);
+  box-shadow: none;
+  outline: var(--borda-botao) dashed var(--cinza);
+  outline-offset: calc(-1 * var(--borda-botao));
 }
 
 .proximo .numero {
