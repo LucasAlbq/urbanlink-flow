@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { Outlet, ScrollRestoration, useLocation } from 'react-router'
+import { Outlet, ScrollRestoration, useLocation, useMatches } from 'react-router'
 
 import { FaixaExemplos } from './FaixaExemplos.jsx'
 import { Header } from './Header.jsx'
@@ -17,6 +17,8 @@ function irParaAncora(hash) {
 export function Layout() {
   const { pathname, hash, key } = useLocation()
   const rotaAnterior = useRef(pathname)
+  // Rotas com handle { soConteudo: true } (login e telas de senha) não têm Header nem Rodape.
+  const soConteudo = useMatches().some((rota) => rota.handle?.soConteudo)
 
   // Ao mudar de rota, o foco vai pro título da página (não na primeira carga).
   // Com âncora no endereço, o foco vai pra seção da âncora.
@@ -32,11 +34,11 @@ export function Layout() {
       <a className="pular" href="#conteudo">
         Pular para o conteúdo
       </a>
-      <Header />
+      {!soConteudo && <Header />}
       <main id="conteudo" tabIndex={-1}>
         <Outlet />
       </main>
-      <Rodape />
+      {!soConteudo && <Rodape />}
       <FaixaExemplos />
       <ScrollRestoration />
     </>

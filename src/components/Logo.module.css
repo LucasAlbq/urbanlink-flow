@@ -15,3 +15,13 @@
 .ouro {
   fill: var(--ouro);
 }
+
+.umaCor .letra,
+.umaCor .ouro {
+  fill: var(--branco);
+}
+
+.claro.umaCor .letra,
+.claro.umaCor .ouro {
+  fill: var(--noite);
+}

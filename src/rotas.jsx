@@ -23,7 +23,7 @@ export const rotas = createBrowserRouter([
       { path: '/contato', element: <Contato /> },
       { path: '/contato/enviado', element: <Enviado /> },
       { path: '/contato/enviado/:protocolo', element: <Enviado /> },
-      { path: '/login', element: <Login /> },
+      { path: '/login', element: <Login />, handle: { soConteudo: true } },
       { path: '/privacidade', element: <Politica /> },
       { path: '/recuperar-senha', element: <RecuperarSenha /> },
       { path: '/nova-senha/:token', element: <NovaSenha /> },

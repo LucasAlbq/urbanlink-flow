@@ -1,0 +1,72 @@
+/* Entrar na plataforma (prancha Login). O molde fica em MolduraLogin. */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-22);
+  width: 100%;
+  max-width: var(--form-estreito);
+}
+
+.cabeca {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-12);
+  margin-bottom: var(--e-6);
+}
+
+.h1 {
+  font-size: var(--h1-login);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: var(--aperto-2);
+}
+
+.apoio {
+  font-size: var(--t-17);
+  line-height: 1.55;
+  color: var(--marinho);
+}
+
+/* Manter conectado + Esqueci minha senha */
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-8) var(--e-16);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--alvo);
+  font-size: var(--t-16);
+  font-weight: 600;
+  line-height: normal;
+  color: var(--noite);
+  text-underline-offset: var(--sublinhado-recuo-curto);
+}
+
+.link:hover {
+  color: var(--marinho);
+}
+
+.entrar {
+  width: 100%;
+  font-size: var(--t-18);
+}
+
+.acesso {
+  margin-top: var(--e-6);
+  font-size: var(--t-16);
+  line-height: 1.5;
+  color: var(--marinho);
+}
+
+/* No meio da frase o link não precisa de caixa de 44 px: segue a linha do texto. */
+.acesso .link {
+  display: inline;
+  min-height: 0;
+  line-height: inherit;
+}
