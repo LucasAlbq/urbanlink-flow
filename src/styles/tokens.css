@@ -52,7 +52,7 @@
   --aperto-2: -0.02em;
 
   /* espaços */
-  --e-4: 4px;   --e-8: 8px;   --e-10: 10px; --e-12: 12px; --e-14: 14px;
+  --e-4: 4px;   --e-6: 6px;   --e-8: 8px;   --e-10: 10px; --e-12: 12px; --e-14: 14px;
   --e-16: 16px; --e-18: 18px; --e-20: 20px; --e-22: 22px; --e-24: 24px;
   --e-28: 28px; --e-30: 30px; --e-32: 32px; --e-40: 40px; --e-44: 44px;
   --e-48: 48px; --e-56: 56px; --e-64: 64px;
@@ -102,4 +102,16 @@
   --cidade-altura: 520px;
   --cidade-altura-celular: 300px;
   --cidade-sobe-celular: 110px; /* no celular a cidade sobe por baixo dos botões */
+
+  /* rastreamento (docs/referencia/Rastreamento.html) */
+  --h1-pagina: clamp(2.5rem, 5vw, 4.5rem);
+  --h2-status: clamp(2rem, 3.8vw, 3.25rem);
+  --t-placa-pequena: clamp(1.25rem, 1.6vw, 1.5rem);
+  --topo-pagina: clamp(24px, 4vw, 48px);
+  --topo-pagina-fim: clamp(56px, 7vw, 96px);
+  --mapa-caixa: clamp(320px, 46vw, 640px);
+  --cartao-margem: clamp(20px, 3vw, 36px);
+  --barra-mapa: 56px;
+  --carregando-a: 32px;
+  --espera-carregando: 300ms;
 }

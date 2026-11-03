@@ -40,6 +40,14 @@
   background: var(--estrada-futura);
 }
 
+.etapaFutura .haste {
+  background: var(--estrada-futura);
+}
+
+.etapaFutura .fim {
+  fill: var(--estrada-futura);
+}
+
 .faixa {
   position: absolute;
   left: 0;
@@ -84,6 +92,12 @@
   height: var(--fim-altura);
   fill: var(--ouro);
   transform: translateY(-50%);
+}
+
+/* Entregue: o pacote para em cima da seta. */
+.pacote.pacoteFim {
+  left: auto;
+  right: var(--fim-largura);
 }
 
 .texto {
@@ -143,6 +157,12 @@
   top: var(--e-22);
   left: 50%;
   transform: translateX(-50%);
+}
+
+.vertical .pacote.pacoteFim {
+  top: auto;
+  right: auto;
+  bottom: var(--fim-largura);
 }
 
 .vertical .fim {
@@ -205,6 +225,12 @@
     top: var(--e-22);
     left: 50%;
     transform: translateX(-50%);
+  }
+
+  .auto .pacote.pacoteFim {
+    top: auto;
+    right: auto;
+    bottom: var(--fim-largura);
   }
 
   .auto .fim {

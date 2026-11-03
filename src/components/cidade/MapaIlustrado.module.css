@@ -46,3 +46,25 @@
 .fim {
   fill: var(--noite);
 }
+
+/* Rastreamento: o que falta do caminho e o pacote. */
+.falta {
+  fill: none;
+  stroke: var(--noite);
+  stroke-width: 6;
+  stroke-dasharray: 2 14;
+  stroke-linecap: round;
+}
+
+.halo {
+  fill: none;
+  stroke: var(--amarelo);
+  stroke-width: 6;
+  opacity: 0.55;
+}
+
+.pacote {
+  fill: var(--amarelo);
+  stroke: var(--noite);
+  stroke-width: 5;
+}
