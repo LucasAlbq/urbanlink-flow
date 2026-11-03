@@ -77,6 +77,26 @@ export function Abertura({ aoTerminar, aoSair }) {
         })
 
         const { tl, limpar } = montarAbertura(cortina.current, { reduzido, aoSair: sair })
+
+        // O relógio do GSAP não segura o tempo (lagSmoothing(0), do scroll suave). Se a página
+        // carrega sem desenhar quadros (aba em segundo plano, janela escondida), a abertura
+        // corria sem ninguém ver e, no primeiro quadro, já estava no fim. Por isso ela fica
+        // parada e só anda a partir do primeiro quadro desenhado com a página visível. O
+        // ouvinte roda depois do GSAP atualizar o tempo do quadro, então o pulo não entra.
+        // Se a aba é escondida no meio, pausa e continua de onde parou.
+        tl.pause()
+        const andar = () => {
+          if (document.hidden) return
+          gsap.ticker.remove(andar)
+          tl.resume()
+        }
+        const aoMudarVisibilidade = () => {
+          if (document.hidden) tl.pause()
+          else gsap.ticker.add(andar)
+        }
+        gsap.ticker.add(andar)
+        document.addEventListener('visibilitychange', aoMudarVisibilidade)
+
         pular.current = () => {
           pulou = true
           tl.progress(1)
@@ -85,6 +105,8 @@ export function Abertura({ aoTerminar, aoSair }) {
 
         return () => {
           pular.current = null
+          gsap.ticker.remove(andar)
+          document.removeEventListener('visibilitychange', aoMudarVisibilidade)
           limpar()
         }
       })
