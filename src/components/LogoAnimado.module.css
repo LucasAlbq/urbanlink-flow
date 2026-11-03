@@ -1,0 +1,30 @@
+.logo {
+  display: block;
+  height: auto;
+  aspect-ratio: 852.28 / 419.28;
+  overflow: visible;
+}
+
+.branco {
+  fill: var(--branco);
+}
+
+.ouro {
+  fill: var(--ouro);
+}
+
+/* Dentro das máscaras: o traço mostra o A, os recortes escondem. */
+.fio {
+  fill: none;
+  stroke: var(--mascara-mostra);
+}
+
+.esconde {
+  fill: var(--mascara-esconde);
+}
+
+/* O pacote só existe enquanto o efeito toca (o logo pronto não tem pacote). */
+.pacote {
+  fill: var(--amarelo);
+  visibility: hidden;
+}
