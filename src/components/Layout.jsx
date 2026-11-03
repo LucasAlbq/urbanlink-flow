@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Outlet, ScrollRestoration, useLocation } from 'react-router'
 
+import { FaixaExemplos } from './FaixaExemplos.jsx'
 import { Header } from './Header.jsx'
 import { Rodape } from './Rodape.jsx'
 
@@ -36,6 +37,7 @@ export function Layout() {
         <Outlet />
       </main>
       <Rodape />
+      <FaixaExemplos />
       <ScrollRestoration />
     </>
   )

@@ -17,6 +17,19 @@
   --cor-placa: var(--amarelo);
 }
 
+/* Etapa que ainda não chegou: sem fundo, contorno e texto em cinza. */
+.proximo {
+  color: var(--cinza);
+  background: transparent;
+  box-shadow: inset 0 0 0 var(--borda-botao) var(--cinza);
+}
+
+.proximo .numero {
+  color: var(--cinza);
+  background: transparent;
+  box-shadow: inset 0 0 0 var(--borda-botao) var(--cinza);
+}
+
 .numero {
   display: inline-flex;
   align-items: center;
@@ -38,6 +51,10 @@
   white-space: nowrap;
 }
 
+.pequeno .nome {
+  font-size: var(--t-placa-pequena);
+}
+
 .seta {
   flex: none;
   width: var(--e-24);
@@ -48,6 +65,17 @@
 .desvio {
   flex: none;
   width: var(--glifo-largura);
+  height: var(--e-22);
+  fill: none;
+  stroke: var(--noite);
+  stroke-width: 3.2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.check {
+  flex: none;
+  width: var(--e-22);
   height: var(--e-22);
   fill: none;
   stroke: var(--noite);
