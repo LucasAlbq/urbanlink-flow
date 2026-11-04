@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { Link, NavLink } from 'react-router'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 
+import { montarLogoTopo } from '../motion/logoTopo.js'
+import { MODOS } from '../motion/setup.js'
 import { Botao } from './Botao.jsx'
 import { Logo } from './Logo.jsx'
 import { MenuCelular } from './MenuCelular.jsx'
@@ -13,6 +17,19 @@ export function Header() {
   const idMenu = useId()
   const botaoMenu = useRef(null)
   const jaAbriu = useRef(false)
+  const linkDoLogo = useRef(null)
+
+  // No hover, só com mouse, a seta do A encaixa de novo (motion/logoTopo.js).
+  // Toque e movimento reduzido: nada.
+  useGSAP(
+    () => {
+      gsap.matchMedia().add({ ...MODOS, mouse: '(hover: hover)' }, ({ conditions }, contextSafe) => {
+        if (conditions.reduzido || !conditions.mouse) return
+        return montarLogoTopo(linkDoLogo.current, contextSafe)
+      })
+    },
+    { scope: linkDoLogo },
+  )
 
   const fecharMenu = useCallback(() => setMenuAberto(false), [])
 
@@ -28,7 +45,7 @@ export function Header() {
   return (
     <header className={css.header}>
       <div className={css.dentro}>
-        <Link to="/" className={css.logo} aria-label="UrbanLink, início">
+        <Link ref={linkDoLogo} to="/" className={css.logo} aria-label="UrbanLink, início">
           <Logo className={css.logoSvg} />
         </Link>
         <div className={css.direita}>
