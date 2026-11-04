@@ -80,7 +80,7 @@ export function Jornada() {
             cada um.
           </p>
         </div>
-        <Estrada etapas={ETAPAS} />
+        <Estrada etapas={ETAPAS} faixas="jornada" />
       </div>
     </section>
   )
