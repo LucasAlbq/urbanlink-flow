@@ -1,4 +1,10 @@
+import { useRef } from 'react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+
 import { Estrada } from '../../components/estrada/Estrada.jsx'
+import { montarJornada } from '../../motion/jornada.js'
+import { MODOS } from '../../motion/setup.js'
 import secao from './Secao.module.css'
 import css from './Jornada.module.css'
 
@@ -50,8 +56,22 @@ const ETAPAS = MOMENTOS.map((m) => ({
 }))
 
 export function Jornada() {
+  const jornada = useRef(null)
+
+  // Desktop: a seção trava e o pacote anda a estrada. Celular: a estrada se desenha.
+  // Movimento reduzido: tudo visível, nada se mexe (motion/jornada.js).
+  useGSAP(
+    () => {
+      gsap.matchMedia().add(MODOS, ({ conditions }) => {
+        if (conditions.reduzido) return
+        montarJornada(jornada.current, { desktop: conditions.desktop })
+      })
+    },
+    { scope: jornada },
+  )
+
   return (
-    <section id="como-funciona" className={secao.nevoa}>
+    <section ref={jornada} id="como-funciona" className={secao.nevoa}>
       <div className={secao.dentro}>
         <div className={css.cabeca}>
           <h2 className={secao.h2}>Do galpão à porta.</h2>

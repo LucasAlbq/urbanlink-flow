@@ -73,8 +73,10 @@
   transform: translateY(-50%);
 }
 
+/* Acima dos trechos seguintes: na jornada ele anda a estrada inteira. */
 .inicio {
   left: 0;
+  z-index: 1;
 }
 
 .pacote {
@@ -94,6 +96,12 @@
   height: var(--fim-altura);
   fill: var(--ouro);
   transform: translateY(-50%);
+}
+
+/* A seta acesa (Amarelo) por cima da Ouro: a jornada acende quando o pacote chega. */
+.fimAceso {
+  fill: var(--amarelo);
+  opacity: 0;
 }
 
 /* Entregue: o pacote para em cima da seta. */
