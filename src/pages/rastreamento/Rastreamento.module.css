@@ -170,11 +170,6 @@
   height: var(--mapa-caixa);
 }
 
-.mapaSvg {
-  position: absolute;
-  inset: 0;
-}
-
 /* ---- Ajuda ---- */
 .ajuda {
   display: flex;

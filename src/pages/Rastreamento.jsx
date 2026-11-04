@@ -7,7 +7,7 @@ import { buscarRastreio } from '../api/rastreio.js'
 import { Botao } from '../components/Botao.jsx'
 import { BuscaRastreio } from '../components/BuscaRastreio.jsx'
 import { CarregandoA } from '../components/CarregandoA.jsx'
-import { MapaIlustrado } from '../components/cidade/MapaIlustrado.jsx'
+import { MapaDaEntrega } from '../components/cidade/MapaDaEntrega.jsx'
 import { Estrada } from '../components/estrada/Estrada.jsx'
 import { useTituloAba } from '../components/useTituloAba.js'
 import { MODOS } from '../motion/setup.js'
@@ -162,8 +162,13 @@ function Resultado({ codigo, dados }) {
           <h3 className={css.mapaTitulo}>No mapa</h3>
           <p className={css.mapaNota}>Atualizado em tempo real</p>
         </div>
-        <div className={css.mapaCaixa} role="img" aria-label={`Mapa com o caminho da entrega: ${r.comoEsta}`}>
-          <MapaIlustrado progresso={r.progresso} className={css.mapaSvg} />
+        <div className={css.mapaCaixa}>
+          <MapaDaEntrega
+            rota={dados.rota}
+            posicao={dados.posicaoAtual}
+            progresso={r.progresso}
+            rotulo={`Mapa com o caminho da entrega: ${r.comoEsta}`}
+          />
         </div>
       </div>
 

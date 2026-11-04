@@ -1,0 +1,5 @@
+.caixa {
+  position: absolute;
+  inset: 0;
+  background: var(--mapa-quadra);
+}
