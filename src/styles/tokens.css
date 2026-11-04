@@ -169,4 +169,13 @@
   --gap-indice: clamp(32px, 6vw, 96px);
   --lacuna: #FBE8BF;     /* fundo dos trechos que o grupo ainda vai preencher */
   --r-lacuna: 4px;
+
+  /* abertura (docs/referencia/abertura/Abertura-Codigo.dc.html) */
+  --logo-abertura: 620px;
+  --mascara-mostra: #FFFFFF;  /* luminância das máscaras SVG (não são cores da marca): */
+  --mascara-esconde: #000000; /* branco mostra, preto esconde */
+  --z-abertura: 95;           /* acima do menu (80) e da faixa de exemplos (90): a landing não
+                                 mostra dado */
+  --voo-aro: 3px;             /* aro Noite do pacote voando até o hero (Passagem-2 a 4) */
+  --pulso: 2s;                /* uma volta do pulso do anel do pacote (01-plano.md) */
 }

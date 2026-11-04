@@ -23,7 +23,7 @@ Todo estado de toda tela, com o texto que aparece. As pranchas estão em `docs/r
 
 A landing não mostra nenhum dado da API.
 
-**Ordem do foco:** pular abertura (enquanto toca) → pular para o conteúdo → logo → links do menu → Entrar na plataforma → botões do hero → campo de rastreio → Rastrear → Falar com a equipe → botões da chamada final → rodapé.
+**Ordem do foco:** pular para o conteúdo → logo → links do menu → Entrar na plataforma → botões do hero → campo de rastreio → Rastrear → Falar com a equipe → botões da chamada final → rodapé.
 
 **Campo de rastreio:** ao enviar, tira espaços, passa pra maiúsculas e vai pra `/rastreamento/CODIGO`. Vazio: mostra "Digite o código de rastreio." e não sai da página. Quem decide se o código existe é a API.
 

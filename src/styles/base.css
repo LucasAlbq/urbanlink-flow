@@ -100,3 +100,9 @@ a {
 .pular:focus-visible {
   transform: none;
 }
+
+/* Âncoras (/#como-funciona, índice da política): a seção para 16 px abaixo do topo,
+   no pulo do ScrollRestoration e no deslize do Lenis (02-efeitos.md). */
+section[id] {
+  scroll-margin-top: var(--e-16);
+}

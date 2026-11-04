@@ -38,7 +38,7 @@ export function Placa({ numero, nome, glifo = 'seta', estado = 'normal', tamanho
     .join(' ')
 
   return (
-    <div className={classes} data-placa="">
+    <div className={classes} data-placa="" data-estado={estado}>
       {!semNumero && <span className={css.numero}>{numero}</span>}
       <span className={css.nome}>
         {nome}

@@ -30,14 +30,15 @@
 }
 
 .asfalto {
+  --asfalto-cor: var(--noite);
   grid-area: asfalto;
   justify-self: stretch;
   position: relative;
-  background: var(--noite);
+  background: var(--asfalto-cor);
 }
 
 .futuro {
-  background: var(--estrada-futura);
+  --asfalto-cor: var(--estrada-futura);
 }
 
 .etapaFutura .haste {
@@ -73,15 +74,54 @@
   transform: translateY(-50%);
 }
 
+/* Capa do trecho feito (cor do trecho futuro), por cima das faixas e embaixo do pacote e da
+   seta. Fica encolhida (invisível); o status do rastreamento mostra e encolhe ela. */
+.cobre {
+  position: absolute;
+  inset: 0;
+  background: var(--estrada-futura);
+  transform: scaleX(0);
+  pointer-events: none;
+}
+
+/* Acima dos trechos seguintes: na jornada ele anda a estrada inteira. */
 .inicio {
   left: 0;
+  z-index: 1;
 }
 
 .pacote {
   left: var(--e-22);
-  box-shadow:
-    0 0 0 var(--pacote-aro) var(--noite),
-    0 0 0 var(--pacote-halo) var(--halo-pacote);
+}
+
+/* O anel (halo) em volta do pacote: do fim do aro até --pacote-halo. Pulso do pacote
+   (01-plano.md): parado numa etapa, ele cresce de 1 a 1,6 e some, a cada 2 s, em CSS.
+   Movimento reduzido: anel fixo. */
+.pacote::after {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--pacote-halo));
+  border: calc(var(--pacote-halo) - var(--pacote-aro)) solid var(--halo-pacote);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pacote::after {
+    animation: pulso var(--pulso) linear infinite;
+  }
+}
+
+@keyframes pulso {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(1.6);
+    opacity: 0;
+  }
 }
 
 .fim {
@@ -94,6 +134,12 @@
   height: var(--fim-altura);
   fill: var(--ouro);
   transform: translateY(-50%);
+}
+
+/* A seta acesa (Amarelo) por cima da Ouro: a jornada acende quando o pacote chega. */
+.fimAceso {
+  fill: var(--amarelo);
+  opacity: 0;
 }
 
 /* Entregue: o pacote para em cima da seta. */
@@ -268,7 +314,7 @@
 }
 
 .menu .asfalto {
-  background: var(--marinho);
+  --asfalto-cor: var(--marinho);
 }
 
 .menu .faixa {
@@ -281,6 +327,11 @@
   padding: 0;
 }
 
+/* No menu o pacote não tem anel (nem pulso). */
+.menu .pacote::after {
+  content: none;
+}
+
 .menu .pacote {
   top: 50%;
   box-shadow: 0 0 0 var(--pacote-aro) var(--noite);
@@ -291,4 +342,66 @@
   bottom: calc(-1 * var(--fim-menu-recuo));
   width: var(--fim-menu-largura);
   height: var(--fim-menu-altura);
+}
+
+/* No último trecho, a faixa para onde a seta começa: o recorte de trás da seta mostra só o
+   asfalto entrando nela, sem a faixa amarela atravessando. A seta passa --fim-recuo do fim
+   do asfalto, então ela começa a (largura − recuo) do fim. */
+.faixaAteSeta {
+  right: calc(var(--fim-largura) - var(--fim-recuo));
+}
+
+.vertical .faixaAteSeta {
+  right: auto;
+  bottom: calc(var(--fim-largura) - var(--fim-recuo));
+}
+
+@media (max-width: 760px) {
+  .auto .faixaAteSeta {
+    right: auto;
+    bottom: calc(var(--fim-largura) - var(--fim-recuo));
+  }
+}
+
+.menu .faixaAteSeta {
+  bottom: calc(var(--fim-menu-largura) - var(--fim-menu-recuo));
+}
+
+/* No último trecho, o asfalto termina dentro da seta: depois do fundo do recorte de trás
+   (26/64 da largura da seta) e antes de a ponta começar a afinar (30/64). Indo até o fim do
+   asfalto, os cantos dele sobravam dos dois lados da ponta (já vinha assim na prancha).
+   A seta fica onde estava; quem encurta é o asfalto, desenhado num ::before. */
+.asfaltoComSeta {
+  --asfalto-sob-seta: calc(var(--fim-largura) - var(--fim-recuo) - var(--fim-largura) * 0.4375);
+  background: none;
+}
+
+.asfaltoComSeta::before {
+  content: '';
+  position: absolute;
+  inset: 0 var(--asfalto-sob-seta) 0 0;
+  background: var(--asfalto-cor);
+}
+
+.asfaltoComSeta .cobre {
+  right: var(--asfalto-sob-seta);
+}
+
+.vertical .asfaltoComSeta::before,
+.vertical .asfaltoComSeta .cobre {
+  right: 0;
+  bottom: var(--asfalto-sob-seta);
+}
+
+@media (max-width: 760px) {
+  .auto .asfaltoComSeta::before,
+  .auto .asfaltoComSeta .cobre {
+    right: 0;
+    bottom: var(--asfalto-sob-seta);
+  }
+}
+
+/* O menu já passa a seta 24 px do fim do asfalto: lá os cantos ficam dentro dela. */
+.menu .asfaltoComSeta {
+  --asfalto-sob-seta: 0px;
 }

@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 
 import { buscarRastreio } from '../api/rastreio.js'
 import { Botao } from '../components/Botao.jsx'
@@ -8,6 +10,8 @@ import { CarregandoA } from '../components/CarregandoA.jsx'
 import { MapaIlustrado } from '../components/cidade/MapaIlustrado.jsx'
 import { Estrada } from '../components/estrada/Estrada.jsx'
 import { useTituloAba } from '../components/useTituloAba.js'
+import { MODOS } from '../motion/setup.js'
+import { montarStatus } from '../motion/statusRastreio.js'
 import { ETAPAS, TITULOS, data, dataHora, montarRastreio } from './rastreamento/etapas.js'
 import css from './rastreamento/Rastreamento.module.css'
 
@@ -117,7 +121,20 @@ function SemCodigo() {
 }
 
 function Resultado({ codigo, dados }) {
+  const raiz = useRef(null)
   const r = montarRastreio(dados)
+
+  // A resposta chegou: a estrada se preenche até a etapa atual, o pacote desliza e o mapa
+  // desenha o trecho percorrido (motion/statusRastreio.js). Movimento reduzido: estado final.
+  useGSAP(
+    () => {
+      gsap.matchMedia().add(MODOS, ({ conditions }) => {
+        if (conditions.reduzido) return
+        montarStatus(raiz.current, { vertical: conditions.celular })
+      })
+    },
+    { scope: raiz },
+  )
   const etapas = r.placas.map((p) => ({
     id: p.chave,
     placa: p.placa,
@@ -136,7 +153,7 @@ function Resultado({ codigo, dados }) {
   ) : null
 
   return (
-    <>
+    <div ref={raiz}>
       <Cabeca codigo={codigo} titulo={TITULOS[dados.status] ?? dados.status} lado={lado} />
       <Estrada etapas={etapas} pacoteEm={r.pacoteEm} aria-label="Etapas da entrega" />
 
@@ -159,7 +176,7 @@ function Resultado({ codigo, dados }) {
           Falar com a gente
         </Botao>
       </div>
-    </>
+    </div>
   )
 }
 
