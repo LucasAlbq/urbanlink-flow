@@ -30,7 +30,13 @@ export function montarChamadaA(secao) {
     paused: true,
     scrollTrigger: { trigger: a, start: 'top 70%', once: true },
   })
-  tl.to(traco, { progress: 1, duration: DURACAO, ease: 'power2.inOut' }, 0)
+  // Durante o desenho vale o A com máscaras; no fim ele troca pelo caminho inteiro, sem a
+  // lasca que as máscaras deixam na ponta do furo (0,01 s: um tween de duração zero no
+  // começo de uma timeline parada não se aplica na hora).
+  const troca = { duration: 0.01, ease: 'none', immediateRender: true }
+  tl.fromTo(q('[data-ul-ch="desenho"]'), { opacity: 1 }, { opacity: 0, ...troca }, DURACAO)
+    .fromTo(q('[data-ul-ch="inteiro"]'), { opacity: 0 }, { opacity: 1, ...troca }, DURACAO)
+    .to(traco, { progress: 1, duration: DURACAO, ease: 'power2.inOut' }, 0)
     .fromTo(seta, { x: -18 }, { x: 0, duration: 0.45, ease: 'back.out(1.7)', immediateRender: true }, DURACAO)
     .fromTo(seta, { opacity: 0 }, { opacity: 1, duration: 0.15, ease: 'none', immediateRender: true }, DURACAO)
 }
