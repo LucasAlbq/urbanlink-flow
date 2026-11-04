@@ -4,24 +4,23 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useLenis } from 'lenis/react'
 
-import { Botao } from '../../components/Botao.jsx'
 import { LogoAnimado } from '../../components/LogoAnimado.jsx'
 import { aberturaComecou, montarAbertura, sairCortina } from '../../motion/abertura.js'
 import { pararRolagem } from '../../motion/pararRolagem.js'
 import { MODOS } from '../../motion/setup.js'
 import css from './Abertura.module.css'
 
-// Teclas que só levam o foco até o "Pular abertura" (ou são atalhos do navegador): não pulam.
-const SO_FOCO = new Set(['Tab', 'Shift', 'Control', 'Alt', 'Meta', 'AltGraph', 'CapsLock'])
+// Teclas sozinhas de modificador e atalhos do navegador (Ctrl, Alt, Cmd) não pulam.
+const MODIFICADORES = new Set(['Shift', 'Control', 'Alt', 'Meta', 'AltGraph', 'CapsLock'])
 
 function teclaPula(evento) {
-  return !SO_FOCO.has(evento.key) && !evento.ctrlKey && !evento.metaKey && !evento.altKey
+  return !MODIFICADORES.has(evento.key) && !evento.ctrlKey && !evento.metaKey && !evento.altKey
 }
 
 // Cortina da abertura (02-efeitos.md): Noite em tela cheia com o logo se desenhando, por cima
-// do hero já montado. Vai num portal fora do #root, que fica inert enquanto ela está na tela,
-// então o "Pular abertura" é o primeiro (e único) item focável. Clique, toque ou tecla pulam.
-// No fim: sai o inert, o Lenis volta a rolar e, se o foco estava no botão, vai pro título.
+// do hero já montado. Vai num portal fora do #root, que fica inert enquanto ela está na tela.
+// Sem botão de pular (decisão do grupo): clique, toque ou tecla pulam.
+// No fim: sai o inert e o Lenis volta a rolar.
 // aoSair (opcional): ponto de encaixe do voo do pacote e da entrada do hero, na hora da saída.
 export function Abertura({ aoTerminar, aoSair }) {
   const cortina = useRef(null)
@@ -44,7 +43,11 @@ export function Abertura({ aoTerminar, aoSair }) {
 
   useEffect(() => {
     const aoTeclar = (evento) => {
-      if (teclaPula(evento)) pular.current?.()
+      if (!teclaPula(evento)) return
+      // Com a página de trás inert não há o que focar: sem isso, o Tab mandava o foco pra
+      // barra do navegador. Assim o próximo Tab, já sem a cortina, começa pelo topo da página.
+      if (evento.key === 'Tab') evento.preventDefault()
+      pular.current?.()
     }
     document.addEventListener('keydown', aoTeclar)
     return () => document.removeEventListener('keydown', aoTeclar)
@@ -63,17 +66,11 @@ export function Abertura({ aoTerminar, aoSair }) {
         let pulou = false
         let saindo = false
 
-        const terminar = () => {
-          const comFoco = cortina.current?.contains(document.activeElement)
-          document.getElementById('root').inert = false
-          if (comFoco) document.querySelector('#conteudo h1')?.focus({ preventScroll: true })
-          aoTerminar()
-        }
         const sair = contextSafe(() => {
           if (saindo) return
           saindo = true
           aoSair?.({ pulou, reduzido })
-          sairCortina(cortina.current, { reduzido, pulou, aoTerminar: terminar })
+          sairCortina(cortina.current, { reduzido, pulou, aoTerminar })
         })
 
         const { tl, limpar } = montarAbertura(cortina.current, { reduzido, aoSair: sair })
@@ -117,9 +114,6 @@ export function Abertura({ aoTerminar, aoSair }) {
   return createPortal(
     <div ref={cortina} className={css.cortina} onClick={() => pular.current?.()}>
       <LogoAnimado className={css.logo} />
-      <Botao variante="contorno" tamanho="normal" className={css.pular}>
-        Pular abertura
-      </Botao>
     </div>,
     document.body,
   )
