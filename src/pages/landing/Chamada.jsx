@@ -11,7 +11,8 @@ import secao from './Secao.module.css'
 import css from './Chamada.module.css'
 
 const MASCARA = { maskUnits: 'userSpaceOnUse', x: 1000, y: 300, width: 320, height: 280 }
-const FIO = { strokeWidth: 64, strokeLinecap: 'butt', strokeLinejoin: 'round' }
+// Ponta redonda: no A grande, a frente do traço é uma cabeça de rota, não um corte reto.
+const FIO = { strokeWidth: 64, strokeLinecap: 'round', strokeLinejoin: 'round' }
 
 export function Chamada() {
   const chamada = useRef(null)
@@ -44,8 +45,11 @@ export function Chamada() {
         </div>
         <div className={css.arte}>
           {/* O mesmo A do logo animado (geom.json), com o pé que desce até a borda da seção.
-              A rota do A se pinta por duas máscaras, uma por fio (P1 com os recortes, P2);
-              o pé e a ponta da seta ficam fora delas. Ids ul-ch-: únicos na página. */}
+              A rota do A se pinta por duas máscaras, uma por fio (P1 com os recortes, P2); o
+              pé fica fora delas e a ponta da seta entra no fim. As máscaras deixam uma lasca
+              escura na ponta do furo, então elas só valem durante o desenho: pronto (e no
+              modo reduzido), o A é o caminho inteiro, sem máscara, como o gen.py faz no fim.
+              Ids ul-ch-: únicos na página. */}
           <svg viewBox="1030 335 245 305" className={css.a} aria-hidden="true" focusable="false" data-chamada-a="">
             <defs>
               <mask id="ul-ch-m1" {...MASCARA}>
@@ -64,11 +68,14 @@ export function Chamada() {
               </clipPath>
             </defs>
             <g clipPath="url(#ul-ch-cm)">
-              <path d={A_CHAMADA.a} mask="url(#ul-ch-m1)" />
-              <path d={A_CHAMADA.a} mask="url(#ul-ch-m2)" />
+              <g className={css.desenho} data-ul-ch="desenho">
+                <path d={A_CHAMADA.a} mask="url(#ul-ch-m1)" />
+                <path d={A_CHAMADA.a} mask="url(#ul-ch-m2)" />
+              </g>
+              <path d={A_CHAMADA.a} data-ul-ch="inteiro" />
             </g>
             <g clipPath="url(#ul-ch-ca)">
-              <path d={A_CHAMADA.a} />
+              <path d={A_CHAMADA.a} data-ul-ch="seta" />
             </g>
             <path d={A_CHAMADA.base} />
           </svg>
