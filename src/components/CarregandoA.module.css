@@ -13,6 +13,20 @@
   fill: var(--ouro);
 }
 
+/* O A com máscaras só aparece enquanto a espera anima (motion/esperaA.js). */
+.desenho {
+  opacity: 0;
+}
+
+.fio {
+  fill: none;
+  stroke: var(--mascara-mostra);
+}
+
+.esconde {
+  fill: var(--mascara-esconde);
+}
+
 /* Dentro do botão, antes do texto da espera. */
 .noBotao {
   --tamanho: var(--carregando-a-botao);
