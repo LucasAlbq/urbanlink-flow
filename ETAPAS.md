@@ -108,9 +108,14 @@ rode design:accessibility-review.
 
 **Pronto quando:** dá pra usar o site inteiro só com o teclado.
 
-### [ ] Fase 3: efeitos (tag `v0.4.0`)
+### [x] Fase 3: efeitos (tag `v0.4.0`)
 
 Um efeito por sessão, nesta ordem: scroll suave → abertura → abertura → hero → parallax → jornada → (se der tempo) A da chamada final, status do rastreamento, espera com o A, logo do topo, faixas, pulso, mensagem enviada.
+
+- Feita em 03 e 04/11/2026: todos os efeitos da lista, cada um num branch `fase-3/*` mesclado na `dev`. Com "reduzir movimento", cada efeito fica no estado final do plano.
+- Mudado a pedido do usuário: a abertura não tem o botão "Pular abertura" (clique, toque ou tecla pulam; o plano foi atualizado), o A da chamada se desenha quando aparece e termina sem a lasca do furo, e a seta do fim da estrada não deixa mais a faixa nem os cantos do asfalto sobrando.
+- **Não medido:** 60 quadros por segundo na jornada (painel Performance), um celular Android médio de verdade com toque, e o tamanho da trava da jornada (250%) testado com mouse e touchpad.
+- **Pro grupo aprovar** (decisões fora do plano): abertura só se a visita começa em `/` sem âncora ("por link direto, nunca"); a página toda fica `inert` na abertura, não só o hero; a entrada do hero só acontece depois da abertura e é feita no GSAP (o plano diz CSS `.rise`); pulando a abertura, o voo do pacote acontece igual; na jornada os textos somem só por opacidade (pro Ctrl+F) e, em tela baixa, a trava fica centrada; o balanço do Imprevisto dura 0,06 da trava; as faixas andam um ciclo a cada 3 s; no rastreamento, estrada, pacote e mapa começam juntos; na mensagem enviada a seta encaixa de −18.
 
 ```text
 Com as skills gsap-react e gsap-scrolltrigger, implemente o efeito <nome> de
