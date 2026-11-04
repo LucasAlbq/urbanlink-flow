@@ -84,7 +84,7 @@ Tempos iguais aos da prancha `docs/referencia/abertura/Abertura-Codigo.dc.html` 
 - **Os dois fios do traço:** a máscara usa P1 (comprimento 478,8) e P2 (133,6), em `geom.json`. Um único tween de 0 a 1 com `onUpdate` divide o progresso entre os dois na proporção dos comprimentos (`strand_offsets()` do gerador).
 - **O voo do pacote:** medir o ponto no logo e o ponto da rota no hero (`getBoundingClientRect`). Um ponto fixo voa entre os dois com `motionPath` de três pontos, o do meio 80 px acima da reta. Ao chegar, ele some e o pacote do hero aparece. Quadros de referência: `docs/referencia/abertura/Passagem-1.png` a `Passagem-5.png`.
 - **Quando toca:** só na rota `/` e só se `sessionStorage['ul-abertura']` não existir. Por link direto, nunca.
-- **Pular:** "Pular abertura" é o primeiro item focável. Clique ou tecla fazem `tl.progress(1)` e a cortina sai em 0,3 s.
+- **Pular:** sem botão na tela (decidido em 03/11/2026). Clique, toque ou tecla fazem `tl.progress(1)` e a cortina sai em 0,3 s.
 - **Durante a abertura:** `lenis.stop()` e o hero com `inert`. No fim, `lenis.start()` e sai o `inert`.
 - **Movimento reduzido:** logo pronto por 0,6 s, cortina some por opacidade em 0,3 s, sem voo.
 - **Ids do SVG:** prefixo próprio (`ul-ab-`). Ids de máscara repetidos na página quebram o desenho.
@@ -187,6 +187,6 @@ mm.add(MODOS, ({ conditions: c }) => {
 - [ ] Redimensionar a janela no meio da jornada não quebra a trava
 - [ ] Sair da landing e voltar não deixa trava fantasma nem efeito duplicado
 - [ ] A abertura não toca de novo na mesma sessão nem por link direto
-- [ ] "Pular abertura" funciona com mouse, Enter e toque
+- [ ] A abertura pula com clique, tecla e toque
 - [ ] Só `transform` e `opacity` animados (fora o traço da máscara e as faixas da estrada)
 - [ ] O texto continua selecionável e o Ctrl+F acha palavras dentro da jornada travada

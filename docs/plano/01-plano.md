@@ -171,7 +171,7 @@ Cada fase só começa quando a anterior cumpre o critério de pronto.
 **Acessibilidade**
 
 - Link "Pular para o conteúdo" no topo de cada página.
-- Na abertura, o botão "Pular abertura" fica visível e o logo animado tem `aria-hidden`.
+- Na abertura, o logo animado tem `aria-hidden`. Ela dura menos de 3 s e não tem botão de pular (decidido em 03/11/2026): clique, toque ou tecla pulam.
 - Campos com `label` e erro ligado por `aria-describedby`.
 - Foco sempre visível.
 - Movimento reduzido testado ligando a opção no sistema.
