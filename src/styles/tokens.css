@@ -177,4 +177,5 @@
   --z-abertura: 95;           /* acima do menu (80) e da faixa de exemplos (90): a landing não
                                  mostra dado */
   --voo-aro: 3px;             /* aro Noite do pacote voando até o hero (Passagem-2 a 4) */
+  --pulso: 2s;                /* uma volta do pulso do anel do pacote (01-plano.md) */
 }
