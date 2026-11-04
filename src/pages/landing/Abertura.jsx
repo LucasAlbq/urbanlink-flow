@@ -5,7 +5,7 @@ import { useGSAP } from '@gsap/react'
 import { useLenis } from 'lenis/react'
 
 import { LogoAnimado } from '../../components/LogoAnimado.jsx'
-import { aberturaComecou, montarAbertura, sairCortina } from '../../motion/abertura.js'
+import { aberturaComecou, montarAbertura, montarSaida } from '../../motion/abertura.js'
 import { pararRolagem } from '../../motion/pararRolagem.js'
 import { MODOS } from '../../motion/setup.js'
 import css from './Abertura.module.css'
@@ -20,10 +20,11 @@ function teclaPula(evento) {
 // Cortina da abertura (02-efeitos.md): Noite em tela cheia com o logo se desenhando, por cima
 // do hero já montado. Vai num portal fora do #root, que fica inert enquanto ela está na tela.
 // Sem botão de pular (decisão do grupo): clique, toque ou tecla pulam.
-// No fim: sai o inert e o Lenis volta a rolar.
-// aoSair (opcional): ponto de encaixe do voo do pacote e da entrada do hero, na hora da saída.
-export function Abertura({ aoTerminar, aoSair }) {
+// Na saída, o pacote voa do logo até a rota do hero e o hero entra (montarSaida).
+// hero: ref da seção do hero. No fim da passagem: sai o inert e o Lenis volta a rolar.
+export function Abertura({ hero, aoTerminar }) {
   const cortina = useRef(null)
+  const voo = useRef(null)
   const pular = useRef(null)
   const lenis = useLenis()
 
@@ -66,14 +67,24 @@ export function Abertura({ aoTerminar, aoSair }) {
         let pulou = false
         let saindo = false
 
+        let chegada = null
         const sair = contextSafe(() => {
           if (saindo) return
           saindo = true
-          aoSair?.({ pulou, reduzido })
-          sairCortina(cortina.current, { reduzido, pulou, aoTerminar })
+          const partes = { cortina: cortina.current, voo: voo.current, hero: hero.current }
+          montarSaida({ ...partes, chegada, reduzido, pulou }).eventCallback(
+            'onComplete',
+            aoTerminar,
+          )
         })
 
-        const { tl, limpar } = montarAbertura(cortina.current, { reduzido, aoSair: sair })
+        const abertura = montarAbertura(cortina.current, {
+          hero: hero.current,
+          reduzido,
+          aoSair: sair,
+        })
+        const { tl, limpar } = abertura
+        chegada = abertura.chegada
 
         // O relógio do GSAP não segura o tempo (lagSmoothing(0), do scroll suave). Se a página
         // carrega sem desenhar quadros (aba em segundo plano, janela escondida), a abertura
@@ -111,10 +122,14 @@ export function Abertura({ aoTerminar, aoSair }) {
     { scope: cortina },
   )
 
+  // O ponto do voo fica fora da cortina: ele não sobe com ela.
   return createPortal(
-    <div ref={cortina} className={css.cortina} onClick={() => pular.current?.()}>
-      <LogoAnimado className={css.logo} />
-    </div>,
+    <>
+      <div ref={cortina} className={css.cortina} onClick={() => pular.current?.()}>
+        <LogoAnimado className={css.logo} />
+      </div>
+      <span ref={voo} className={css.voo} aria-hidden="true" />
+    </>,
     document.body,
   )
 }

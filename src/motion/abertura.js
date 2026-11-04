@@ -43,8 +43,26 @@ const URB = { u: 1.0, r: 1.07, b: 1.14 } // sobem 215 → 0
 const LINK = { l: 1.3, i: 1.37, n2: 1.44, k: 1.51 } // sobem 200 → 0
 const SETA = 1.5
 const N = 1.55 // o N de URBAN sobe junto com a seta
-const SAIDA = 2.2 // a cortina sobe
+const SAIDA = 2.2 // a cortina sobe e o pacote voa até a rota do hero
 const SAIDA_REDUZIDO = 0.6 // movimento reduzido: o logo pronto fica 0,6 s
+
+// Passagem abertura → hero, contada a partir da saída (2,20 s).
+const CORTINA = 0.5 // a cortina sobe (0,3 s quando a pessoa pula)
+const VOO = 0.6 // o pacote voa em arco (power2.inOut)
+const ENTRADA = 0.25 // título, texto e botões do hero sobem 12 px (2,45 s)
+const ARCO = 160 // controle da curva do voo: ela passa 80 px acima do meio da reta
+
+// Peças do hero que a passagem usa, marcadas com data-* em Hero.jsx e Skyline.jsx:
+// o texto que entra, o pacote da rota (com o halo) e o ponto amarelo dele.
+function partesDoHero(hero) {
+  const q = gsap.utils.selector(hero)
+  return { texto: q('[data-entrada]'), pacote: q('[data-pacote]'), ponto: q('[data-ponto]')[0] }
+}
+
+function centro(elemento) {
+  const caixa = elemento.getBoundingClientRect()
+  return { x: caixa.left + caixa.width / 2, y: caixa.top + caixa.height / 2, d: caixa.width }
+}
 
 // Os dois fios da máscara do A num tween só, de 0 a 1: o progresso se divide entre o P1
 // (478,8) e o P2 (133,6) na proporção dos comprimentos, como o strand_offsets() do gen.py.
@@ -55,18 +73,39 @@ function pintarTraco(fio1, fio2, progresso) {
 }
 
 // Monta a timeline do logo (rode dentro do gsap.matchMedia() do componente).
-// logo: elemento com o LogoAnimado dentro. aoSair: chamado no rótulo 'saida', a hora da
-// cortina sair. Pular = tl.progress(1): o logo fica pronto e o aoSair é chamado na hora.
-// Devolve a timeline e a limpeza do traço (o tween do traço escreve direto no estilo).
-export function montarAbertura(logo, { reduzido, aoSair }) {
+// logo: elemento com o LogoAnimado dentro. hero: a seção do hero, embaixo da cortina.
+// aoSair: chamado no rótulo 'saida', a hora da cortina sair. Pular = tl.progress(1): o logo
+// fica pronto e o aoSair é chamado na hora.
+// Devolve a timeline, a chegada no hero (pra montarSaida) e a limpeza do traço (o tween do
+// traço escreve direto no estilo).
+export function montarAbertura(logo, { hero, reduzido, aoSair }) {
   const q = gsap.utils.selector(logo)
   const parte = (nome) => q(`[data-ul-ab="${nome}"]`)
   const tl = gsap.timeline({ defaults: { duration: 0.55, ease: 'expo.out' } })
 
-  // Movimento reduzido: o logo já está pronto no HTML, sem o pacote e sem voo.
+  // Movimento reduzido: o logo já está pronto no HTML, sem o pacote e sem voo, e o hero
+  // espera pronto embaixo da cortina.
   if (reduzido) {
     tl.addLabel('saida', SAIDA_REDUZIDO).call(aoSair, null, 'saida')
-    return { tl, limpar() {} }
+    return { tl, chegada: null, limpar() {} }
+  }
+
+  // O hero espera embaixo da cortina sem o texto e sem o pacote da rota: os dois chegam na
+  // passagem. Uma animação só por peça, criada aqui parada: o from já esconde a peça, a
+  // saída solta na hora certa e, desfeito, ele devolve o hero ao normal. (Com um set aqui e
+  // um to na saída, o GSAP desfazia os dois na ordem errada e o texto ficava escondido.)
+  const doHero = partesDoHero(hero)
+  const chegada = {
+    texto: gsap.from(doHero.texto, {
+      opacity: 0,
+      y: 12,
+      duration: 0.3,
+      ease: 'ul',
+      stagger: 0.04,
+      paused: true,
+    }),
+    // 0,01 s: um from de duração zero conta como terminado e não esconderia o pacote já.
+    pacote: gsap.from(doHero.pacote, { autoAlpha: 0, duration: 0.01, paused: true }),
   }
 
   const [fio1] = parte('fio1')
@@ -91,23 +130,63 @@ export function montarAbertura(logo, { reduzido, aoSair }) {
     .from(parte('seta'), { opacity: 0, duration: 0.15, ease: 'none' }, SETA)
     .from(parte('n'), { y: 215 }, N)
 
-  // Ponto de encaixe dos próximos efeitos da lista: o voo do pacote até a rota do hero
-  // (2,20 s, 0,6 s, power2.inOut) e a entrada do hero (2,45 s) entram no aoSair.
-  // Até lá, o pacote fica na ponta da rota do A e sobe junto com a cortina.
+  // O pacote fica na ponta da rota do A até a saída, quando sai voando (montarSaida).
   tl.addLabel('saida', SAIDA).call(aoSair, null, 'saida')
 
   const limpar = () => {
     fio1.style.removeProperty('stroke-dashoffset')
     fio2.style.removeProperty('stroke-dashoffset')
   }
-  return { tl, limpar }
+  return { tl, chegada, limpar }
 }
 
-// A cortina sai: sobe em 0,5 s (ou em 0,3 s quando a pessoa pula). Movimento reduzido:
-// some por opacidade em 0,3 s.
-export function sairCortina(cortina, { reduzido, pulou, aoTerminar }) {
-  const saida = reduzido
-    ? { autoAlpha: 0, duration: 0.3 }
-    : { yPercent: -100, duration: pulou ? 0.3 : 0.5 }
-  return gsap.to(cortina, { ...saida, ease: 'ul', onComplete: aoTerminar })
+// A saída, com a passagem pro hero (02-efeitos.md, "O voo do pacote"; quadros Passagem-1 a 5):
+// - a cortina sobe em 0,5 s com o ease ul (0,3 s quando a pessoa pula);
+// - um ponto fixo (voo) sai do fim da rota do logo e voa em arco até o pacote da rota do
+//   hero, por cima do hero já aberto. As duas pontas são medidas na hora. Ao chegar, ele
+//   some e o pacote do hero aparece;
+// - aos 0,25 s, título, texto e botões do hero sobem 12 px em 0,3 s, 40 ms um do outro.
+// Movimento reduzido: a cortina some por opacidade em 0,3 s, sem voo, e o hero já está pronto.
+// chegada: as animações paradas do hero que o montarAbertura devolveu.
+export function montarSaida({ cortina, voo, hero, chegada, reduzido, pulou }) {
+  const tl = gsap.timeline()
+  if (reduzido || !chegada) return tl.to(cortina, { autoAlpha: 0, duration: 0.3, ease: 'ul' })
+
+  tl.to(cortina, { yPercent: -100, duration: pulou ? 0.3 : CORTINA, ease: 'ul' }, 0)
+
+  const [pontoDoLogo] = gsap.utils.selector(cortina)('[data-ul-ab="pacote"]')
+  const { ponto } = partesDoHero(hero)
+  const de = centro(pontoDoLogo)
+  const para = centro(ponto)
+  const meio = { x: (de.x + para.x) / 2, y: (de.y + para.y) / 2 - ARCO }
+
+  // O ponto tem o tamanho do pacote do hero e sai do tamanho do pacote do logo.
+  gsap.set(voo, {
+    width: para.d,
+    height: para.d,
+    xPercent: -50,
+    yPercent: -50,
+    x: de.x,
+    y: de.y,
+    scale: de.d / para.d,
+  })
+  tl.set(pontoDoLogo, { autoAlpha: 0 }, 0)
+    .set(voo, { autoAlpha: 1 }, 0)
+    .to(
+      voo,
+      {
+        motionPath: { path: `M ${de.x} ${de.y} Q ${meio.x} ${meio.y} ${para.x} ${para.y}` },
+        scale: 1,
+        duration: VOO,
+        ease: 'power2.inOut',
+      },
+      0,
+    )
+    .set(voo, { autoAlpha: 0 }, VOO)
+    .add(chegada.pacote, VOO)
+    .add(chegada.texto, ENTRADA)
+  // Soltas depois de entrar na timeline, elas ficam nas posições dela.
+  chegada.pacote.paused(false)
+  chegada.texto.paused(false)
+  return tl
 }

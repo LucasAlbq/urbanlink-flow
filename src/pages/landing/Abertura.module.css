@@ -8,6 +8,20 @@
   background: var(--noite);
 }
 
+/* O pacote em voo (quadros Passagem-2 a 4): amarelo com aro Noite. Tamanho e posição
+   vêm do efeito; só aparece durante o voo. */
+.voo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-abertura);
+  border-radius: 50%;
+  background: var(--amarelo);
+  outline: var(--voo-aro) solid var(--noite);
+  visibility: hidden;
+  pointer-events: none;
+}
+
 /* 620 px como na prancha; no celular, o logo encolhe até caber entre as margens. */
 .logo {
   width: min(var(--logo-abertura), 100% - 2 * var(--margem));

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { useTituloAba } from '../components/useTituloAba.js'
 import { aberturaPendente } from '../motion/abertura.js'
@@ -12,13 +12,16 @@ import { Chamada } from './landing/Chamada.jsx'
 
 export function Landing() {
   useTituloAba('UrbanLink Flow: a logística da cidade, em tempo real')
-  // A abertura toca por cima do hero já montado, uma vez por sessão (motion/abertura.js).
+  // A abertura toca por cima do hero já montado, uma vez por sessão (motion/abertura.js),
+  // e termina passando o pacote e o texto pro hero. Ela vem depois do Hero no JSX (a cortina
+  // vai num portal) pra ref do hero já estar ligada quando a timeline monta.
   const [abertura, setAbertura] = useState(aberturaPendente)
+  const hero = useRef(null)
 
   return (
     <>
-      {abertura && <Abertura aoTerminar={() => setAbertura(false)} />}
-      <Hero />
+      <Hero ref={hero} />
+      {abertura && <Abertura hero={hero} aoTerminar={() => setAbertura(false)} />}
       <Jornada />
       <Plataforma />
       <Rastrear />
