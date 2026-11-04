@@ -9,6 +9,8 @@ const SETA = 'M 0 0 H 30 L 64 30 L 30 60 H 0 L 26 30 Z'
 // Sem `placa`, a etapa fica sem poste (menu do celular). parada: ponto no asfalto (sem pacote).
 // data-* pros efeitos (a jornada): data-haste no poste, data-inicio no ponto do começo (o pacote
 // que anda) e data-fim-aceso numa segunda seta Amarela por cima da Ouro, invisível até acender.
+// No trecho feito, data-cobre é uma capa da cor do trecho futuro, invisível: o rastreamento
+// mostra e encolhe a capa pra o trecho "se preencher" (sem achatar o pacote e a seta).
 export function Etapa({ placa, trecho = 'feito', inicio, fim, pacote, parada, children }) {
   const futuro = trecho === 'futuro'
 
@@ -22,6 +24,7 @@ export function Etapa({ placa, trecho = 'feito', inicio, fim, pacote, parada, ch
       )}
       <div className={`${css.asfalto} ${futuro ? css.futuro : ''}`} aria-hidden="true" data-asfalto="">
         {!futuro && <span className={css.faixa} data-faixa="" />}
+        {!futuro && <span className={css.cobre} data-cobre="" />}
         {inicio && <span className={css.inicio} data-inicio="" />}
         {parada && !pacote && <span className={css.parada} data-parada="" />}
         {pacote && <span className={`${css.pacote} ${pacote === 'fim' ? css.pacoteFim : ''}`} data-pacote="" />}

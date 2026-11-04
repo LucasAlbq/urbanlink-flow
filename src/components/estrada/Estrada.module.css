@@ -73,6 +73,16 @@
   transform: translateY(-50%);
 }
 
+/* Capa do trecho feito (cor do trecho futuro), por cima das faixas e embaixo do pacote e da
+   seta. Fica encolhida (invisível); o status do rastreamento mostra e encolhe ela. */
+.cobre {
+  position: absolute;
+  inset: 0;
+  background: var(--estrada-futura);
+  transform: scaleX(0);
+  pointer-events: none;
+}
+
 /* Acima dos trechos seguintes: na jornada ele anda a estrada inteira. */
 .inicio {
   left: 0;
