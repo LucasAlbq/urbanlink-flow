@@ -22,7 +22,11 @@ export function Etapa({ placa, trecho = 'feito', inicio, fim, pacote, parada, ch
           <div className={css.haste} aria-hidden="true" data-haste="" />
         </div>
       )}
-      <div className={`${css.asfalto} ${futuro ? css.futuro : ''}`} aria-hidden="true" data-asfalto="">
+      <div
+        className={`${css.asfalto} ${futuro ? css.futuro : ''} ${fim ? css.asfaltoComSeta : ''}`}
+        aria-hidden="true"
+        data-asfalto=""
+      >
         {!futuro && <span className={`${css.faixa} ${fim ? css.faixaAteSeta : ''}`} data-faixa="" />}
         {!futuro && <span className={css.cobre} data-cobre="" />}
         {inicio && <span className={css.inicio} data-inicio="" />}

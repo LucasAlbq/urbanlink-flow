@@ -30,14 +30,15 @@
 }
 
 .asfalto {
+  --asfalto-cor: var(--noite);
   grid-area: asfalto;
   justify-self: stretch;
   position: relative;
-  background: var(--noite);
+  background: var(--asfalto-cor);
 }
 
 .futuro {
-  background: var(--estrada-futura);
+  --asfalto-cor: var(--estrada-futura);
 }
 
 .etapaFutura .haste {
@@ -286,7 +287,7 @@
 }
 
 .menu .asfalto {
-  background: var(--marinho);
+  --asfalto-cor: var(--marinho);
 }
 
 .menu .faixa {
@@ -332,4 +333,43 @@
 
 .menu .faixaAteSeta {
   bottom: calc(var(--fim-menu-largura) - var(--fim-menu-recuo));
+}
+
+/* No último trecho, o asfalto termina dentro da seta: depois do fundo do recorte de trás
+   (26/64 da largura da seta) e antes de a ponta começar a afinar (30/64). Indo até o fim do
+   asfalto, os cantos dele sobravam dos dois lados da ponta (já vinha assim na prancha).
+   A seta fica onde estava; quem encurta é o asfalto, desenhado num ::before. */
+.asfaltoComSeta {
+  --asfalto-sob-seta: calc(var(--fim-largura) - var(--fim-recuo) - var(--fim-largura) * 0.4375);
+  background: none;
+}
+
+.asfaltoComSeta::before {
+  content: '';
+  position: absolute;
+  inset: 0 var(--asfalto-sob-seta) 0 0;
+  background: var(--asfalto-cor);
+}
+
+.asfaltoComSeta .cobre {
+  right: var(--asfalto-sob-seta);
+}
+
+.vertical .asfaltoComSeta::before,
+.vertical .asfaltoComSeta .cobre {
+  right: 0;
+  bottom: var(--asfalto-sob-seta);
+}
+
+@media (max-width: 760px) {
+  .auto .asfaltoComSeta::before,
+  .auto .asfaltoComSeta .cobre {
+    right: 0;
+    bottom: var(--asfalto-sob-seta);
+  }
+}
+
+/* O menu já passa a seta 24 px do fim do asfalto: lá os cantos ficam dentro dela. */
+.menu .asfaltoComSeta {
+  --asfalto-sob-seta: 0px;
 }
