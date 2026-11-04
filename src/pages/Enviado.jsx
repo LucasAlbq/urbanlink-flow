@@ -50,7 +50,7 @@ export function Enviado() {
       <meta name="robots" content="noindex" />
       <div className={css.dentro}>
         <div className={css.cartao}>
-          <MiniEstrada />
+          <MiniEstrada correr />
 
           <div className={css.titulo}>
             <h1 tabIndex={-1} className={css.h1}>
