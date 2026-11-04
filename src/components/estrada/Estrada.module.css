@@ -310,3 +310,26 @@
   width: var(--fim-menu-largura);
   height: var(--fim-menu-altura);
 }
+
+/* No último trecho, a faixa para onde a seta começa: o recorte de trás da seta mostra só o
+   asfalto entrando nela, sem a faixa amarela atravessando. A seta passa --fim-recuo do fim
+   do asfalto, então ela começa a (largura − recuo) do fim. */
+.faixaAteSeta {
+  right: calc(var(--fim-largura) - var(--fim-recuo));
+}
+
+.vertical .faixaAteSeta {
+  right: auto;
+  bottom: calc(var(--fim-largura) - var(--fim-recuo));
+}
+
+@media (max-width: 760px) {
+  .auto .faixaAteSeta {
+    right: auto;
+    bottom: calc(var(--fim-largura) - var(--fim-recuo));
+  }
+}
+
+.menu .faixaAteSeta {
+  bottom: calc(var(--fim-menu-largura) - var(--fim-menu-recuo));
+}
