@@ -92,9 +92,36 @@
 
 .pacote {
   left: var(--e-22);
-  box-shadow:
-    0 0 0 var(--pacote-aro) var(--noite),
-    0 0 0 var(--pacote-halo) var(--halo-pacote);
+}
+
+/* O anel (halo) em volta do pacote: do fim do aro até --pacote-halo. Pulso do pacote
+   (01-plano.md): parado numa etapa, ele cresce de 1 a 1,6 e some, a cada 2 s, em CSS.
+   Movimento reduzido: anel fixo. */
+.pacote::after {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--pacote-halo));
+  border: calc(var(--pacote-halo) - var(--pacote-aro)) solid var(--halo-pacote);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pacote::after {
+    animation: pulso var(--pulso) linear infinite;
+  }
+}
+
+@keyframes pulso {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(1.6);
+    opacity: 0;
+  }
 }
 
 .fim {
@@ -298,6 +325,11 @@
 .menu .texto {
   justify-self: stretch;
   padding: 0;
+}
+
+/* No menu o pacote não tem anel (nem pulso). */
+.menu .pacote::after {
+  content: none;
 }
 
 .menu .pacote {
