@@ -1,3 +1,9 @@
+import { useRef } from 'react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+
+import { montarFaixas } from '../../motion/faixas.js'
+import { MODOS } from '../../motion/setup.js'
 import { Etapa } from './Etapa.jsx'
 import css from './Estrada.module.css'
 
@@ -8,6 +14,8 @@ import css from './Estrada.module.css'
 // pacoteEm: índice da etapa com o pacote, ou 'fim' (pacote na seta).
 // variante="menu": a estrada do menu do celular (asfalto Marinho, pacote no meio da parada).
 // paradas: ponto no asfalto das etapas sem o pacote.
+// faixas: andam (deslizam devagar na tela, motion/faixas.js) · jornada (no desktop quem
+// mexe nelas é a trava da jornada; no celular elas andam).
 export function Estrada({
   etapas,
   orientacao = 'auto',
@@ -16,9 +24,11 @@ export function Estrada({
   fim = true,
   pacoteEm,
   paradas = false,
+  faixas = 'andam',
   className = '',
   ...resto
 }) {
+  const estrada = useRef(null)
   const ultima = etapas.length - 1
   const classes = [
     css.estrada,
@@ -29,8 +39,22 @@ export function Estrada({
     .filter(Boolean)
     .join(' ')
 
+  // Movimento reduzido: faixas paradas.
+  useGSAP(
+    () => {
+      gsap.matchMedia().add(MODOS, ({ conditions }) => {
+        if (conditions.reduzido) return undefined
+        if (faixas === 'jornada' && conditions.desktop) return undefined
+        const vertical = orientacao === 'vertical' || conditions.celular
+        return montarFaixas(estrada.current, { vertical })
+      })
+    },
+    { scope: estrada },
+  )
+
   return (
     <ol
+      ref={estrada}
       className={classes}
       style={{ '--etapas': etapas.length }}
       data-estrada=""
