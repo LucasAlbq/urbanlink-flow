@@ -14,6 +14,10 @@ const NOME = ['get', 'name']
 const classe = (...nomes) => ['match', ['get', 'class'], nomes, true, false]
 const largura = (base, z1, l1, z2, l2) => ['interpolate', ['exponential', base], ['zoom'], z1, l1, z2, l2]
 
+// A linha Ouro até `t` (0 a 1 do comprimento) e transparente depois. O efeito de desenhar só
+// troca o `t`: mudar a pintura é bem mais leve que mandar a linha de novo pro mapa a cada quadro.
+export const tracoAte = (cor, t) => ['step', ['line-progress'], cor, t, 'transparent']
+
 export function lerCores() {
   const tokens = getComputedStyle(document.documentElement)
   const ler = (nome) => tokens.getPropertyValue(nome).trim()

@@ -1,10 +1,13 @@
-import { Component, lazy, Suspense, useCallback, useState } from 'react'
+import { Component, lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 
 import { MapaIlustrado } from './MapaIlustrado.jsx'
 import css from './MapaDaEntrega.module.css'
 
-// O MapLibre só carrega aqui, na tela de rastreamento (01-plano.md, "Orçamento").
+// O MapLibre só carrega aqui, na tela de rastreamento (01-plano.md, "Orçamento"), e só quando a
+// caixa do mapa chega perto da tela: abrir o mapa pesa no processador e não pode travar a página
+// enquanto ela abre.
 const MapaReal = lazy(() => import('./MapaReal.jsx'))
+const PERTO_DA_TELA = '300px'
 
 // Se o MapaReal quebrar ao carregar ou ao desenhar, fica o MapaIlustrado.
 class SeQuebrar extends Component {
@@ -25,6 +28,15 @@ class SeQuebrar extends Component {
 export function MapaDaEntrega({ rota, posicao, progresso, rotulo }) {
   const [falhou, setFalhou] = useState(false)
   const aoFalhar = useCallback(() => setFalhou(true), [])
+  const caixa = useRef(null)
+  const [perto, setPerto] = useState(false)
+
+  useEffect(() => {
+    if (perto || !caixa.current) return
+    const olho = new IntersectionObserver(([e]) => e.isIntersecting && setPerto(true), { rootMargin: PERTO_DA_TELA })
+    olho.observe(caixa.current)
+    return () => olho.disconnect()
+  }, [perto])
 
   const ilustrado = (
     <div className={css.caixa} role="img" aria-label={rotulo}>
@@ -34,6 +46,7 @@ export function MapaDaEntrega({ rota, posicao, progresso, rotulo }) {
   const temRota = rota?.type === 'LineString' && rota.coordinates?.length > 1
   if (falhou || !temRota || !(posicao || progresso >= 1)) return ilustrado
 
+  if (!perto) return <div ref={caixa} className={css.caixa} />
   return (
     <SeQuebrar reserva={ilustrado}>
       <Suspense fallback={<div className={css.caixa} />}>
