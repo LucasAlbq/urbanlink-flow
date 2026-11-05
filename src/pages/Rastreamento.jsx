@@ -64,7 +64,10 @@ export function Rastreamento() {
         </div>
       </section>
 
-      <section className={css.resultado} aria-label="Resultado">
+      <section
+        className={`${css.resultado} ${busca.estado === 'carregando' ? css.esperando : ''}`}
+        aria-label="Resultado"
+      >
         <div className={css.dentro}>
           {busca.estado === 'vazio' && <SemCodigo />}
           {busca.estado === 'carregando' && <CarregandoA texto="Buscando a entrega…" />}

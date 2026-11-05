@@ -9,7 +9,7 @@ import { useGSAP } from '@gsap/react'
 
 import { MODOS } from '../../motion/setup.js'
 import { desenharRotaReal } from '../../motion/mapaReal.js'
-import { estiloDoMapa, lerCores } from './mapaRealEstilo.js'
+import { estiloDoMapa, lerCores, tracoAte } from './mapaRealEstilo.js'
 import { direcaoFinal, dividirRota, limites, linha } from './rotaGeo.js'
 import css from './MapaReal.module.css'
 
@@ -42,7 +42,7 @@ export default function MapaReal({ rota, posicao, progresso, rotulo, aoFalhar })
   const mapa = useRef(null)
   const abriu = useRef(false)
   const [pronto, setPronto] = useState(false)
-  // Com efeito, a linha Ouro começa vazia e o efeito desenha; sem efeito, já vem inteira.
+  // Com efeito, a linha Ouro começa apagada e o efeito desenha; sem efeito, já vem inteira.
   const [comEfeito] = useState(() => !window.matchMedia(MODOS.reduzido).matches)
 
   const cores = useMemo(() => lerCores(), [])
@@ -53,7 +53,11 @@ export default function MapaReal({ rota, posicao, progresso, rotulo, aoFalhar })
     [coords, posicao, progresso],
   )
   const dadosResto = useMemo(() => (resto.length > 1 ? linha(resto) : NADA), [resto])
-  const dadosFeito = useMemo(() => (comEfeito ? NADA : linha(feito)), [comEfeito, feito])
+  const dadosFeito = useMemo(() => linha(feito), [feito])
+  const pinturaFeito = useMemo(
+    () => ({ 'line-gradient': tracoAte(cores.ouro, comEfeito ? 0 : 1), 'line-width': 7 }),
+    [cores, comEfeito],
+  )
   // Abre enquadrando a rota toda, com folga pras peças, à direita pro zoom e embaixo pros créditos.
   // No celular a caixa é baixa (proporção 960/560): folga menor pra rota não ficar minúscula.
   const vista = useMemo(() => {
@@ -72,17 +76,17 @@ export default function MapaReal({ rota, posicao, progresso, rotulo, aoFalhar })
 
   useGSAP(
     () => {
-      const fonte = pronto && mapa.current?.getSource('feito')
-      if (!fonte) return
+      const mapaGl = pronto && mapa.current?.getMap()
+      if (!mapaGl) return
       gsap.matchMedia().add(MODOS, ({ conditions }) => {
         if (conditions.reduzido) {
-          fonte.setData(linha(feito))
+          mapaGl.setPaintProperty('rota-feita', 'line-gradient', tracoAte(cores.ouro, 1))
           return
         }
-        return desenharRotaReal(fonte, feito)
+        return desenharRotaReal(mapaGl, 'rota-feita', cores.ouro)
       })
     },
-    { dependencies: [pronto, feito], scope: raiz },
+    { dependencies: [pronto, cores], scope: raiz },
   )
 
   function aoAbrir({ target }) {
@@ -126,13 +130,9 @@ export default function MapaReal({ rota, posicao, progresso, rotulo, aoFalhar })
             paint={{ 'line-color': cores.noite, 'line-width': 4, 'line-dasharray': [0, 2.5] }}
           />
         </Source>
-        <Source id="feito" type="geojson" data={dadosFeito}>
-          <Layer
-            id="rota-feita"
-            type="line"
-            layout={{ 'line-cap': 'round', 'line-join': 'round' }}
-            paint={{ 'line-color': cores.ouro, 'line-width': 7 }}
-          />
+        {/* lineMetrics: a linha sabe onde fica cada pedaço dela (0 a 1), e o efeito só muda a cor. */}
+        <Source id="feito" type="geojson" data={dadosFeito} lineMetrics>
+          <Layer id="rota-feita" type="line" layout={{ 'line-cap': 'round', 'line-join': 'round' }} paint={pinturaFeito} />
         </Source>
 
         <Marker longitude={inicio[0]} latitude={inicio[1]} anchor="center">

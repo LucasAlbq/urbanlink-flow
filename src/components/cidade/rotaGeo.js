@@ -9,10 +9,6 @@ function noPlano(coords) {
   return coords.map(([lng, lat]) => [lng * k * METROS_POR_GRAU, lat * METROS_POR_GRAU])
 }
 
-function comprimentos(plano) {
-  return plano.slice(1).map((p, i) => Math.hypot(p[0] - plano[i][0], p[1] - plano[i][1]))
-}
-
 const misturar = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]
 
 // Divide a rota no ponto dela mais perto de `posicao`: trecho feito, trecho que falta e o ponto.
@@ -36,22 +32,6 @@ export function dividirRota(coords, posicao) {
     resto: [ponto, ...coords.slice(melhor.i + 1)],
     ponto,
   }
-}
-
-// O pedaço do começo da linha até `t` (0 a 1) do comprimento. É o que o efeito desenha.
-export function cortarLinha(coords, t) {
-  const trechos = comprimentos(noPlano(coords))
-  let falta = trechos.reduce((a, b) => a + b, 0) * Math.min(Math.max(t, 0), 1)
-  const saida = [coords[0]]
-  for (let i = 0; i < trechos.length; i++) {
-    if (falta <= trechos[i]) {
-      saida.push(misturar(coords[i], coords[i + 1], trechos[i] ? falta / trechos[i] : 0))
-      return saida
-    }
-    falta -= trechos[i]
-    saida.push(coords[i + 1])
-  }
-  return saida
 }
 
 // Pra onde o último trecho aponta, em graus no sentido do relógio a partir do leste
