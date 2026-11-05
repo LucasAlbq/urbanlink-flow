@@ -152,7 +152,7 @@ mm.add(MODOS, ({ conditions: c }) => {
       })
       gsap.from(etapa.querySelectorAll('.st-pole, .st-text'), {
         autoAlpha: 0, y: 16, duration: 0.4, ease: 'ul', stagger: 0.08,
-        scrollTrigger: { trigger: etapa, start: 'top 72%', once: true },
+        scrollTrigger: { trigger: etapa, start: 'top 72%', toggleActions: 'play none none reverse' },
       })
     })
   }
@@ -165,6 +165,7 @@ mm.add(MODOS, ({ conditions: c }) => {
 - A seta do fim passa de Ouro pra Amarelo quando o pacote chega (últimos 0,02).
 - O pacote da jornada é um `span` amarelo de 26 px na primeira etapa.
 - A trava dura 250% da altura da tela. Ajustar entre 200% e 300% testando com mouse e touchpad.
+- Celular: subindo a página, a placa e o texto somem junto com a estrada (`reverse`). Com `once`, a estrada voltava e o texto ficava sozinho (achado no celular em 05/11/2026).
 
 ## Os outros efeitos
 
