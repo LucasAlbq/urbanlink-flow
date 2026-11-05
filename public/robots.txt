@@ -1,0 +1,3 @@
+# A plataforma (/app) e as telas de conta já levam noindex; aqui só fica de fora a /app.
+User-agent: *
+Disallow: /app
