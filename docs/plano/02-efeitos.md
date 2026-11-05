@@ -79,13 +79,14 @@ Tempos iguais aos da prancha `docs/referencia/abertura/Abertura-Codigo.dc.html` 
 | 1,55 | N de URBAN | Sobe junto com a seta | 0,55 s | `expo.out` |
 | 2,20 | Cortina | Sobe (yPercent 0 → −100) | 0,5 s | `ul` |
 | 2,20 | Pacote | Voa em arco até o ponto da rota do hero | 0,6 s | `power2.inOut` |
-| 2,45 | Hero | Entrada do título, texto e botões | 0,3 s | `ul` |
+| 2,45 | Hero | Entrada do título, texto e botões (sobem 12 px) | 0,3 s | `ul` |
 
 - **Os dois fios do traço:** a máscara usa P1 (comprimento 478,8) e P2 (133,6), em `geom.json`. Um único tween de 0 a 1 com `onUpdate` divide o progresso entre os dois na proporção dos comprimentos (`strand_offsets()` do gerador).
 - **O voo do pacote:** medir o ponto no logo e o ponto da rota no hero (`getBoundingClientRect`). Um ponto fixo voa entre os dois com `motionPath` de três pontos, o do meio 80 px acima da reta. Ao chegar, ele some e o pacote do hero aparece. Quadros de referência: `docs/referencia/abertura/Passagem-1.png` a `Passagem-5.png`.
 - **Quando toca:** só na rota `/` e só se `sessionStorage['ul-abertura']` não existir. Por link direto, nunca.
 - **Pular:** sem botão na tela (decidido em 03/11/2026). Clique, toque ou tecla fazem `tl.progress(1)` e a cortina sai em 0,3 s.
 - **Durante a abertura:** `lenis.stop()` e o hero com `inert`. No fim, `lenis.start()` e sai o `inert`.
+- **Texto do hero embaixo da cortina:** já visível, só sobe 12 px na entrada (sem opacidade). Invisível, ele atrasava o maior elemento da tela pra depois da abertura e a landing ficava em 82 no Lighthouse do celular (decidido em 04/11/2026).
 - **Movimento reduzido:** logo pronto por 0,6 s, cortina some por opacidade em 0,3 s, sem voo.
 - **Ids do SVG:** prefixo próprio (`ul-ab-`). Ids de máscara repetidos na página quebram o desenho.
 
