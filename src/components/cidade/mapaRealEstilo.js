@@ -1,6 +1,7 @@
 // Estilo do MapaReal: os dados do OpenFreeMap (esquema OpenMapTiles) pintados como o
 // MapaIlustrado. As quadras são o chão, as ruas são Névoa, parques e água nas cores --mapa-*,
-// nomes em Cinza. Só as camadas que ajudam a ler a rota; sem prédios, trilhos e divisas.
+// nomes em Marinho (o Cinza fica abaixo de 4,5:1 sobre as quadras, os parques e a água).
+// Só as camadas que ajudam a ler a rota; sem prédios, trilhos e divisas.
 // As cores chegam lidas dos tokens (lerCores), nenhum hex aqui.
 
 const OPENFREEMAP = 'https://tiles.openfreemap.org'
@@ -26,7 +27,7 @@ export function lerCores() {
     parque: ler('--mapa-parque'),
     rio: ler('--mapa-rio'),
     nevoa: ler('--nevoa'),
-    cinza: ler('--cinza'),
+    marinho: ler('--marinho'),
     noite: ler('--noite'),
     ouro: ler('--ouro'),
   }
@@ -50,7 +51,7 @@ export function estiloDoMapa(cor) {
     'source-layer': camada,
     filter: filtro,
     layout: { 'text-field': NOME, 'text-font': FONTE, 'text-size': 12, ...extra },
-    paint: { 'text-color': cor.cinza, 'text-halo-color': cor.nevoa, 'text-halo-width': 1.5 },
+    paint: { 'text-color': cor.marinho, 'text-halo-color': cor.nevoa, 'text-halo-width': 1.5 },
   })
   const tunel = ['==', ['get', 'brunnel'], 'tunnel']
   const semTunel = ['!=', ['get', 'brunnel'], 'tunnel']
