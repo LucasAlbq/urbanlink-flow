@@ -1,34 +1,178 @@
-# UrbanLink Flow: site
+# UrbanLink Flow
 
-Site da UrbanLink Flow, uma plataforma de gestão e simulação de logística urbana em tempo real. Ele apresenta a plataforma, deixa rastrear uma entrega e falar com a equipe. É o front-end em React do TCC de Desenvolvimento de Sistemas (SENAI). A API e o banco de dados do mesmo TCC ficam na pasta `backend/`.
+Plataforma de gestão e simulação de logística urbana em tempo real, da UrbanLink Systems. Tem um site público, pra apresentar a plataforma, rastrear uma entrega e falar com a equipe, uma API REST com as regras de negócio e um banco PostgreSQL. É o Projeto Integrador do curso técnico de Desenvolvimento de Sistemas (SENAI).
 
-![Primeira tela da landing em 1440 px](docs/readme/landing.jpg)
+![Primeira tela do site em 1440 px](docs/readme/landing.jpg)
 
 > Projeto acadêmico. A UrbanLink Systems é uma empresa fictícia.
 
-## Como rodar
+## Site publicado
 
-Precisa do Node 22 (versão exata no `.nvmrc`).
+**Endereço:** _ainda não publicado_
+
+## Objetivo do sistema
+
+Nas cidades inteligentes, a logística urbana precisa ser eficiente e acompanhar o que acontece em tempo real. O UrbanLink Flow existe pra:
+
+- monitorar o fluxo de entregas na cidade, do centro de distribuição até a porta;
+- planejar e otimizar rotas, calculando distância, tempo, custo e emissão de CO2;
+- simular cenários (trânsito, tamanho da frota, preço do combustível) antes de mudar a operação, e treinar a equipe com eles;
+- mostrar indicadores de desempenho e nível de serviço;
+- deixar o cliente final acompanhar a própria entrega pelo código de rastreio.
+
+Público: gestores de logística, operadores de transporte, empresas de e-commerce, prefeituras e profissionais de mobilidade urbana.
+
+## Funcionalidades
+
+### Site público
+
+- Página inicial com a apresentação da plataforma.
+- **Rastreio de entrega** por código: as quatro etapas (postado, em trânsito, em rota, entregue), com data e cidade de cada uma, imprevistos e previsão de entrega.
+- **Fale com a gente**: o formulário grava a mensagem no banco e mostra o número de protocolo.
+- **Login** com sessão segura (cookie que o JavaScript da página não lê) e "manter conectado".
+- **Recuperar senha** com link de uso único que vence em 30 minutos.
+- Política de Privacidade e página de "não encontrado".
+- Layout responsivo, do celular ao desktop, e acessível: dá pra usar só com o teclado, e com "reduzir movimento" nenhum efeito anima.
+
+### API (back-end)
+
+- Autenticação com JWT e três perfis com permissões diferentes: administrador, gestor e operador.
+- **CRUD** de usuários, veículos, centros de distribuição, entregas, rotas e simulações, com busca, filtros e paginação.
+- **Regras de negócio:**
+  - distância entre pontos pela fórmula de Haversine;
+  - duração com o fator de trânsito e o tempo de cada parada;
+  - otimização de rotas por vizinho mais próximo e melhoria 2-opt;
+  - capacidade do veículo e transições de estado válidas de entregas e rotas;
+  - simulação de cenários com a comparação entre a ordem original e a otimizada;
+  - indicadores (entregas no prazo, nível de serviço, uso da frota, custo, CO2) e relatórios;
+  - monitoramento demonstrativo em tempo real (Server-Sent Events).
+- Documentação interativa (Swagger), verificação de saúde, limite de tentativas e trilha de auditoria.
+
+### Banco de dados
+
+- PostgreSQL com 13 tabelas, criadas por migrations ou pelos scripts SQL de `arquivos-adicionais/sql/`.
+- Um **trigger** grava o histórico de cada entrega a cada troca de estado, e uma **sequência** gera o protocolo das mensagens do site.
+- Dados de demonstração: 3 usuários, 8 veículos, 24 entregas, 3 rotas e 2 simulações.
+
+### Em andamento
+
+- As telas internas da plataforma (`/app`): monitoramento com mapa, rotas, simulação e cadastros. A API já tem todas as rotas que elas vão usar; hoje, depois do login, a área `/app` só mostra o título.
+
+## Tecnologias
+
+### Site (front-end)
+
+| Camada | Escolha | Por quê |
+| --- | --- | --- |
+| Base | React 19 + Vite | O enunciado aceita React. Vite é o padrão atual |
+| Rotas | React Router | O enunciado cita "tratamento de rotas" no consumo de API |
+| Estilo | CSS puro com variáveis + CSS Modules | As cores e medidas da marca ficam todas em `tokens.css` |
+| Fonte | Fira Sans (`@fontsource/fira-sans`) | Fonte da marca, servida pelo próprio site |
+| Efeitos | GSAP 3 (ScrollTrigger, MotionPath, DrawSVG) + `@gsap/react` | Plugins grátis. O `useGSAP()` desfaz os efeitos ao trocar de página |
+| Scroll suave | Lenis, no relógio do GSAP | Fica em sincronia com o ScrollTrigger |
+| Mapa | MapLibre GL + `react-map-gl`, dados do OpenFreeMap | Mapa com as cores da marca e sem chave de API |
+| Chamadas à API | `fetch` em `src/api` | Uma dependência a menos |
+| Qualidade | oxlint | Confere o código rápido |
+
+### API e banco (back-end)
+
+| Camada | Escolha |
+| --- | --- |
+| Linguagem | Node.js 22 + TypeScript |
+| Servidor | Express 5 |
+| Banco | PostgreSQL 16 |
+| Acesso ao banco | Prisma 7 (schema, migrations e seed) |
+| Validação | Zod |
+| Segurança | JWT, bcrypt, Helmet, CORS e limite de tentativas |
+| Documentação | Swagger (OpenAPI 3.1) |
+| Testes | Vitest e Supertest (73 testes) e um smoke test com a API ligada |
+| Qualidade | ESLint com typescript-eslint |
+| Banco local | Docker Compose |
+
+## Modelagem do banco de dados
+
+13 tabelas, 13 relacionamentos e 12 enums. Os arquivos estão em [`docs/banco-de-dados/`](docs/banco-de-dados/):
+
+| Arquivo | O que tem |
+| --- | --- |
+| [Modelagem conceitual](docs/banco-de-dados/modelagem-conceitual.md) | Entidades, relacionamentos e cardinalidades |
+| [Modelagem lógica](docs/banco-de-dados/modelagem-logica.md) | Cada tabela com colunas, tipos, chaves e enums |
+| [DER](docs/banco-de-dados/der.md) | Diagrama Entidade-Relacionamento com todos os atributos |
+| [Modelo completo](docs/backend/MODELO_DADOS.md) | Modelo físico, normalização, integridade e dados de demonstração |
+
+O modelo físico são os scripts de [`arquivos-adicionais/sql/`](arquivos-adicionais/sql/) e as migrations de `backend/prisma/migrations/`.
+
+```mermaid
+erDiagram
+    USUARIO ||--o{ PEDIDO_DE_SENHA : "pede"
+    USUARIO o|--o{ REGISTRO_DE_AUDITORIA : "realiza"
+    USUARIO ||--o{ SIMULACAO : "cria"
+    SIMULACAO ||--o| RESULTADO_DA_SIMULACAO : "produz"
+    CENTRO_DE_DISTRIBUICAO ||--o{ ENTREGA : "origina"
+    VEICULO o|--o{ ENTREGA : "transporta"
+    ENTREGA ||--o{ EVENTO_DA_ENTREGA : "registra"
+    VEICULO ||--o{ ROTA : "executa"
+    ROTA ||--o{ PARADA : "contem"
+    ENTREGA ||--o{ PARADA : "aparece em"
+    VEICULO o|--o{ ALERTA : "contextualiza"
+    ROTA o|--o{ ALERTA : "contextualiza"
+    ENTREGA o|--o{ ALERTA : "contextualiza"
+    MENSAGEM_DO_SITE
+```
+
+## Como instalar e rodar
+
+O passo a passo completo (banco com Docker, com PostgreSQL instalado ou sem nenhum dos dois, API, site e como usar) está em [`arquivos-adicionais/INSTALACAO.md`](arquivos-adicionais/INSTALACAO.md). O resumo, com Docker:
+
+```bash
+cd backend
+npm install
+cp .env.example .env
+docker compose up -d
+npm run db:deploy
+npm run db:seed
+npm run dev
+```
+
+Em outro terminal, na raiz:
 
 ```bash
 npm install
 cp .env.exemplo .env.local
-npm run dev
+npm run dev:api
 ```
 
-O site abre em http://localhost:5173.
+- Site: http://localhost:5173
+- API: http://localhost:3333/api
+- Documentação da API: http://localhost:3333/api/docs
+- Usuário de demonstração: `admin@urbanlink.local`, senha `UrbanLink@2026` (só pra uso local)
+- Códigos de rastreio: `ULF-2026-0001` a `ULF-2026-0024`
+
+### Comandos do site
 
 | Comando | O que faz |
 | --- | --- |
-| `npm run dev` | Servidor local com recarga automática (com os dados de exemplo, se o `.env.development.local` ligar) |
-| `npm run dev:api` | O mesmo, falando com a API de verdade (precisa da API ligada; ver "Back-end e banco de dados") |
+| `npm run dev:api` | Servidor local falando com a API |
+| `npm run dev` | Servidor local com os dados de exemplo, sem a API (se o `.env.development.local` ligar) |
 | `npm run build` | Gera o site em `dist/` e roda a trava de dados de exemplo |
 | `npm run preview` | Serve o `dist/` pra conferir o build |
 | `npm run lint` | Confere o código com o oxlint |
 
+### Comandos da API (dentro de `backend/`)
+
+| Comando | O que faz |
+| --- | --- |
+| `npm run dev` | API com recarga automática |
+| `npm test` | Testes (Vitest e Supertest) |
+| `npm run lint` | Confere o código com o ESLint |
+| `npm run build` | Compila pra `dist/` |
+| `npm run db:deploy` | Aplica as migrations |
+| `npm run db:seed` | Apaga e recria os dados de demonstração |
+| `npm run test:smoke` | Com a API ligada, testa login, permissões, CRUD e simulação |
+
 ### Sem a API: dados de exemplo
 
-Pra ver as telas sem a API rodando, crie um `.env.development.local` com:
+Pra ver as telas sem a API, crie um `.env.development.local` com:
 
 ```bash
 VITE_USAR_EXEMPLOS=true
@@ -47,7 +191,7 @@ Só o `npm run dev` lê esse arquivo. Com ele, as respostas vêm de `src/api/exe
 | Login | qualquer e-mail com a senha `exemplo123` |
 | Link de senha vencido | `/nova-senha/vencido` (o erro aparece ao salvar) |
 
-## Variáveis de ambiente
+## Variáveis de ambiente do site
 
 | Variável | Pra quê | Exemplo |
 | --- | --- | --- |
@@ -56,32 +200,39 @@ Só o `npm run dev` lê esse arquivo. Com ele, as respostas vêm de `src/api/exe
 | `VITE_LINK_API_DOCS` | Link da documentação da API no rodapé. Vazio, o link não aparece | |
 | `VITE_LINK_GITHUB` | Link do código no rodapé. Vazio, o link não aparece | |
 
+As da API estão em `backend/.env.example` e explicadas no [guia de instalação](arquivos-adicionais/INSTALACAO.md#4-api-back-end).
+
 ## Estrutura de pastas
 
 ```
-src/
-  api/          único lugar que chama fetch (cliente.js) e os pedidos de cada tela
-    exemplos/   respostas de exemplo (só com VITE_USAR_EXEMPLOS=true)
-  components/   Header, Rodape, Botao, Campo, Logo, LogoAnimado, MenuCelular, CarregandoA…
-    estrada/    Estrada, Etapa, Placa: a estrada com placas que se repete no site
-    cidade/     Skyline, MapaIlustrado, MapaReal, MapaDaEntrega
-  pages/        uma tela por rota, com as peças de cada uma em subpastas
-  motion/       os efeitos (GSAP), um arquivo por efeito, e o scroll suave
-  styles/       tokens.css (cores, tamanhos, espaços e tempos) e base.css
-public/         robots.txt
-scripts/        sem-exemplos.js, a trava do build
-backend/        a API e o banco (Express, Prisma e PostgreSQL), com package.json próprio
+src/                  o site
+  api/                único lugar que chama fetch (cliente.js) e traduz a API pros nomes das telas
+    exemplos/         respostas de exemplo (só com VITE_USAR_EXEMPLOS=true)
+  components/         Header, Rodape, Botao, Campo, Logo, LogoAnimado, MenuCelular, CarregandoA…
+    estrada/          Estrada, Etapa, Placa: a estrada com placas que se repete no site
+    cidade/           Skyline, MapaIlustrado, MapaReal, MapaDaEntrega
+  pages/              uma tela por rota, com as peças de cada uma em subpastas
+  motion/             os efeitos (GSAP), um arquivo por efeito, e o scroll suave
+  styles/             tokens.css (cores, tamanhos, espaços e tempos) e base.css
+public/               robots.txt
+scripts/              sem-exemplos.js, a trava do build
+backend/              a API e o banco, com package.json próprio
+  prisma/             schema, migrations e seed
+  src/                módulos da API, regras de negócio, middlewares e o Swagger
+  tests/              testes da API
+arquivos-adicionais/  guia de instalação e uso e os scripts SQL
 docs/
-  plano/        o plano do site: telas, efeitos, API e dados, Git e revisão
-  referencia/   as pranchas do design (HTML e prints em 1440 e 390 px) e a marca
-  backend/      requisitos, modelo de dados, arquitetura e exemplos de chamadas da API
+  banco-de-dados/     modelagem conceitual, lógica e DER
+  backend/            requisitos, modelo de dados completo, arquitetura e exemplos de chamadas
+  plano/              o plano do site: telas, efeitos, API e dados, Git e revisão
+  referencia/         as pranchas do design (HTML e prints em 1440 e 390 px) e a marca
 ```
 
-## Rotas
+## Rotas do site
 
 | Rota | Tela | Pedido à API |
 | --- | --- | --- |
-| `/` | Landing: hero, como funciona, a plataforma, rastrear, quem faz | Nenhum |
+| `/` | Página inicial: como funciona, a plataforma, rastrear, quem faz | Nenhum |
 | `/rastreamento` | Busca pelo código | Nenhum |
 | `/rastreamento/:codigo` | Resultado do rastreio, com a estrada das etapas e o mapa | `GET /public/tracking/:code` |
 | `/contato` | Fale com a gente | `POST /public/contact` |
@@ -90,24 +241,10 @@ docs/
 | `/recuperar-senha` | Pedir o link pra criar uma senha nova | `POST /auth/password-reset/request` |
 | `/nova-senha/:token` | Criar a senha nova | `POST /auth/password-reset/confirm` |
 | `/privacidade` | Política de Privacidade | Nenhum |
-| `/app/*` | Área da plataforma (ainda vazia) | Nenhum por enquanto |
+| `/app/*` | Área da plataforma (em andamento) | Nenhum por enquanto |
 | qualquer outra | Página não encontrada | Nenhum |
 
-O formato de cada pedido e de cada erro está em `docs/plano/04-api-e-dados.md`.
-
-## Tecnologias
-
-| Camada | Escolha | Por quê |
-| --- | --- | --- |
-| Base | React 19 + Vite | O PDF do TCC aceita React. Vite é o padrão atual |
-| Rotas | React Router | O PDF cita "tratamento de rotas" no consumo de API |
-| Estilo | CSS puro com variáveis + CSS Modules | As cores e medidas da marca ficam todas em `tokens.css` |
-| Fonte | Fira Sans (`@fontsource/fira-sans`) | Fonte da marca, servida pelo próprio site |
-| Efeitos | GSAP 3 (ScrollTrigger, MotionPath, DrawSVG) + `@gsap/react` | Plugins grátis. O `useGSAP()` desfaz os efeitos ao trocar de página |
-| Scroll suave | Lenis, no relógio do GSAP | Fica em sincronia com o ScrollTrigger |
-| Mapa | MapLibre GL + `react-map-gl`, dados do OpenFreeMap | Mapa de verdade com as cores da marca e sem chave de API. Só carrega no rastreamento |
-| Chamadas à API | `fetch` em `src/api` | Uma dependência a menos |
-| Qualidade | oxlint | Confere o código rápido |
+O formato de cada pedido e de cada erro, e como o site traduz a API pros nomes das telas, está em `docs/plano/04-api-e-dados.md`. Todas as rotas da API estão no Swagger.
 
 ## Acessibilidade e movimento reduzido
 
@@ -118,72 +255,10 @@ O formato de cada pedido e de cada erro está em `docs/plano/04-api-e-dados.md`.
 - A abertura pula com clique, toque ou qualquer tecla.
 - Com "reduzir movimento" ligado no sistema, nenhum efeito anima: cada um já aparece no estado final, e nenhum conteúdo depende de efeito pra aparecer.
 
-Medido em 04/11/2026 com o Lighthouse no build de produção (o rastreamento com os dados de exemplo): acessibilidade 100 em todas as rotas, desempenho no celular 91 na landing e 99 no rastreamento. Testado no Chrome, no Edge e no Firefox, em 1440 e 390 px.
+Medido em 04/11/2026 com o Lighthouse no build de produção (o rastreamento com os dados de exemplo): acessibilidade 100 em todas as rotas, desempenho no celular 91 na página inicial e 99 no rastreamento. Testado no Chrome, no Edge e no Firefox, em 1440 e 390 px.
 
 ## Git
 
 - `main`: o que está pronto pra apresentar. `dev`: onde as fases se juntam. Uma branch por tela ou efeito (`fase-3/jornada`), saindo de `dev`.
 - Commits em português, um assunto por commit: `tipo(escopo): resumo` (`feat`, `fix`, `perf`, `style`, `refactor`, `docs`, `test`).
 - Uma tag por fase, de `v0.1.0` (base) a `v1.0.0` (versão da apresentação). As etapas estão em `ETAPAS.md`.
-
-## Back-end e banco de dados
-
-A API e o banco ficam em `backend/`: Express 5, Prisma 7 e PostgreSQL 16, em TypeScript. As dependências e os comandos são separados dos do site.
-
-```bash
-cd backend
-npm install
-cp .env.example .env
-```
-
-O banco precisa estar no ar antes dos próximos comandos. Com Docker:
-
-```bash
-docker compose up -d
-```
-
-Depois, as tabelas, os dados de demonstração e a API:
-
-```bash
-npm run db:deploy
-npm run db:seed
-npm run dev
-```
-
-- API: http://localhost:3333/api
-- Documentação (Swagger): http://localhost:3333/api/docs
-
-| Comando, dentro de `backend/` | O que faz |
-| --- | --- |
-| `npm run dev` | API com recarga automática |
-| `npm test` | Testes (Vitest e Supertest) |
-| `npm run lint` | Confere o código com o ESLint |
-| `npm run build` | Compila pra `dist/` |
-| `npm run db:deploy` | Aplica as migrations |
-| `npm run db:seed` | Carrega os dados de demonstração |
-| `npm run test:smoke` | Com a API ligada, testa login, permissões, CRUD e simulação |
-
-Sem Docker, `npm run db:dev` sobe um PostgreSQL local do Prisma. Dois cuidados, vistos em 16/11/2026:
-
-- Use no `.env` a `DATABASE_URL` que o comando mostra e `DATABASE_POOL_MAX=1`. Com mais de uma conexão, esse banco local mistura as respostas e a API devolve erro 500.
-- Num computador onde o banco `urbanlink` ainda não existe, o comando tenta usar a porta da API (`PORT`) pra tudo e não termina de subir. Passe as portas na mão (`npx prisma dev --name urbanlink --port 51213 --db-port 51214 --shadow-db-port 51215`) e troque o `PORT` da API no `.env`.
-
-Os documentos estão em `docs/backend/`: requisitos, modelo de dados (conceitual, lógico e físico), arquitetura e exemplos de chamadas.
-
-Pra recuperar senha sem serviço de e-mail, o link de senha nova aparece no terminal da API (só fora de produção). Ele vale 30 minutos (`PASSWORD_RESET_TTL_MINUTES`) e aponta pro endereço do site em `APP_URL`.
-
-### Site e API juntos
-
-O rastreio, o contato, o login e a recuperação de senha do site usam esta API. Com a API ligada (`npm run dev` dentro de `backend/`), rode o site com:
-
-```bash
-npm run dev:api
-```
-
-Um banco que já existia antes de 20/11/2026 precisa das migrations novas (histórico das entregas, protocolo do contato e senha nova). Dentro de `backend/`:
-
-```bash
-npm run db:deploy
-```
-
-O que o site usa de cada rota, e como traduz pros nomes das telas, está em `docs/plano/04-api-e-dados.md`.
