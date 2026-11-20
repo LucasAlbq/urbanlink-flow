@@ -60,16 +60,22 @@ publicRouter.get(
   validate({ params: trackingSchema }),
   asyncHandler(async (request, response) => {
     const { code } = trackingSchema.parse(request.params);
-    // A projeção é intencional: nunca expor endereço, destinatário ou veículo.
+    // A projeção é intencional: nunca expor endereço, destinatário ou veículo. O histórico só
+    // traz a cidade de cada etapa, gravada pelo trigger deliveries_record_event.
     const delivery = await prisma.delivery.findFirst({
       where: { trackingCode: { equals: code, mode: 'insensitive' } },
       select: {
         trackingCode: true,
         status: true,
         estimatedArrival: true,
+        serviceDeadline: true,
         deliveredAt: true,
         createdAt: true,
         updatedAt: true,
+        events: {
+          select: { status: true, location: true, occurredAt: true },
+          orderBy: [{ occurredAt: 'asc' }, { id: 'asc' }],
+        },
       },
     });
     if (!delivery)
