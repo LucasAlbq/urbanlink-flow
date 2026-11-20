@@ -48,8 +48,9 @@ const contactSchema = z.object({
   email: z.email().max(255),
   company: z.string().trim().max(160).default(''),
   phone: z.string().trim().max(30).default(''),
-  subject: z.enum(['Solução logística', 'Parceria', 'Suporte', 'Outros']),
-  message: z.string().trim().min(15).max(3000),
+  // Os assuntos e os limites da mensagem são os do formulário do site.
+  subject: z.enum(['ORCAMENTO', 'DUVIDA_ENTREGA', 'PARCERIA', 'OUTRO']),
+  message: z.string().trim().min(10).max(1000),
   consent: z.literal(true),
   website: z.string().max(0).optional(),
 });
@@ -97,7 +98,11 @@ publicRouter.post(
     const { consent, website, ...data } = contactSchema.parse(request.body);
     void consent;
     void website;
-    const inquiry = await prisma.inquiry.create({ data, select: { id: true, createdAt: true } });
+    // O protocolo vem do valor padrão da coluna (função next_inquiry_protocol do banco).
+    const inquiry = await prisma.inquiry.create({
+      data,
+      select: { id: true, protocol: true, createdAt: true },
+    });
     sendSuccess(response, inquiry, 201);
   }),
 );
