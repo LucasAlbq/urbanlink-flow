@@ -62,6 +62,25 @@ describe('Sessão por cookie', () => {
     expect((await agent.get('/api/auth/me')).status).toBe(401);
   });
 
+  it('pedir senha nova dá 202 igual pra e-mail sem conta', async () => {
+    vi.spyOn(prisma.user, 'findUnique').mockResolvedValue(null);
+    const response = await request(app)
+      .post('/api/auth/password-reset/request')
+      .send({ email: 'ninguem@urbanlink.local' });
+    expect(response.status).toBe(202);
+    expect(response.body).toEqual({ success: true, data: null });
+  });
+
+  it('senha nova com menos de 8 caracteres é 422 antes de olhar o link', async () => {
+    const response = await request(app)
+      .post('/api/auth/password-reset/confirm')
+      .send({ token: 'qualquer', password: 'curta' });
+    expect(response.status).toBe(422);
+    expect(response.body).toMatchObject({
+      error: { code: 'VALIDATION_ERROR', details: { properties: { password: {} } } },
+    });
+  });
+
   it('senha curta e errada é 401, não 422', async () => {
     const response = await request(app)
       .post('/api/auth/login')

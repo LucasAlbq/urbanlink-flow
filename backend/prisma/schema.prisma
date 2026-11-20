@@ -110,19 +110,35 @@ enum AlertStatus {
 }
 
 model User {
-  id           String       @id @default(uuid()) @db.Uuid
-  name         String       @db.VarChar(120)
-  email        String       @unique @db.VarChar(255)
-  passwordHash String       @map("password_hash") @db.VarChar(255)
-  role         Role         @default(OPERATOR)
-  status       UserStatus   @default(ACTIVE)
-  simulations  Simulation[]
-  auditLogs    AuditLog[]
-  createdAt    DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt    DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  id                  String               @id @default(uuid()) @db.Uuid
+  name                String               @db.VarChar(120)
+  email               String               @unique @db.VarChar(255)
+  passwordHash        String               @map("password_hash") @db.VarChar(255)
+  role                Role                 @default(OPERATOR)
+  status              UserStatus           @default(ACTIVE)
+  simulations         Simulation[]
+  auditLogs           AuditLog[]
+  passwordResetTokens PasswordResetToken[]
+  createdAt           DateTime             @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime             @updatedAt @map("updated_at") @db.Timestamptz(3)
 
   @@index([role, status])
   @@map("users")
+}
+
+/// Pedido de senha nova. O link leva o token; aqui fica só o SHA-256 dele, então quem lê o
+/// banco não consegue montar um link válido. Vale uma vez e até expiresAt.
+model PasswordResetToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  tokenHash String    @unique @map("token_hash") @db.Char(64)
+  expiresAt DateTime  @map("expires_at") @db.Timestamptz(3)
+  usedAt    DateTime? @map("used_at") @db.Timestamptz(3)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([userId])
+  @@map("password_reset_tokens")
 }
 
 model Vehicle {

@@ -20,6 +20,15 @@ export const apiRateLimit = rateLimit({
   handler,
 });
 
+// O pedido de senha nova sempre dá 202, então aqui todo pedido conta (não só os que falham).
+export const passwordResetRateLimit = rateLimit({
+  windowMs: env.RATE_LIMIT_WINDOW_MS,
+  limit: env.AUTH_RATE_LIMIT_MAX,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+  handler,
+});
+
 export const authRateLimit = rateLimit({
   windowMs: env.RATE_LIMIT_WINDOW_MS,
   limit: env.AUTH_RATE_LIMIT_MAX,
