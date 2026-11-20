@@ -127,8 +127,8 @@ export const openApiDocument = {
           email: { type: 'string', format: 'email', maxLength: 255 },
           company: { type: 'string', maxLength: 160 },
           phone: { type: 'string', maxLength: 30 },
-          subject: { type: 'string', enum: ['Solução logística', 'Parceria', 'Suporte', 'Outros'] },
-          message: { type: 'string', minLength: 15, maxLength: 3000 },
+          subject: { type: 'string', enum: ['ORCAMENTO', 'DUVIDA_ENTREGA', 'PARCERIA', 'OUTRO'] },
+          message: { type: 'string', minLength: 10, maxLength: 1000 },
           consent: { type: 'boolean', const: true },
           website: {
             type: 'string',
@@ -452,7 +452,7 @@ export const openApiDocument = {
         tags: ['Public Website'],
         summary: 'Registra uma solicitação de contato',
         description:
-          'Persiste a mensagem no banco e retorna id e createdAt. Não envia e-mail automaticamente. Limite de 8 solicitações por IP por hora.',
+          'Persiste a mensagem no banco e retorna id, protocol (ex.: ULS20260001, gerado pelo banco) e createdAt. Não envia e-mail automaticamente. Limite de 8 solicitações por IP por hora.',
         requestBody: jsonBody('ContactSubmission'),
         responses: {
           '201': successResponse('Protocolo de contato registrado'),

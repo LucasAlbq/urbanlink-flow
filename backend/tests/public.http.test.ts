@@ -60,7 +60,7 @@ describe('Site público', () => {
     const input = {
       name: 'Contato de teste',
       email: 'teste@example.com',
-      subject: 'Parceria',
+      subject: 'PARCERIA',
       message: 'Gostaria de conhecer as soluções da plataforma.',
     };
     expect(
@@ -80,25 +80,48 @@ describe('Site público', () => {
     expect(create).not.toHaveBeenCalled();
   });
 
-  it('registra contato e retorna apenas o protocolo e a data', async () => {
-    const create = vi
-      .spyOn(prisma.inquiry, 'create')
-      .mockResolvedValue({ id: 'inquiry-1', createdAt: new Date('2026-10-20T12:00:00Z') } as never);
+  it('registra contato e retorna apenas o id, o protocolo e a data', async () => {
+    const create = vi.spyOn(prisma.inquiry, 'create').mockResolvedValue({
+      id: 'inquiry-1',
+      protocol: 'ULS20260001',
+      createdAt: new Date('2026-10-20T12:00:00Z'),
+    } as never);
     const response = await request(app).post('/api/public/contact').send({
       name: 'Contato de teste',
       email: 'teste@example.com',
       company: '',
       phone: '',
-      subject: 'Suporte',
+      subject: 'DUVIDA_ENTREGA',
       message: 'Gostaria de esclarecer uma dúvida sobre a plataforma.',
       consent: true,
       website: '',
     });
     expect(response.status).toBe(201);
     const body = response.body as { data: Record<string, unknown> };
-    expect(body.data).toEqual({ id: 'inquiry-1', createdAt: '2026-10-20T12:00:00.000Z' });
+    expect(body.data).toEqual({
+      id: 'inquiry-1',
+      protocol: 'ULS20260001',
+      createdAt: '2026-10-20T12:00:00.000Z',
+    });
+    expect(create.mock.calls[0]?.[0]?.select).toEqual({ id: true, protocol: true, createdAt: true });
     expect(create.mock.calls[0]?.[0]?.data).not.toHaveProperty('consent');
     expect(create.mock.calls[0]?.[0]?.data).not.toHaveProperty('website');
+  });
+
+  it('aceita só os assuntos e o tamanho de mensagem do formulário do site', async () => {
+    const create = vi.spyOn(prisma.inquiry, 'create');
+    const input = {
+      name: 'Contato de teste',
+      email: 'teste@example.com',
+      subject: 'ORCAMENTO',
+      message: 'Quero um orçamento.',
+      consent: true,
+    };
+    const send = (body: object) => request(app).post('/api/public/contact').send(body);
+    expect((await send({ ...input, subject: 'Suporte' })).status).toBe(422);
+    expect((await send({ ...input, message: 'Curta.' })).status).toBe(422);
+    expect((await send({ ...input, message: 'a'.repeat(1001) })).status).toBe(422);
+    expect(create).not.toHaveBeenCalled();
   });
 
   it('mantém mensagens recebidas restritas à área autenticada', async () => {
