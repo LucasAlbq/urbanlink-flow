@@ -10,6 +10,8 @@ Plataforma de gestão e simulação de logística urbana em tempo real, da Urban
 
 **Endereço:** _ainda não publicado_
 
+**Código:** [github.com/LucasAlbq/urbanlink-flow](https://github.com/LucasAlbq/urbanlink-flow)
+
 O site e a API ficam na Vercel e o banco no Neon. Como publicar está em [`arquivos-adicionais/PUBLICACAO.md`](arquivos-adicionais/PUBLICACAO.md).
 
 ## Objetivo do sistema
