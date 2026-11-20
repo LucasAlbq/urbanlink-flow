@@ -13,10 +13,10 @@ export const hashResetToken = (token: string): string =>
 const invalidResetToken = (): AppError =>
   new AppError(400, 'INVALID_RESET_TOKEN', 'O link de senha nova é inválido ou já venceu.');
 
-// Ainda não tem envio de e-mail: fora de produção, o link aparece no terminal da API pra
-// demonstração. Em produção, nada é registrado (o token nunca vai pro log).
+// Ainda não tem envio de e-mail: o link aparece no log da API pra demonstração. Por padrão só fora
+// de produção; na publicada, só com PASSWORD_RESET_LOG_LINK=true (ver config/env.ts).
 function deliverResetLink(email: string, link: string): void {
-  if (env.NODE_ENV === 'production' || env.LOG_LEVEL === 'silent') return;
+  if (!env.PASSWORD_RESET_LOG_LINK || env.LOG_LEVEL === 'silent') return;
   console.info(
     `[recuperar senha] Link de senha nova pra ${email} (vale ${env.PASSWORD_RESET_TTL_MINUTES} min): ${link}`,
   );
