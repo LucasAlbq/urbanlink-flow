@@ -130,6 +130,64 @@ curl -sS "$API_URL/auth/me" \
 
 O objeto retornado nunca contém `passwordHash`.
 
+### Sessão do site (cookie)
+
+O login também grava o token no cookie `urbanlink_session` (httpOnly, SameSite=Lax).
+O site usa só o cookie; com `curl`, dá pra guardar e reusar com `-c` e `-b`:
+
+```bash
+curl -sS -c sessao.txt -X POST "$API_URL/auth/login" \
+  -H "Content-Type: application/json" \
+  -d '{"email":"manager@urbanlink.local","password":"UrbanLink@2026","remember":true}'
+
+curl -sS -b sessao.txt "$API_URL/auth/me"
+
+curl -sS -b sessao.txt -c sessao.txt -X POST "$API_URL/auth/logout" -i
+```
+
+`remember: true` faz o cookie durar até o token vencer; sem ele, o cookie some ao
+fechar o navegador. `POST /auth/logout` responde `204` e apaga o cookie.
+
+### Recuperar senha
+
+```bash
+curl -sS -X POST "$API_URL/auth/password-reset/request" \
+  -H "Content-Type: application/json" \
+  -d '{"email":"manager@urbanlink.local"}'
+```
+
+Responde `202` exista ou não a conta. Fora de produção, o link aparece no terminal
+da API:
+
+```text
+[recuperar senha] Link de senha nova pra manager@urbanlink.local (vale 30 min): http://localhost:5173/nova-senha/<token>
+```
+
+```bash
+curl -sS -X POST "$API_URL/auth/password-reset/confirm" \
+  -H "Content-Type: application/json" \
+  -d '{"token":"<token>","password":"SenhaNova@2026"}' -i
+```
+
+`204` troca a senha e queima o link. Link inexistente, usado ou vencido dá
+`400 INVALID_RESET_TOKEN`.
+
+### Site público: rastreio e contato
+
+Sem autenticação:
+
+```bash
+curl -sS "$API_URL/public/tracking/ULF-2026-0009"
+
+curl -sS -X POST "$API_URL/public/contact" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Ana Souza","email":"ana@example.com","subject":"ORCAMENTO","message":"Quero um orçamento pra 40 entregas por dia.","consent":true}'
+```
+
+O rastreio devolve o estado, o prazo e o histórico (`events`, com a cidade de cada
+etapa); o contato devolve `201` com o `protocol` gerado pelo banco (ex.:
+`ULS20260001`).
+
 ## 4. CRUD de veículos
 
 ### Listar, buscar e filtrar
@@ -698,7 +756,8 @@ Resposta esperada:
 
 | Grupo       | Endpoints principais                                            |
 | ----------- | --------------------------------------------------------------- |
-| Auth        | `POST /auth/login`, `GET /auth/me`                              |
+| Auth        | `POST /auth/login`, `GET /auth/me`, `POST /auth/logout`, `POST /auth/password-reset/request` e `/confirm` |
+| Public      | `GET /public/tracking/:code`, `POST /public/contact`, `GET /public/inquiries` |
 | Users       | CRUD `/users`                                                   |
 | Vehicles    | CRUD `/vehicles`                                                |
 | Centers     | CRUD `/distribution-centers`                                    |
