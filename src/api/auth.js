@@ -1,26 +1,44 @@
 import { pedir } from './cliente.js'
 
 // Login e senha (04-api-e-dados.md, "Contato, login e senha"). A sessão é um cookie httpOnly
-// da API: o front não guarda nada.
+// da API (urbanlink_session): o site não guarda nem vê o token.
 // Com VITE_USAR_EXEMPLOS=true responde com src/api/exemplos/auth.js. A condição precisa ler
 // import.meta.env em cada função: o Vite troca pelo valor e o ramo some do build.
 
-// POST /auth/login: 200 { usuario }. 401 CREDENCIAIS_INVALIDAS, 429 MUITAS_TENTATIVAS.
+const PAPEL = { ADMIN: 'ADMIN', MANAGER: 'GESTOR', OPERATOR: 'OPERADOR' }
+const paraUsuario = (user) => ({ id: user.id, nome: user.name, papel: PAPEL[user.role] ?? user.role })
+
+// POST /auth/login: 200 { user } e o cookie da sessão. 401 errou, 429 MUITAS_TENTATIVAS.
 export async function entrar({ email, senha, manterConectado }, { sinal } = {}) {
   if (import.meta.env.VITE_USAR_EXEMPLOS === 'true') {
     const exemplos = await import('./exemplos/auth.js')
     return exemplos.entrar({ email, senha }, sinal)
   }
-  return pedir('/auth/login', { metodo: 'POST', corpo: { email, senha, manterConectado }, sinal })
+  const { user } = await pedir('/auth/login', {
+    metodo: 'POST',
+    corpo: { email, password: senha, remember: manterConectado },
+    sinal,
+  })
+  return { usuario: paraUsuario(user) }
 }
 
-// GET /auth/eu: 200 com o usuário, 401 sem sessão.
+// GET /auth/me: 200 com o usuário, 401 sem sessão.
 export async function buscarEu({ sinal } = {}) {
   if (import.meta.env.VITE_USAR_EXEMPLOS === 'true') {
     const exemplos = await import('./exemplos/auth.js')
     return exemplos.eu(sinal)
   }
-  return pedir('/auth/eu', { sinal })
+  return { usuario: paraUsuario(await pedir('/auth/me', { sinal })) }
+}
+
+// POST /auth/logout: 204, apaga o cookie da sessão.
+export async function sair({ sinal } = {}) {
+  if (import.meta.env.VITE_USAR_EXEMPLOS === 'true') {
+    const exemplos = await import('./exemplos/auth.js')
+    return exemplos.sair(sinal)
+  }
+  await pedir('/auth/logout', { metodo: 'POST', sinal })
+  return null
 }
 
 // POST /auth/recuperar-senha: 202 sempre (não revela se a conta existe). 429 MUITAS_TENTATIVAS.
