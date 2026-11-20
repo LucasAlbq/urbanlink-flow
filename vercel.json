@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
   "rewrites": [
     { "source": "/api/:path*", "destination": "https://urbanlink-flow-api.vercel.app/api/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
