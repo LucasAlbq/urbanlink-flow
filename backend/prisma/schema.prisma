@@ -178,6 +178,7 @@ model Delivery {
   assignedVehicle      Vehicle?           @relation(fields: [assignedVehicleId], references: [id], onDelete: SetNull)
   routeStops           RouteStop[]
   alerts               Alert[]
+  events               DeliveryEvent[]
   createdAt            DateTime           @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt            DateTime           @updatedAt @map("updated_at") @db.Timestamptz(3)
 
@@ -186,6 +187,20 @@ model Delivery {
   @@index([assignedVehicleId])
   @@index([serviceDeadline])
   @@map("deliveries")
+}
+
+/// Histórico de status de cada entrega. Quem grava é o trigger deliveries_record_event
+/// (migration add_delivery_events): a API não insere nesta tabela.
+model DeliveryEvent {
+  id         Int            @id @default(autoincrement())
+  deliveryId String         @map("delivery_id") @db.Uuid
+  status     DeliveryStatus
+  location   String?        @db.VarChar(120)
+  occurredAt DateTime       @default(now()) @map("occurred_at") @db.Timestamptz(3)
+  delivery   Delivery       @relation(fields: [deliveryId], references: [id], onDelete: Cascade)
+
+  @@index([deliveryId, occurredAt])
+  @@map("delivery_events")
 }
 
 model Route {
