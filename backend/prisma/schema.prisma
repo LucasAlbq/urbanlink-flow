@@ -1,0 +1,354 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  runtime      = "nodejs"
+  moduleFormat = "esm"
+  engineType   = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Inquiry {
+  id        String   @id @default(uuid()) @db.Uuid
+  /// "ULS" + ano + número da sequência inquiry_protocol_seq (ex.: ULS20260001). Gerado pelo banco.
+  protocol  String   @unique @default(dbgenerated("next_inquiry_protocol()")) @db.VarChar(20)
+  name      String   @db.VarChar(120)
+  email     String   @db.VarChar(255)
+  company   String   @default("") @db.VarChar(160)
+  phone     String   @default("") @db.VarChar(30)
+  subject   String   @db.VarChar(80)
+  message   String   @db.VarChar(3000)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([createdAt])
+  @@map("inquiries")
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  OPERATOR
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum VehicleType {
+  MOTORCYCLE
+  VAN
+  TRUCK
+  BICYCLE
+}
+
+enum VehicleStatus {
+  AVAILABLE
+  IN_ROUTE
+  MAINTENANCE
+  INACTIVE
+}
+
+enum DeliveryPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum DeliveryStatus {
+  PENDING
+  ASSIGNED
+  IN_TRANSIT
+  DELIVERED
+  FAILED
+  CANCELED
+}
+
+enum RouteStatus {
+  PLANNED
+  ACTIVE
+  COMPLETED
+  CANCELED
+}
+
+enum RouteStopStatus {
+  PENDING
+  ARRIVED
+  COMPLETED
+  SKIPPED
+  FAILED
+}
+
+enum TrafficLevel {
+  LOW
+  MODERATE
+  HIGH
+  CRITICAL
+}
+
+enum SimulationStatus {
+  DRAFT
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+enum AlertSeverity {
+  INFO
+  WARNING
+  CRITICAL
+}
+
+enum AlertStatus {
+  OPEN
+  ACKNOWLEDGED
+  RESOLVED
+}
+
+model User {
+  id                  String               @id @default(uuid()) @db.Uuid
+  name                String               @db.VarChar(120)
+  email               String               @unique @db.VarChar(255)
+  passwordHash        String               @map("password_hash") @db.VarChar(255)
+  role                Role                 @default(OPERATOR)
+  status              UserStatus           @default(ACTIVE)
+  simulations         Simulation[]
+  auditLogs           AuditLog[]
+  passwordResetTokens PasswordResetToken[]
+  createdAt           DateTime             @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime             @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([role, status])
+  @@map("users")
+}
+
+/// Pedido de senha nova. O link leva o token; aqui fica só o SHA-256 dele, então quem lê o
+/// banco não consegue montar um link válido. Vale uma vez e até expiresAt.
+model PasswordResetToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  tokenHash String    @unique @map("token_hash") @db.Char(64)
+  expiresAt DateTime  @map("expires_at") @db.Timestamptz(3)
+  usedAt    DateTime? @map("used_at") @db.Timestamptz(3)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([userId])
+  @@map("password_reset_tokens")
+}
+
+model Vehicle {
+  id               String        @id @default(uuid()) @db.Uuid
+  plate            String        @unique @db.VarChar(10)
+  model            String        @db.VarChar(120)
+  type             VehicleType
+  capacityKg       Float         @map("capacity_kg")
+  averageSpeedKmh  Float         @map("average_speed_kmh")
+  fuelConsumption  Float         @map("fuel_consumption")
+  status           VehicleStatus @default(AVAILABLE)
+  currentLatitude  Float?        @map("current_latitude")
+  currentLongitude Float?        @map("current_longitude")
+  deliveries       Delivery[]
+  routes           Route[]
+  alerts           Alert[]
+  createdAt        DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([status])
+  @@index([type])
+  @@map("vehicles")
+}
+
+model DistributionCenter {
+  id             String     @id @default(uuid()) @db.Uuid
+  name           String     @db.VarChar(160)
+  address        String     @db.VarChar(255)
+  latitude       Float
+  longitude      Float
+  operatingHours String     @map("operating_hours") @db.VarChar(120)
+  deliveries     Delivery[]
+  createdAt      DateTime   @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime   @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([name])
+  @@map("distribution_centers")
+}
+
+model Delivery {
+  id                   String             @id @default(uuid()) @db.Uuid
+  trackingCode         String             @unique @map("tracking_code") @db.VarChar(40)
+  originCenterId       String             @map("origin_center_id") @db.Uuid
+  destinationAddress   String             @map("destination_address") @db.VarChar(255)
+  destinationLatitude  Float              @map("destination_latitude")
+  destinationLongitude Float              @map("destination_longitude")
+  weightKg             Float              @map("weight_kg")
+  priority             DeliveryPriority   @default(NORMAL)
+  status               DeliveryStatus     @default(PENDING)
+  serviceDeadline      DateTime           @map("service_deadline") @db.Timestamptz(3)
+  assignedVehicleId    String?            @map("assigned_vehicle_id") @db.Uuid
+  estimatedArrival     DateTime?          @map("estimated_arrival") @db.Timestamptz(3)
+  deliveredAt          DateTime?          @map("delivered_at") @db.Timestamptz(3)
+  originCenter         DistributionCenter @relation(fields: [originCenterId], references: [id], onDelete: Restrict)
+  assignedVehicle      Vehicle?           @relation(fields: [assignedVehicleId], references: [id], onDelete: SetNull)
+  routeStops           RouteStop[]
+  alerts               Alert[]
+  events               DeliveryEvent[]
+  createdAt            DateTime           @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt            DateTime           @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([status, priority])
+  @@index([originCenterId])
+  @@index([assignedVehicleId])
+  @@index([serviceDeadline])
+  @@map("deliveries")
+}
+
+/// Histórico de status de cada entrega. Quem grava é o trigger deliveries_record_event
+/// (migration add_delivery_events): a API não insere nesta tabela.
+model DeliveryEvent {
+  id         Int            @id @default(autoincrement())
+  deliveryId String         @map("delivery_id") @db.Uuid
+  status     DeliveryStatus
+  location   String?        @db.VarChar(120)
+  occurredAt DateTime       @default(now()) @map("occurred_at") @db.Timestamptz(3)
+  delivery   Delivery       @relation(fields: [deliveryId], references: [id], onDelete: Cascade)
+
+  @@index([deliveryId, occurredAt])
+  @@map("delivery_events")
+}
+
+model Route {
+  id                       String       @id @default(uuid()) @db.Uuid
+  vehicleId                String       @map("vehicle_id") @db.Uuid
+  name                     String       @db.VarChar(160)
+  status                   RouteStatus  @default(PLANNED)
+  totalDistanceKm          Float        @default(0) @map("total_distance_km")
+  estimatedDurationMinutes Int          @default(0) @map("estimated_duration_minutes")
+  actualDurationMinutes    Int?         @map("actual_duration_minutes")
+  estimatedCost            Float        @default(0) @map("estimated_cost")
+  estimatedCo2Kg           Float        @default(0) @map("estimated_co2_kg")
+  trafficLevel             TrafficLevel @default(MODERATE) @map("traffic_level")
+  fuelPrice                Float        @default(6.19) @map("fuel_price")
+  co2Factor                Float        @default(2.31) @map("co2_factor")
+  serviceMinutesPerStop    Int          @default(8) @map("service_minutes_per_stop")
+  startedAt                DateTime?    @map("started_at") @db.Timestamptz(3)
+  completedAt              DateTime?    @map("completed_at") @db.Timestamptz(3)
+  vehicle                  Vehicle      @relation(fields: [vehicleId], references: [id], onDelete: Restrict)
+  stops                    RouteStop[]
+  alerts                   Alert[]
+  createdAt                DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt                DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([vehicleId, status])
+  @@index([status])
+  @@map("routes")
+}
+
+model RouteStop {
+  id             String          @id @default(uuid()) @db.Uuid
+  routeId        String          @map("route_id") @db.Uuid
+  deliveryId     String          @map("delivery_id") @db.Uuid
+  sequence       Int
+  latitude       Float
+  longitude      Float
+  plannedArrival DateTime?       @map("planned_arrival") @db.Timestamptz(3)
+  actualArrival  DateTime?       @map("actual_arrival") @db.Timestamptz(3)
+  status         RouteStopStatus @default(PENDING)
+  route          Route           @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  delivery       Delivery        @relation(fields: [deliveryId], references: [id], onDelete: Restrict)
+  createdAt      DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@unique([routeId, sequence])
+  @@unique([routeId, deliveryId])
+  @@index([deliveryId])
+  @@index([status])
+  @@map("route_stops")
+}
+
+model Simulation {
+  id                String            @id @default(uuid()) @db.Uuid
+  userId            String            @map("user_id") @db.Uuid
+  name              String            @db.VarChar(160)
+  trafficLevel      TrafficLevel      @map("traffic_level")
+  availableVehicles Int               @map("available_vehicles")
+  averageSpeedKmh   Float             @map("average_speed_kmh")
+  fuelPrice         Float             @map("fuel_price")
+  co2Factor         Float             @map("co2_factor")
+  parameters        Json
+  status            SimulationStatus  @default(DRAFT)
+  user              User              @relation(fields: [userId], references: [id], onDelete: Restrict)
+  result            SimulationResult?
+  createdAt         DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([userId, status])
+  @@index([createdAt])
+  @@map("simulations")
+}
+
+model SimulationResult {
+  id                       String     @id @default(uuid()) @db.Uuid
+  simulationId             String     @unique @map("simulation_id") @db.Uuid
+  originalDistanceKm       Float      @map("original_distance_km")
+  optimizedDistanceKm      Float      @map("optimized_distance_km")
+  originalDurationMinutes  Int        @map("original_duration_minutes")
+  optimizedDurationMinutes Int        @map("optimized_duration_minutes")
+  originalCost             Float      @map("original_cost")
+  optimizedCost            Float      @map("optimized_cost")
+  originalCo2Kg            Float      @map("original_co2_kg")
+  optimizedCo2Kg           Float      @map("optimized_co2_kg")
+  onTimeDeliveryRate       Float      @map("on_time_delivery_rate")
+  serviceLevel             Float      @map("service_level")
+  improvementPercentage    Float      @map("improvement_percentage")
+  routeData                Json       @map("route_data")
+  simulation               Simulation @relation(fields: [simulationId], references: [id], onDelete: Cascade)
+  createdAt                DateTime   @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([createdAt])
+  @@map("simulation_results")
+}
+
+model Alert {
+  id         String        @id @default(uuid()) @db.Uuid
+  severity   AlertSeverity
+  status     AlertStatus   @default(OPEN)
+  title      String        @db.VarChar(160)
+  message    String        @db.Text
+  vehicleId  String?       @map("vehicle_id") @db.Uuid
+  routeId    String?       @map("route_id") @db.Uuid
+  deliveryId String?       @map("delivery_id") @db.Uuid
+  vehicle    Vehicle?      @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  route      Route?        @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  delivery   Delivery?     @relation(fields: [deliveryId], references: [id], onDelete: Cascade)
+  createdAt  DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  resolvedAt DateTime?     @map("resolved_at") @db.Timestamptz(3)
+
+  @@index([status, severity])
+  @@index([vehicleId])
+  @@index([routeId])
+  @@index([deliveryId])
+  @@map("alerts")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String?  @map("user_id") @db.Uuid
+  action    String   @db.VarChar(80)
+  entity    String   @db.VarChar(80)
+  entityId  String?  @map("entity_id") @db.VarChar(80)
+  metadata  Json?
+  ipAddress String?  @map("ip_address") @db.VarChar(64)
+  userAgent String?  @map("user_agent") @db.VarChar(255)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([userId, createdAt])
+  @@index([entity, entityId])
+  @@index([action])
+  @@map("audit_logs")
+}

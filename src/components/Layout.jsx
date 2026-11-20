@@ -16,6 +16,12 @@ function irParaAncora(hash) {
   return true
 }
 
+// O React Router dá a chave 'default' pra primeira página de todo carregamento. Com uma chave
+// só pra todas, abrir outro endereço direto na mesma aba restaurava a rolagem da página
+// anterior. A primeira página usa o próprio endereço (recarregar volta onde estava); as
+// outras, a chave da entrada no histórico, como antes.
+const chaveDaRolagem = (local) => (local.key === 'default' ? `inicio:${local.pathname}${local.search}` : local.key)
+
 export function Layout() {
   const { pathname, hash, key } = useLocation()
   const rotaAnterior = useRef(pathname)
@@ -45,7 +51,7 @@ export function Layout() {
       </main>
       {!soConteudo && <Rodape />}
       <FaixaExemplos />
-      <ScrollRestoration />
+      <ScrollRestoration getKey={chaveDaRolagem} />
     </ScrollSuave>
   )
 }

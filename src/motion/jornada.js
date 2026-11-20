@@ -37,17 +37,22 @@ function travarNoDesktop(secao, q) {
       invalidateOnRefresh: true,
     },
   })
-  tl.set(q('[data-poste]'), { scaleY: 0, transformOrigin: '50% 100%' })
-    .set(q('[data-texto]'), { opacity: 0, y: 12 })
-    .to(pacote, { x: largura, duration: 0.9 }, 0.1)
+  tl.to(pacote, { x: largura, duration: 0.9 }, 0.1)
 
   const inicio = estrada.getBoundingClientRect().left
   for (const etapa of q('[data-etapa]')) {
     const haste = etapa.querySelector('[data-haste]')
     const centro = haste.getBoundingClientRect().left + haste.offsetWidth / 2 - inicio
     const quando = 0.1 + 0.9 * (centro / largura()) - 0.02
-    tl.to(etapa.querySelector('[data-poste]'), { scaleY: 1, duration: 0.06, ease: 'back.out(1.7)' }, quando)
-      .to(etapa.querySelector('[data-texto]'), { opacity: 1, y: 0, duration: 0.05 }, quando + 0.03)
+    // Uma animação só por peça (fromTo): o from já esconde a peça e, desfeita (ao estreitar a
+    // janela pro modo celular), devolve o estado normal. Com um set no começo e um to aqui, o
+    // GSAP desfazia os dois na ordem errada e o poste e o texto ficavam escondidos.
+    tl.fromTo(
+      etapa.querySelector('[data-poste]'),
+      { scaleY: 0, transformOrigin: '50% 100%' },
+      { scaleY: 1, duration: 0.06, ease: 'back.out(1.7)' },
+      quando,
+    ).fromTo(etapa.querySelector('[data-texto]'), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.05 }, quando + 0.03)
 
     // A placa do Imprevisto balança uma vez depois de subir: −4° → 3° → 0.
     const imprevisto = etapa.querySelector('[data-placa][data-estado="atual"]')
@@ -66,7 +71,8 @@ function travarNoDesktop(secao, q) {
 }
 
 // Celular: sem trava. A estrada de cada etapa se desenha de cima pra baixo com a rolagem, e
-// a placa e o texto sobem uma vez quando a etapa chega a 72% da tela.
+// a placa e o texto sobem quando a etapa chega a 72% da tela. Subindo a página, eles somem de
+// novo junto com a estrada (com `once`, a estrada voltava e o texto ficava sozinho).
 function desenharNoCelular(q) {
   for (const etapa of q('[data-etapa]')) {
     gsap.from(etapa.querySelector('[data-asfalto]'), {
@@ -81,7 +87,7 @@ function desenharNoCelular(q) {
       duration: 0.4,
       ease: 'ul',
       stagger: 0.08,
-      scrollTrigger: { trigger: etapa, start: 'top 72%', once: true },
+      scrollTrigger: { trigger: etapa, start: 'top 72%', toggleActions: 'play none none reverse' },
     })
   }
 }

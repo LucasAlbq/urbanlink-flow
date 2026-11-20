@@ -90,14 +90,15 @@ export function montarAbertura(logo, { hero, reduzido, aoSair }) {
     return { tl, chegada: null, limpar() {} }
   }
 
-  // O hero espera embaixo da cortina sem o texto e sem o pacote da rota: os dois chegam na
-  // passagem. Uma animação só por peça, criada aqui parada: o from já esconde a peça, a
+  // O hero espera embaixo da cortina com o texto já visível (só sobe 12 px na passagem) e sem o
+  // pacote da rota, que chega no voo. O texto não some: se ele ficasse invisível até o fim da
+  // abertura, o maior elemento da tela só contaria como pintado aos 2,5 s (LCP do Lighthouse,
+  // decidido em 04/11/2026). Uma animação só por peça, criada aqui parada: o from já esconde a peça, a
   // saída solta na hora certa e, desfeito, ele devolve o hero ao normal. (Com um set aqui e
   // um to na saída, o GSAP desfazia os dois na ordem errada e o texto ficava escondido.)
   const doHero = partesDoHero(hero)
   const chegada = {
     texto: gsap.from(doHero.texto, {
-      opacity: 0,
       y: 12,
       duration: 0.3,
       ease: 'ul',

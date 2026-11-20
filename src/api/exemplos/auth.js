@@ -34,6 +34,12 @@ export async function eu(sinal) {
   return { usuario: sessao }
 }
 
+export async function sair(sinal) {
+  await esperar(200, sinal)
+  sessao = null
+  return null
+}
+
 export async function recuperarSenha(email, sinal) {
   await esperar(900, sinal)
   falhaPorGatilho(email)

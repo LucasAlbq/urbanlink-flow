@@ -56,6 +56,12 @@
   background: var(--nevoa);
 }
 
+/* Enquanto a busca carrega, a área ocupa a tela toda: o rodapé fica fora da vista e não
+   pula quando o resultado chega (CLS do Lighthouse). */
+.esperando {
+  min-height: 100vh;
+}
+
 .dentro {
   max-width: var(--largura);
   margin: 0 auto;
@@ -168,11 +174,6 @@
 .mapaCaixa {
   position: relative;
   height: var(--mapa-caixa);
-}
-
-.mapaSvg {
-  position: absolute;
-  inset: 0;
 }
 
 /* ---- Ajuda ---- */
