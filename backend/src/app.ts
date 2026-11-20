@@ -97,3 +97,6 @@ app.use('/api/reports', reportsRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
+
+// A Vercel roda o app exportado por padrão como uma função (ver index.js).
+export default app;
