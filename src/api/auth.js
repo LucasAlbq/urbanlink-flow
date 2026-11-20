@@ -1,4 +1,4 @@
-import { pedir } from './cliente.js'
+import { ErroApi, pedir, renomearCampos } from './cliente.js'
 
 // Login e senha (04-api-e-dados.md, "Contato, login e senha"). A sessão é um cookie httpOnly
 // da API (urbanlink_session): o site não guarda nem vê o token.
@@ -41,20 +41,27 @@ export async function sair({ sinal } = {}) {
   return null
 }
 
-// POST /auth/recuperar-senha: 202 sempre (não revela se a conta existe). 429 MUITAS_TENTATIVAS.
+// POST /auth/password-reset/request: 202 sempre (não revela se a conta existe). 429 MUITAS_TENTATIVAS.
 export async function pedirLinkSenha(email, { sinal } = {}) {
   if (import.meta.env.VITE_USAR_EXEMPLOS === 'true') {
     const exemplos = await import('./exemplos/auth.js')
     return exemplos.recuperarSenha(email, sinal)
   }
-  return pedir('/auth/recuperar-senha', { metodo: 'POST', corpo: { email }, sinal })
+  await pedir('/auth/password-reset/request', { metodo: 'POST', corpo: { email }, sinal })
+  return null
 }
 
-// POST /auth/nova-senha: 204. 400 TOKEN_INVALIDO (link vencido ou usado), 422 VALIDACAO.
+// POST /auth/password-reset/confirm: 204. 400 TOKEN_INVALIDO (link vencido ou usado), 422 VALIDACAO.
 export async function salvarSenhaNova({ token, senha }, { sinal } = {}) {
   if (import.meta.env.VITE_USAR_EXEMPLOS === 'true') {
     const exemplos = await import('./exemplos/auth.js')
     return exemplos.novaSenha({ token, senha }, sinal)
   }
-  return pedir('/auth/nova-senha', { metodo: 'POST', corpo: { token, senha }, sinal })
+  try {
+    await pedir('/auth/password-reset/confirm', { metodo: 'POST', corpo: { token, password: senha }, sinal })
+    return null
+  } catch (falha) {
+    if (falha instanceof ErroApi && falha.campos) falha.campos = renomearCampos(falha.campos, { password: 'senha' })
+    throw falha
+  }
 }
