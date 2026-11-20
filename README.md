@@ -20,7 +20,8 @@ O site abre em http://localhost:5173.
 
 | Comando | O que faz |
 | --- | --- |
-| `npm run dev` | Servidor local com recarga automática |
+| `npm run dev` | Servidor local com recarga automática (com os dados de exemplo, se o `.env.development.local` ligar) |
+| `npm run dev:api` | O mesmo, falando com a API de verdade (precisa da API ligada; ver "Back-end e banco de dados") |
 | `npm run build` | Gera o site em `dist/` e roda a trava de dados de exemplo |
 | `npm run preview` | Serve o `dist/` pra conferir o build |
 | `npm run lint` | Confere o código com o oxlint |
@@ -50,7 +51,7 @@ Só o `npm run dev` lê esse arquivo. Com ele, as respostas vêm de `src/api/exe
 
 | Variável | Pra quê | Exemplo |
 | --- | --- | --- |
-| `VITE_API_URL` | Endereço da API | `http://localhost:3000/api` |
+| `VITE_API_URL` | Endereço da API | `http://localhost:3333/api` |
 | `VITE_USAR_EXEMPLOS` | `true` usa os dados de exemplo no lugar da API (só em dev) | `false` |
 | `VITE_LINK_API_DOCS` | Link da documentação da API no rodapé. Vazio, o link não aparece | |
 | `VITE_LINK_GITHUB` | Link do código no rodapé. Vazio, o link não aparece | |
@@ -82,12 +83,12 @@ docs/
 | --- | --- | --- |
 | `/` | Landing: hero, como funciona, a plataforma, rastrear, quem faz | Nenhum |
 | `/rastreamento` | Busca pelo código | Nenhum |
-| `/rastreamento/:codigo` | Resultado do rastreio, com a estrada das etapas e o mapa | `GET /entregas/rastreio/:codigo` |
-| `/contato` | Fale com a gente | `POST /contatos` |
+| `/rastreamento/:codigo` | Resultado do rastreio, com a estrada das etapas e o mapa | `GET /public/tracking/:code` |
+| `/contato` | Fale com a gente | `POST /public/contact` |
 | `/contato/enviado/:protocolo` | Mensagem enviada, com o protocolo | Nenhum |
-| `/login` | Entrar na plataforma | `GET /auth/eu` (já tem sessão?) e `POST /auth/login` |
-| `/recuperar-senha` | Pedir o link pra criar uma senha nova | `POST /auth/recuperar-senha` |
-| `/nova-senha/:token` | Criar a senha nova | `POST /auth/nova-senha` |
+| `/login` | Entrar na plataforma | `GET /auth/me` (já tem sessão?) e `POST /auth/login` |
+| `/recuperar-senha` | Pedir o link pra criar uma senha nova | `POST /auth/password-reset/request` |
+| `/nova-senha/:token` | Criar a senha nova | `POST /auth/password-reset/confirm` |
 | `/privacidade` | Política de Privacidade | Nenhum |
 | `/app/*` | Área da plataforma (ainda vazia) | Nenhum por enquanto |
 | qualquer outra | Página não encontrada | Nenhum |
@@ -169,4 +170,20 @@ Sem Docker, `npm run db:dev` sobe um PostgreSQL local do Prisma. Dois cuidados, 
 
 Os documentos estão em `docs/backend/`: requisitos, modelo de dados (conceitual, lógico e físico), arquitetura e exemplos de chamadas.
 
-**O site ainda não usa esta API.** Os endereços e os formatos que o site espera (`docs/plano/04-api-e-dados.md`) são diferentes dos que a API oferece hoje. Juntar os dois é a fase 4 do `ETAPAS.md`.
+Pra recuperar senha sem serviço de e-mail, o link de senha nova aparece no terminal da API (só fora de produção). Ele vale 30 minutos (`PASSWORD_RESET_TTL_MINUTES`) e aponta pro endereço do site em `APP_URL`.
+
+### Site e API juntos
+
+O rastreio, o contato, o login e a recuperação de senha do site usam esta API. Com a API ligada (`npm run dev` dentro de `backend/`), rode o site com:
+
+```bash
+npm run dev:api
+```
+
+Um banco que já existia antes de 20/11/2026 precisa das migrations novas (histórico das entregas, protocolo do contato e senha nova). Dentro de `backend/`:
+
+```bash
+npm run db:deploy
+```
+
+O que o site usa de cada rota, e como traduz pros nomes das telas, está em `docs/plano/04-api-e-dados.md`.
