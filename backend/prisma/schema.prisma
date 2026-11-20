@@ -12,6 +12,8 @@ datasource db {
 
 model Inquiry {
   id        String   @id @default(uuid()) @db.Uuid
+  /// "ULS" + ano + número da sequência inquiry_protocol_seq (ex.: ULS20260001). Gerado pelo banco.
+  protocol  String   @unique @default(dbgenerated("next_inquiry_protocol()")) @db.VarChar(20)
   name      String   @db.VarChar(120)
   email     String   @db.VarChar(255)
   company   String   @default("") @db.VarChar(160)
