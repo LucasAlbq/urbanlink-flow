@@ -1,6 +1,6 @@
 # UrbanLink Flow: site
 
-Site da UrbanLink Flow, uma plataforma de gestão e simulação de logística urbana em tempo real. Ele apresenta a plataforma, deixa rastrear uma entrega e falar com a equipe. É o front-end em React do TCC de Desenvolvimento de Sistemas (SENAI) e consome a API do grupo.
+Site da UrbanLink Flow, uma plataforma de gestão e simulação de logística urbana em tempo real. Ele apresenta a plataforma, deixa rastrear uma entrega e falar com a equipe. É o front-end em React do TCC de Desenvolvimento de Sistemas (SENAI). A API e o banco de dados do mesmo TCC ficam na pasta `backend/`.
 
 ![Primeira tela da landing em 1440 px](docs/readme/landing.jpg)
 
@@ -69,9 +69,11 @@ src/
   styles/       tokens.css (cores, tamanhos, espaços e tempos) e base.css
 public/         robots.txt
 scripts/        sem-exemplos.js, a trava do build
+backend/        a API e o banco (Express, Prisma e PostgreSQL), com package.json próprio
 docs/
   plano/        o plano do site: telas, efeitos, API e dados, Git e revisão
   referencia/   as pranchas do design (HTML e prints em 1440 e 390 px) e a marca
+  backend/      requisitos, modelo de dados, arquitetura e exemplos de chamadas da API
 ```
 
 ## Rotas
@@ -123,7 +125,48 @@ Medido em 04/11/2026 com o Lighthouse no build de produção (o rastreamento com
 - Commits em português, um assunto por commit: `tipo(escopo): resumo` (`feat`, `fix`, `perf`, `style`, `refactor`, `docs`, `test`).
 - Uma tag por fase, de `v0.1.0` (base) a `v1.0.0` (versão da apresentação). As etapas estão em `ETAPAS.md`.
 
-## API e back-end
+## Back-end e banco de dados
 
-- Documentação da API (Swagger): **[link a definir pelo grupo]**
-- Repositório do back-end: **[link a definir pelo grupo]**
+A API e o banco ficam em `backend/`: Express 5, Prisma 7 e PostgreSQL 16, em TypeScript. As dependências e os comandos são separados dos do site.
+
+```bash
+cd backend
+npm install
+cp .env.example .env
+```
+
+O banco precisa estar no ar antes dos próximos comandos. Com Docker:
+
+```bash
+docker compose up -d
+```
+
+Depois, as tabelas, os dados de demonstração e a API:
+
+```bash
+npm run db:deploy
+npm run db:seed
+npm run dev
+```
+
+- API: http://localhost:3333/api
+- Documentação (Swagger): http://localhost:3333/api/docs
+
+| Comando, dentro de `backend/` | O que faz |
+| --- | --- |
+| `npm run dev` | API com recarga automática |
+| `npm test` | Testes (Vitest e Supertest) |
+| `npm run lint` | Confere o código com o ESLint |
+| `npm run build` | Compila pra `dist/` |
+| `npm run db:deploy` | Aplica as migrations |
+| `npm run db:seed` | Carrega os dados de demonstração |
+| `npm run test:smoke` | Com a API ligada, testa login, permissões, CRUD e simulação |
+
+Sem Docker, `npm run db:dev` sobe um PostgreSQL local do Prisma. Dois cuidados, vistos em 16/11/2026:
+
+- Use no `.env` a `DATABASE_URL` que o comando mostra e `DATABASE_POOL_MAX=1`. Com mais de uma conexão, esse banco local mistura as respostas e a API devolve erro 500.
+- Num computador onde o banco `urbanlink` ainda não existe, o comando tenta usar a porta da API (`PORT`) pra tudo e não termina de subir. Passe as portas na mão (`npx prisma dev --name urbanlink --port 51213 --db-port 51214 --shadow-db-port 51215`) e troque o `PORT` da API no `.env`.
+
+Os documentos estão em `docs/backend/`: requisitos, modelo de dados (conceitual, lógico e físico), arquitetura e exemplos de chamadas.
+
+**O site ainda não usa esta API.** Os endereços e os formatos que o site espera (`docs/plano/04-api-e-dados.md`) são diferentes dos que a API oferece hoje. Juntar os dois é a fase 4 do `ETAPAS.md`.

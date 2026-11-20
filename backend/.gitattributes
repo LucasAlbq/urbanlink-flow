@@ -1,0 +1,4 @@
+# O back-end fica com LF em qualquer sistema. O Prisma guarda a soma de cada
+# migration.sql aplicada no banco; se o Git trocar o fim de linha pra CRLF no
+# Windows, o arquivo muda e o Prisma pode acusar migration alterada.
+* text=auto eol=lf
