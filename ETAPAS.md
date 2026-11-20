@@ -127,6 +127,11 @@ MODOS. Depois passe o teste de aceite dos efeitos e me diga o que não passou.
 
 ### [ ] Fase 4: dados reais (tag `v0.5.0`)
 
+- Feito em 04/11/2026: o mapa do rastreamento virou o `MapaReal` com MapLibre, carregado sob demanda, com o mapa ilustrado de reserva (branch `fase-4/mapa-real`, mesclada na `dev`). Os dados de exemplo do rastreio ganharam rota e posição.
+- Conferido em 16/11/2026: `npm run build` passa e a trava não acha dado de exemplo no `dist/`.
+- Feito em 16/11/2026: o back-end e o banco vieram pra pasta `backend/` (branch `fase-4/backend`), com os documentos em `docs/backend/`. Na pasta nova, os 57 testes, o lint e o build passam; as migrations, o seed e o smoke test passaram num PostgreSQL local do Prisma com uma conexão só. Com Docker não foi testado.
+- **Falta:** fazer o site e a API falarem a mesma língua. O site espera os endereços de `docs/plano/04-api-e-dados.md`; a API oferece `/api/public/tracking/:code`, `/api/public/contact` e login com JWT no corpo, e não tem recuperar senha. Depois, testar rastreio, contato e login de ponta a ponta e criar a tag `v0.5.0`.
+
 ```text
 Ligue rastreio, contato e login na API real (docs/plano/04-api-e-dados.md). Troque o mapa do
 rastreamento pelo MapaReal com MapLibre, carregado sob demanda. Desligue os
@@ -136,6 +141,11 @@ exemplos e rode npm run build: a trava de dados de exemplo tem que passar.
 **Pronto quando:** nenhum dado de exemplo sobra na tela.
 
 ### [ ] Fase 5: revisão (tag `v1.0.0`)
+
+- Feito em 04 e 05/11/2026, em branches `fase-5/*` mescladas na `dev`: correções da revisão (rodapé e mapa real do rastreamento, `robots.txt`), texto do hero visível embaixo da cortina, rolagem ao abrir uma página direto, jornada no celular e o README.
+- Medido em 04/11/2026 com o Lighthouse no build de produção: acessibilidade 100 em todas as rotas, desempenho no celular 91 na landing e 99 no rastreamento (este com dados de exemplo). Testado no Chrome, no Edge e no Firefox, em 1440 e 390 px.
+- **Falta:** Lighthouse em `/rastreamento/<código real>` (depende da fase 4), os itens "Não medido" da fase 3, teste com leitor de tela (NVDA ou VoiceOver), merge da `dev` na `main` e a tag `v1.0.0`.
+- **Sem registro no repositório:** o resultado do `design:accessibility-review` em todas as rotas e do `design:design-critique` desta fase.
 
 ```text
 Rode Lighthouse em / e em /rastreamento/<código real>, design:accessibility-review
