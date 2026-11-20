@@ -159,7 +159,8 @@ exemplos e rode npm run build: a trava de dados de exemplo tem que passar.
 - **Falta:** Lighthouse em `/rastreamento/<código real>` (com `npm run dev:api` não vale: tem que ser o build), os itens "Não medido" da fase 3, teste com leitor de tela (NVDA ou VoiceOver), merge da `dev` na `main` e a tag `v1.0.0`.
 - **Sem registro no repositório:** o resultado do `design:accessibility-review` em todas as rotas e do `design:design-critique` desta fase.
 - Feito em 20/11/2026, pros requisitos da entrega final da turma: README com nome, objetivo, funcionalidades, tecnologias, link do site e modelagem; `docs/banco-de-dados/` com a modelagem conceitual, a lógica e o DER, lidos do banco real; `arquivos-adicionais/` com o guia de instalação e uso e os scripts SQL de criação e de dados, testados num banco vazio.
-- **Falta pra entrega final:** subir o repositório pro GitHub, publicar o site com a API e o banco na internet e pôr o link no README. E as telas da plataforma (`/app`), que o enunciado pede e a entrega espera poder testar.
+- Feito em 20/11/2026: repositório público em https://github.com/LucasAlbq/urbanlink-flow e site publicado em https://urbanlink-flow-vert.vercel.app, com a API e o banco Neon em São Paulo (`arquivos-adicionais/PUBLICACAO.md`). Conferido no ar: rastreio, login, recusa do contato com dados inválidos, CORS e a documentação da API.
+- **Falta pra entrega final:** as telas da plataforma (`/app`), que o enunciado pede e a entrega espera poder testar.
 
 ```text
 Rode Lighthouse em / e em /rastreamento/<código real>, design:accessibility-review
