@@ -52,6 +52,18 @@ describe('API HTTP', () => {
     });
   });
 
+  it('serve a documentação interativa com o Swagger UI da CDN', async () => {
+    for (const path of ['/api/docs', '/api/docs/']) {
+      const response = await request(app).get(path);
+      expect(response.status).toBe(200);
+      expect(response.type).toBe('text/html');
+      expect(response.text).toContain("url: '/api/openapi.json'");
+      expect(response.text).toMatch(/swagger-ui-bundle\.js" integrity="sha384-/);
+    }
+    const csp = (await request(app).get('/api/docs')).headers['content-security-policy'];
+    expect(csp).toContain('https://cdn.jsdelivr.net');
+  });
+
   it('padroniza rota inexistente', async () => {
     const response = await request(app).get('/api/nao-existe');
     expect(response.status).toBe(404);

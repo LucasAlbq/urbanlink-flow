@@ -2,8 +2,8 @@ import { randomUUID } from 'node:crypto';
 import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
-import swaggerUi from 'swagger-ui-express';
 import { allowedOrigins, env } from './config/env.js';
+import { docsPage, SWAGGER_UI_ORIGIN } from './docs/docs-page.js';
 import { openApiDocument } from './docs/openapi.js';
 import { apiRateLimit } from './middleware/rate-limit.js';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.js';
@@ -35,8 +35,8 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", SWAGGER_UI_ORIGIN],
+        styleSrc: ["'self'", "'unsafe-inline'", SWAGGER_UI_ORIGIN],
         imgSrc: ["'self'", 'data:'],
       },
     },
@@ -72,14 +72,9 @@ app.get('/api', (_request, response) => {
     health: '/api/health',
   });
 });
-app.use(
-  '/api/docs',
-  swaggerUi.serve,
-  swaggerUi.setup(openApiDocument, {
-    customSiteTitle: 'UrbanLink Flow API',
-    swaggerOptions: { persistAuthorization: true },
-  }),
-);
+app.get('/api/docs', (_request, response) => {
+  response.type('html').send(docsPage);
+});
 app.get('/api/openapi.json', (_request, response) => {
   response.json(openApiDocument);
 });

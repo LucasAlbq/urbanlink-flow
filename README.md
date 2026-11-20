@@ -8,11 +8,15 @@ Plataforma de gestão e simulação de logística urbana em tempo real, da Urban
 
 ## Site publicado
 
-**Endereço:** _ainda não publicado_
+**Endereço:** [urbanlink-flow-vert.vercel.app](https://urbanlink-flow-vert.vercel.app)
 
 **Código:** [github.com/LucasAlbq/urbanlink-flow](https://github.com/LucasAlbq/urbanlink-flow)
 
-O site e a API ficam na Vercel e o banco no Neon. Como publicar está em [`arquivos-adicionais/PUBLICACAO.md`](arquivos-adicionais/PUBLICACAO.md).
+**Documentação da API:** [urbanlink-flow-vert.vercel.app/api/docs](https://urbanlink-flow-vert.vercel.app/api/docs)
+
+Pra testar: rastreie o código `ULF-2026-0009` (outros códigos de demonstração vão de `ULF-2026-0001` a `ULF-2026-0024`), mande uma mensagem em **Fale com a gente** ou entre na plataforma com `admin@urbanlink.local` e a senha `UrbanLink@2026`.
+
+O site e a API ficam na Vercel e o banco no Neon, em São Paulo. Como foi publicado e como publicar de novo está em [`arquivos-adicionais/PUBLICACAO.md`](arquivos-adicionais/PUBLICACAO.md).
 
 ## Objetivo do sistema
 
@@ -149,7 +153,7 @@ npm run dev:api
 - Site: http://localhost:5173
 - API: http://localhost:3333/api
 - Documentação da API: http://localhost:3333/api/docs
-- Usuário de demonstração: `admin@urbanlink.local`, senha `UrbanLink@2026` (só pra uso local)
+- Usuário de demonstração: `admin@urbanlink.local`, senha `UrbanLink@2026` (o mesmo do site publicado)
 - Códigos de rastreio: `ULF-2026-0001` a `ULF-2026-0024`
 
 ### Comandos do site
