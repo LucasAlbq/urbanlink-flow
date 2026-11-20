@@ -184,6 +184,21 @@ export const openApiDocument = {
           },
         },
       },
+      PasswordResetRequestInput: {
+        type: 'object',
+        required: ['email'],
+        properties: {
+          email: { type: 'string', format: 'email', example: 'admin@urbanlink.local' },
+        },
+      },
+      PasswordResetConfirmInput: {
+        type: 'object',
+        required: ['token', 'password'],
+        properties: {
+          token: { type: 'string', description: 'O token do link /nova-senha/<token>.' },
+          password: { type: 'string', format: 'password', minLength: 8, maxLength: 128 },
+        },
+      },
       UserCreateInput: {
         type: 'object',
         required: ['name', 'email', 'password', 'role'],
@@ -517,6 +532,38 @@ export const openApiDocument = {
         description:
           'Não exige estar logado. O JWT em si continua válido até vencer: quem usa o cabeçalho Authorization só precisa descartá-lo.',
         responses: { '204': { description: 'Cookie da sessão apagado' } },
+      },
+    },
+    '/auth/password-reset/request': {
+      post: {
+        tags: ['Auth'],
+        summary: 'Pede o link de senha nova',
+        description:
+          'Responde 202 exista ou não a conta, pra não revelar quais e-mails estão cadastrados. O link vale PASSWORD_RESET_TTL_MINUTES (30 por padrão) e uma vez só; um pedido novo cancela os anteriores. Ainda não há envio de e-mail: fora de produção, o link aparece no terminal da API. Todo pedido conta pro limite de tentativas.',
+        requestBody: jsonBody('PasswordResetRequestInput'),
+        responses: {
+          '202': successResponse('Pedido aceito (data: null)'),
+          '422': errorResponses['422'],
+          '429': { description: 'Limite de pedidos atingido' },
+        },
+      },
+    },
+    '/auth/password-reset/confirm': {
+      post: {
+        tags: ['Auth'],
+        summary: 'Cria a senha nova com o token do link',
+        responses: {
+          '204': { description: 'Senha trocada; o link deixa de valer' },
+          '400': {
+            description: 'INVALID_RESET_TOKEN: link inexistente, já usado ou vencido',
+            content: {
+              'application/json': { schema: { $ref: '#/components/schemas/ErrorEnvelope' } },
+            },
+          },
+          '422': errorResponses['422'],
+          '429': { description: 'Limite de tentativas excedido' },
+        },
+        requestBody: jsonBody('PasswordResetConfirmInput'),
       },
     },
     '/users': {

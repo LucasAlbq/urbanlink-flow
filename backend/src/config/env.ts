@@ -12,6 +12,9 @@ const envSchema = z.object({
   JWT_SECRET: z.string().min(32),
   JWT_EXPIRES_IN: z.string().default('8h'),
   CORS_ORIGIN: z.string().default('http://localhost:5173'),
+  // Endereço do site, pra montar o link de senha nova (APP_URL/nova-senha/<token>).
+  APP_URL: z.string().url().default('http://localhost:5173'),
+  PASSWORD_RESET_TTL_MINUTES: z.coerce.number().int().min(5).max(1440).default(30),
   TRUST_PROXY: z
     .enum(['false', 'true'])
     .default('false')
