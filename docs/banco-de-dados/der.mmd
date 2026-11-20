@@ -1,0 +1,190 @@
+erDiagram
+    users ||--o{ password_reset_tokens : "pede"
+    users o|--o{ audit_logs : "realiza"
+    vehicles o|--o{ deliveries : "transporta"
+    distribution_centers ||--o{ deliveries : "origina"
+    deliveries ||--o{ delivery_events : "registra"
+    vehicles ||--o{ routes : "executa"
+    deliveries ||--o{ route_stops : "aparece em"
+    routes ||--o{ route_stops : "contem"
+    users ||--o{ simulations : "cria"
+    simulations ||--o| simulation_results : "produz"
+    deliveries o|--o{ alerts : "contextualiza"
+    routes o|--o{ alerts : "contextualiza"
+    vehicles o|--o{ alerts : "contextualiza"
+
+    users {
+        uuid id PK
+        varchar name
+        varchar email UK
+        varchar password_hash
+        Role role
+        UserStatus status
+        timestamptz created_at
+        timestamptz updated_at
+    }
+
+    password_reset_tokens {
+        uuid id PK
+        uuid user_id FK
+        char token_hash UK
+        timestamptz expires_at
+        timestamptz used_at
+        timestamptz created_at
+    }
+
+    audit_logs {
+        uuid id PK
+        uuid user_id FK
+        varchar action
+        varchar entity
+        varchar entity_id
+        jsonb metadata
+        varchar ip_address
+        varchar user_agent
+        timestamptz created_at
+    }
+
+    vehicles {
+        uuid id PK
+        varchar plate UK
+        varchar model
+        VehicleType type
+        float capacity_kg
+        float average_speed_kmh
+        float fuel_consumption
+        VehicleStatus status
+        float current_latitude
+        float current_longitude
+        timestamptz created_at
+        timestamptz updated_at
+    }
+
+    distribution_centers {
+        uuid id PK
+        varchar name
+        varchar address
+        float latitude
+        float longitude
+        varchar operating_hours
+        timestamptz created_at
+        timestamptz updated_at
+    }
+
+    deliveries {
+        uuid id PK
+        varchar tracking_code UK
+        uuid origin_center_id FK
+        varchar destination_address
+        float destination_latitude
+        float destination_longitude
+        float weight_kg
+        DeliveryPriority priority
+        DeliveryStatus status
+        timestamptz service_deadline
+        uuid assigned_vehicle_id FK
+        timestamptz estimated_arrival
+        timestamptz delivered_at
+        timestamptz created_at
+        timestamptz updated_at
+    }
+
+    delivery_events {
+        int id PK
+        uuid delivery_id FK
+        DeliveryStatus status
+        varchar location
+        timestamptz occurred_at
+    }
+
+    routes {
+        uuid id PK
+        uuid vehicle_id FK
+        varchar name
+        RouteStatus status
+        float total_distance_km
+        int estimated_duration_minutes
+        int actual_duration_minutes
+        float estimated_cost
+        float estimated_co2_kg
+        timestamptz started_at
+        timestamptz completed_at
+        timestamptz created_at
+        timestamptz updated_at
+        TrafficLevel traffic_level
+        float fuel_price
+        float co2_factor
+        int service_minutes_per_stop
+    }
+
+    route_stops {
+        uuid id PK
+        uuid route_id FK
+        uuid delivery_id FK
+        int sequence
+        float latitude
+        float longitude
+        timestamptz planned_arrival
+        timestamptz actual_arrival
+        RouteStopStatus status
+        timestamptz created_at
+        timestamptz updated_at
+    }
+
+    simulations {
+        uuid id PK
+        uuid user_id FK
+        varchar name
+        TrafficLevel traffic_level
+        int available_vehicles
+        float average_speed_kmh
+        float fuel_price
+        float co2_factor
+        jsonb parameters
+        SimulationStatus status
+        timestamptz created_at
+        timestamptz updated_at
+    }
+
+    simulation_results {
+        uuid id PK
+        uuid simulation_id FK, UK
+        float original_distance_km
+        float optimized_distance_km
+        int original_duration_minutes
+        int optimized_duration_minutes
+        float original_cost
+        float optimized_cost
+        float original_co2_kg
+        float optimized_co2_kg
+        float on_time_delivery_rate
+        float service_level
+        float improvement_percentage
+        jsonb route_data
+        timestamptz created_at
+    }
+
+    alerts {
+        uuid id PK
+        AlertSeverity severity
+        AlertStatus status
+        varchar title
+        text message
+        uuid vehicle_id FK
+        uuid route_id FK
+        uuid delivery_id FK
+        timestamptz created_at
+        timestamptz resolved_at
+    }
+
+    inquiries {
+        uuid id PK
+        varchar name
+        varchar email
+        varchar company
+        varchar phone
+        varchar subject
+        varchar message
+        timestamptz created_at
+        varchar protocol UK
+    }

@@ -1,0 +1,15 @@
+erDiagram
+    USUARIO ||--o{ PEDIDO_DE_SENHA : "pede"
+    USUARIO o|--o{ REGISTRO_DE_AUDITORIA : "realiza"
+    VEICULO o|--o{ ENTREGA : "transporta"
+    CENTRO_DE_DISTRIBUICAO ||--o{ ENTREGA : "origina"
+    ENTREGA ||--o{ EVENTO_DA_ENTREGA : "registra"
+    VEICULO ||--o{ ROTA : "executa"
+    ENTREGA ||--o{ PARADA : "aparece em"
+    ROTA ||--o{ PARADA : "contem"
+    USUARIO ||--o{ SIMULACAO : "cria"
+    SIMULACAO ||--o| RESULTADO_DA_SIMULACAO : "produz"
+    ENTREGA o|--o{ ALERTA : "contextualiza"
+    ROTA o|--o{ ALERTA : "contextualiza"
+    VEICULO o|--o{ ALERTA : "contextualiza"
+    MENSAGEM_DO_SITE
