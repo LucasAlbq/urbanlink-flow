@@ -1,0 +1,488 @@
+/* Telas da plataforma (/app). DESIGN.md: "Sistema: densidade média, tabelas e fichas com grade
+   fina". Um raio só por peça (os tokens --r-*), sem sombra, sem gradiente, Ouro só como acento. */
+
+/* ---- cabeçalho da tela ---- */
+.cabecalho {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--e-16) var(--e-32);
+  margin-bottom: var(--e-28);
+}
+
+.h1 {
+  margin: 0;
+  font-size: var(--h1-app);
+  font-weight: 800;
+  letter-spacing: var(--aperto);
+  line-height: 1.1;
+  color: var(--noite);
+}
+
+.h1:focus {
+  outline: none;
+}
+
+.apoio {
+  max-width: 70ch;
+  margin: var(--e-8) 0 0;
+  font-size: var(--t-16);
+  color: var(--cinza);
+}
+
+.acoesTopo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-12);
+}
+
+.h2 {
+  margin: 0;
+  font-size: var(--t-19);
+  font-weight: 800;
+  letter-spacing: var(--aperto-2);
+  color: var(--noite);
+}
+
+/* ---- painel: bloco branco com borda fina ---- */
+.painel {
+  min-width: 0;
+  padding: var(--e-20);
+  background: var(--branco);
+  border: var(--linha) solid var(--mapa-quadra);
+  border-radius: var(--r-placa);
+}
+
+.painelTopo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-8) var(--e-16);
+  margin-bottom: var(--e-16);
+}
+
+.secoes {
+  display: grid;
+  gap: var(--e-20);
+}
+
+/* ---- fichas de indicador ---- */
+/* 2, 3, 4 ou 6 colunas: as 12 fichas do Monitoramento fecham a grade sem sobrar buraco. */
+.fichas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  overflow: hidden;
+  background: var(--mapa-quadra);
+  border: var(--linha) solid var(--mapa-quadra);
+  border-radius: var(--r-placa);
+  gap: var(--linha);
+}
+
+@media (min-width: 560px) {
+  .fichas { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1100px) {
+  .fichas { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1500px) {
+  .fichas { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
+.ficha {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: var(--e-6);
+  margin: 0;
+  padding: var(--e-16) var(--e-18);
+  background: var(--branco);
+}
+
+.ficha dt {
+  font-size: var(--t-14);
+  font-weight: 500;
+  color: var(--cinza);
+}
+
+.ficha dd {
+  margin: 0;
+  font-size: var(--t-numero);
+  font-weight: 800;
+  letter-spacing: var(--aperto-2);
+  line-height: 1;
+  color: var(--noite);
+  font-variant-numeric: tabular-nums;
+}
+
+.fichaAlerta dd {
+  color: var(--status-critico);
+}
+
+/* ---- selo de status ---- */
+.selo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-6);
+  padding: var(--e-4) var(--e-10);
+  font-size: var(--t-13);
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  color: var(--branco);
+  border-radius: var(--r-lacuna);
+}
+
+.ok { background: var(--status-ok); }
+.atraso { background: var(--status-atraso); }
+.critico { background: var(--status-critico); }
+.andamento { background: var(--status-andamento); }
+.neutro { background: var(--status-neutro); }
+
+/* ---- tabela ---- */
+.tabelaCaixa {
+  overflow-x: auto;
+  border: var(--linha) solid var(--mapa-quadra);
+  border-radius: var(--r-placa);
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--t-15);
+  color: var(--noite);
+  background: var(--branco);
+}
+
+.tabela th,
+.tabela td {
+  padding: var(--e-10) var(--e-14);
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: var(--linha) solid var(--mapa-quadra);
+}
+
+.tabela th {
+  font-size: var(--t-13);
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--cinza);
+  background: var(--nevoa);
+}
+
+.tabela tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.tabela .num {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.forte {
+  font-weight: 600;
+}
+
+.secundario {
+  display: block;
+  margin-top: var(--e-4);
+  font-size: var(--t-13);
+  color: var(--cinza);
+}
+
+/* ---- ações de linha (botões pequenos com alvo de 44 px) ---- */
+.acoesLinha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-6);
+}
+
+.acao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--alvo);
+  padding: 0 var(--e-12);
+  font: inherit;
+  font-size: var(--t-14);
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--noite);
+  background: var(--branco);
+  border: var(--campo-borda) solid var(--cinza);
+  border-radius: var(--r-botao);
+  cursor: pointer;
+  transition: border-color var(--rapido) var(--ease);
+}
+
+.acao:hover {
+  border-color: var(--noite);
+}
+
+.acao[aria-disabled='true'] {
+  cursor: progress;
+}
+
+.acaoPerigo {
+  color: var(--status-critico);
+}
+
+.acaoPerigo:hover {
+  border-color: var(--status-critico);
+}
+
+.selectLinha {
+  min-height: var(--alvo);
+  padding: 0 var(--e-8);
+  font: inherit;
+  font-size: var(--t-14);
+  color: var(--noite);
+  background: var(--branco);
+  border: var(--campo-borda) solid var(--cinza);
+  border-radius: var(--r-botao);
+}
+
+/* ---- abas (links: cada aba tem endereço próprio) ---- */
+.abas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-4);
+  margin: 0 0 var(--e-20);
+  padding: 0;
+  list-style: none;
+  border-bottom: var(--linha) solid var(--mapa-quadra);
+}
+
+.aba {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--alvo);
+  padding: 0 var(--e-14);
+  font-size: var(--t-16);
+  font-weight: 500;
+  color: var(--noite);
+  text-decoration: none;
+  border-bottom: var(--sublinhado-forte) solid transparent;
+  margin-bottom: calc(var(--linha) * -1);
+}
+
+.aba:hover {
+  border-bottom-color: var(--mapa-quadra);
+}
+
+.aba[aria-current='page'] {
+  font-weight: 800;
+  border-bottom-color: var(--ouro);
+}
+
+/* ---- formulário ---- */
+.formulario {
+  display: grid;
+  gap: var(--e-20);
+  margin-bottom: var(--e-20);
+  padding: var(--e-20);
+  background: var(--branco);
+  border: var(--borda-botao) solid var(--noite);
+  border-radius: var(--r-placa);
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--app-campo-min)), 1fr));
+  gap: var(--e-18) var(--e-20);
+}
+
+.largo {
+  grid-column: 1 / -1;
+}
+
+.botoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-20);
+}
+
+.marcarGrupo {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.legenda {
+  padding: 0;
+  font-size: var(--t-15);
+  font-weight: 600;
+  color: var(--noite);
+}
+
+.marcarLista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--app-marcar-min)), 1fr));
+  gap: var(--e-4) var(--e-16);
+  max-height: var(--app-marcar-altura);
+  margin-top: var(--e-8);
+  padding: var(--e-8) var(--e-12);
+  overflow-y: auto;
+  border: var(--campo-borda) solid var(--cinza);
+  border-radius: var(--r-campo);
+}
+
+.marcarItem {
+  display: flex;
+  align-items: center;
+  gap: var(--e-10);
+  min-height: var(--alvo);
+  font-size: var(--t-15);
+  color: var(--noite);
+  cursor: pointer;
+}
+
+.marcarItem input {
+  flex: none;
+  width: var(--e-20);
+  height: var(--e-20);
+  accent-color: var(--noite);
+}
+
+.erroCampo {
+  margin: var(--e-6) 0 0;
+  font-size: var(--t-15);
+  font-weight: 600;
+  color: var(--status-critico);
+}
+
+.ajuda {
+  margin: var(--e-6) 0 0;
+  font-size: var(--t-14);
+  color: var(--cinza);
+}
+
+/* ---- estados ---- */
+.aviso {
+  margin: 0;
+  padding: var(--e-12) var(--e-16);
+  font-size: var(--t-15);
+  font-weight: 500;
+  color: var(--noite);
+  background: var(--lacuna);
+  border-left: var(--sublinhado-forte) solid var(--status-atraso);
+  border-radius: var(--r-lacuna);
+}
+
+.carregando {
+  display: grid;
+  place-items: center;
+  min-height: var(--app-espera);
+}
+
+.vazio {
+  margin: 0;
+  padding: var(--e-24);
+  font-size: var(--t-16);
+  text-align: center;
+  color: var(--cinza);
+  background: var(--branco);
+  border: var(--linha) dashed var(--mapa-quadra);
+  border-radius: var(--r-placa);
+}
+
+/* ---- listas simples (alertas, mensagens) ---- */
+.lista {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lista > li {
+  display: grid;
+  gap: var(--e-6);
+  padding: var(--e-14) 0;
+  border-bottom: var(--linha) solid var(--mapa-quadra);
+}
+
+.lista > li:first-child {
+  padding-top: 0;
+}
+
+.lista > li:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.itemTopo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-8) var(--e-12);
+}
+
+.itemTitulo {
+  margin: 0;
+  font-size: var(--t-16);
+  font-weight: 600;
+  color: var(--noite);
+}
+
+.itemTexto {
+  margin: 0;
+  font-size: var(--t-15);
+  color: var(--noite);
+}
+
+.itemData {
+  font-size: var(--t-13);
+  color: var(--cinza);
+}
+
+/* ---- barras de contagem (entregas e frota por status) ---- */
+.barras {
+  display: grid;
+  gap: var(--e-10);
+  margin: 0;
+}
+
+.barra {
+  display: grid;
+  grid-template-columns: minmax(var(--app-rotulo-barra), auto) 1fr auto;
+  align-items: center;
+  gap: var(--e-12);
+  font-size: var(--t-14);
+}
+
+.barra dt {
+  color: var(--noite);
+}
+
+.barra dd {
+  display: contents;
+}
+
+.trilho {
+  height: var(--e-10);
+  overflow: hidden;
+  background: var(--nevoa);
+  border-radius: var(--r-lacuna);
+}
+
+.preenchido {
+  display: block;
+  height: 100%;
+  background: var(--noite);
+  border-radius: var(--r-lacuna);
+}
+
+.contagem {
+  min-width: 2ch;
+  font-weight: 600;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}

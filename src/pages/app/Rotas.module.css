@@ -1,0 +1,49 @@
+.detalhe td {
+  padding: var(--e-16) var(--e-20) var(--e-20);
+  background: var(--nevoa);
+}
+
+/* As paradas em fila, ligadas por uma linha fina: a rota em forma de lista. */
+.paradas {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.parada {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--e-14);
+  padding: var(--e-10) 0;
+}
+
+.parada:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  top: calc(var(--e-10) + var(--placa-numero));
+  bottom: calc(var(--e-10) * -1);
+  left: calc(var(--placa-numero) / 2 - var(--linha));
+  border-left: var(--sublinhado) solid var(--noite);
+}
+
+.numero {
+  display: grid;
+  place-items: center;
+  width: var(--placa-numero);
+  height: var(--placa-numero);
+  font-size: var(--t-15);
+  font-weight: 800;
+  color: var(--noite);
+  background: var(--ouro);
+  border-radius: 50%;
+}
+
+.paradaTexto {
+  display: grid;
+  gap: var(--e-4);
+  min-width: 0;
+}
