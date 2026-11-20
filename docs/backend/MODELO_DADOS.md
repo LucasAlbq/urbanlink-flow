@@ -35,6 +35,12 @@ Entidades complementares:
   combinação coerente deles.
 - Um **registro de auditoria** pode apontar para o usuário responsável e identifica
   a entidade afetada sem acoplamento por chave estrangeira polimórfica.
+- Uma **entrega** acumula **eventos** de status: o histórico que o rastreio público
+  mostra, com a hora e a cidade de cada etapa.
+- Um **usuário** pode ter **pedidos de senha nova**, cada um válido uma vez e por
+  tempo limitado.
+- Uma **mensagem do site** (Fale com a gente) recebe um **protocolo** único. Ela não
+  se liga a outras entidades.
 
 ### DER
 
@@ -51,6 +57,8 @@ erDiagram
     VEHICLE o|--o{ ALERT : contextualiza
     ROUTE o|--o{ ALERT : contextualiza
     DELIVERY o|--o{ ALERT : contextualiza
+    DELIVERY ||--o{ DELIVERY_EVENT : registra
+    USER ||--o{ PASSWORD_RESET_TOKEN : pede
 
     USER {
         uuid id PK
@@ -198,6 +206,35 @@ erDiagram
         varchar user_agent
         timestamptz created_at
     }
+
+    DELIVERY_EVENT {
+        serial id PK
+        uuid delivery_id FK
+        DeliveryStatus status
+        varchar location
+        timestamptz occurred_at
+    }
+
+    PASSWORD_RESET_TOKEN {
+        uuid id PK
+        uuid user_id FK
+        char token_hash UK
+        timestamptz expires_at
+        timestamptz used_at
+        timestamptz created_at
+    }
+
+    INQUIRY {
+        uuid id PK
+        varchar protocol UK
+        varchar name
+        varchar email
+        varchar company
+        varchar phone
+        varchar subject
+        varchar message
+        timestamptz created_at
+    }
 ```
 
 `o|` indica relacionamento opcional; por isso uma entrega pode ainda não possuir
@@ -224,6 +261,20 @@ veículo e um alerta pode se referir apenas a um dos agregados operacionais.
 Registra `action`, `entity`, `entity_id`, metadados seguros, IP, user-agent e
 instante. `user_id` é opcional para preservar eventos de sistema ou de usuário
 posteriormente removido.
+
+#### `password_reset_tokens`
+
+| Atributo     | Tipo lógico | Obrigatório | Regra                                              |
+| ------------ | ----------- | ----------: | -------------------------------------------------- |
+| `id`         | UUID        |         sim | PK                                                 |
+| `user_id`    | UUID        |         sim | FK para `users`                                    |
+| `token_hash` | texto(64)   |         sim | único; SHA-256 do token do link, nunca o token     |
+| `expires_at` | instante    |         sim | criação + `PASSWORD_RESET_TTL_MINUTES` (30 padrão) |
+| `used_at`    | instante    |         não | preenchido quando a senha é trocada                |
+| `created_at` | instante    |         sim | auditoria                                          |
+
+Um pedido novo apaga os anteriores ainda não usados. Quem lê o banco não consegue
+montar um link válido, porque só o hash fica guardado.
 
 ### 3.2 Frota e distribuição
 
@@ -254,6 +305,19 @@ Enums:
 - prioridade: `LOW`, `NORMAL`, `HIGH`, `URGENT`;
 - estado: `PENDING`, `ASSIGNED`, `IN_TRANSIT`, `DELIVERED`, `FAILED`,
   `CANCELED`.
+
+#### `delivery_events`
+
+| Atributo      | Tipo lógico | Obrigatório | Regra                                         |
+| ------------- | ----------- | ----------: | --------------------------------------------- |
+| `id`          | inteiro     |         sim | PK sequencial; desempata eventos no mesmo instante |
+| `delivery_id` | UUID        |         sim | FK para `deliveries`                          |
+| `status`      | enum        |         sim | o mesmo enum de estado da entrega             |
+| `location`    | texto(120)  |         não | só "Cidade, UF"; nunca rua ou número          |
+| `occurred_at` | instante    |         sim | quando a entrega chegou nesse estado          |
+
+Histórico de status para o rastreio público. A API não escreve nesta tabela: quem
+grava é o trigger `deliveries_record_event` (ver modelo físico).
 
 ### 3.3 Rotas
 
@@ -311,6 +375,7 @@ em `backend/prisma/migrations/`.
 | Conceito                  | PostgreSQL/Prisma                     |
 | ------------------------- | ------------------------------------- |
 | ID                        | `uuid` com `uuid()`                   |
+| ID de histórico           | `serial` (só `delivery_events`)       |
 | Data/hora                 | `timestamptz(3)`                      |
 | Enum                      | enum nativo gerenciado pela migration |
 | Texto limitado            | `varchar(n)`                          |
@@ -337,6 +402,8 @@ simplicidade didática. Em um produto financeiro, a evolução recomendada é
 | `alerts.route_id`                  | `routes.id`               | N:1 opcional    | `CASCADE`  |
 | `alerts.delivery_id`               | `deliveries.id`           | N:1 opcional    | `CASCADE`  |
 | `audit_logs.user_id`               | `users.id`                | N:1 opcional    | `SET NULL` |
+| `delivery_events.delivery_id`      | `deliveries.id`           | N:1 obrigatória | `CASCADE`  |
+| `password_reset_tokens.user_id`    | `users.id`                | N:1 obrigatória | `CASCADE`  |
 
 ### Índices
 
@@ -351,10 +418,28 @@ Além das PKs e unicidades, o schema indexa:
 - simulação por `(user_id, status)` e criação;
 - resultado por criação;
 - alerta por `(status, severity)` e cada referência;
-- auditoria por `(user_id, created_at)`, `(entity, entity_id)` e ação.
+- auditoria por `(user_id, created_at)`, `(entity, entity_id)` e ação;
+- evento de entrega por `(delivery_id, occurred_at)`, a ordem do rastreio;
+- pedido de senha nova por `user_id`, além do `token_hash` único;
+- mensagem do site por `created_at`, além do `protocol` único.
 
 Esses índices cobrem filtros de telas, dashboard, autorização e investigação. O
 plano de consulta deve ser revisto com volume real antes de adicionar índices.
+
+### Recursos do PostgreSQL
+
+Três automações ficam no próprio banco, criadas por migration:
+
+| Recurso | Tipo | O que faz | Migration |
+| --- | --- | --- | --- |
+| `deliveries_record_event` | trigger `AFTER INSERT OR UPDATE OF status` em `deliveries` | Chama `record_delivery_event()`, que grava um evento em `delivery_events` quando a entrega nasce e a cada troca de status. Entrega criada já atribuída também ganha o evento de postada. Atualização que não muda o status não grava nada | `20261120190000_add_delivery_events` |
+| `delivery_event_location(address)` | função `IMMUTABLE` | Tira "Cidade, UF" do fim de um endereço no formato `…, Cidade - UF`. Fora desse formato devolve `NULL` | `20261120190000_add_delivery_events` |
+| `inquiry_protocol_seq` e `next_inquiry_protocol()` | sequência e função, valor padrão de `inquiries.protocol` | Gera `ULS` + ano + número com pelo menos 4 dígitos (`ULS20260001`). Dois envios ao mesmo tempo nunca repetem | `20261120193000_add_inquiry_protocol` |
+
+O trigger vale para qualquer caminho que troque o status (atribuir, iniciar rota,
+concluir parada, cancelar), sem depender de cada serviço da API lembrar de gravar o
+histórico. Na migration, as entregas que já existiam ganharam só a postagem e o
+status atual, porque o banco não sabia quando passaram pelas etapas do meio.
 
 ### Restrições de domínio
 
@@ -439,6 +524,6 @@ requer banco limpo.
 
 ## Solicitações do site institucional
 
-A tabela `inquiries` registra as mensagens enviadas pelo formulário público. Ela possui `id` UUID, `name` (120 caracteres), `email` (255), `company` (160, opcional), `phone` (30, opcional), `subject` (80), `message` (3000) e `created_at` com fuso horário. Há um índice em `created_at` para a listagem das solicitações mais recentes.
+A tabela `inquiries` registra as mensagens enviadas pelo formulário público. Ela possui `id` UUID, `protocol` (20, único, gerado pelo banco), `name` (120 caracteres), `email` (255), `company` (160, opcional), `phone` (30, opcional), `subject` (80), `message` (3000) e `created_at` com fuso horário. Há um índice em `created_at` para a listagem das solicitações mais recentes.
 
-A criação exige consentimento no payload. A resposta pública contém somente identificador e data; a consulta dos dados completos exige perfil `ADMIN` ou `MANAGER`. A migration aditiva é `20261020235500_add_inquiries`. Nenhuma tabela operacional foi removida.
+A API aceita os assuntos do formulário do site (`ORCAMENTO`, `DUVIDA_ENTREGA`, `PARCERIA`, `OUTRO`) e mensagens de 10 a 1.000 caracteres; a coluna aceita até 3.000. A criação exige consentimento no payload. A resposta pública contém identificador, protocolo e data; a consulta dos dados completos exige perfil `ADMIN` ou `MANAGER`. As migrations aditivas são `20261020235500_add_inquiries` e `20261120193000_add_inquiry_protocol`. Nenhuma tabela operacional foi removida.
