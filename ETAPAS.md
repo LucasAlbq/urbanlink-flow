@@ -125,12 +125,24 @@ MODOS. Depois passe o teste de aceite dos efeitos e me diga o que não passou.
 
 **Pronto quando:** roda liso num celular médio e tudo para com "reduzir movimento".
 
-### [ ] Fase 4: dados reais (tag `v0.5.0`)
+### [x] Fase 4: dados reais (tag `v0.5.0`)
 
 - Feito em 04/11/2026: o mapa do rastreamento virou o `MapaReal` com MapLibre, carregado sob demanda, com o mapa ilustrado de reserva (branch `fase-4/mapa-real`, mesclada na `dev`). Os dados de exemplo do rastreio ganharam rota e posição.
 - Conferido em 16/11/2026: `npm run build` passa e a trava não acha dado de exemplo no `dist/`.
 - Feito em 16/11/2026: o back-end e o banco vieram pra pasta `backend/` (branch `fase-4/backend`), com os documentos em `docs/backend/`. Na pasta nova, os 57 testes, o lint e o build passam; as migrations, o seed e o smoke test passaram num PostgreSQL local do Prisma com uma conexão só. Com Docker não foi testado.
-- **Falta:** fazer o site e a API falarem a mesma língua. O site espera os endereços de `docs/plano/04-api-e-dados.md`; a API oferece `/api/public/tracking/:code`, `/api/public/contact` e login com JWT no corpo, e não tem recuperar senha. Depois, testar rastreio, contato e login de ponta a ponta e criar a tag `v0.5.0`.
+- Feito em 20/11/2026, em quatro branches mescladas na `dev` (`fase-4/rastreio`, `fase-4/contato`, `fase-4/login`, `fase-4/senha`): rastreio, contato, login e recuperar senha falam com a API. O contrato real está em `docs/plano/04-api-e-dados.md`.
+  - API: histórico das entregas gravado por um trigger do banco, protocolo do contato gerado por uma sequência, sessão num cookie `httpOnly` com rota de sair, e recuperar senha com link de uso único (3 migrations novas, 73 testes).
+  - Site: `src/api` traduz a resposta e os erros da API pros nomes das telas; as telas não mudaram. `npm run dev:api` roda o site com a API, sem os exemplos.
+  - Testado no navegador contra a API, com os exemplos desligados: rastreio em cada status e código inexistente, contato com protocolo, login certo e errado, sessão mantida ao recarregar, sair, recuperar senha até a senha nova entrar e o link usado recusado, e as mensagens de API fora do ar. O smoke test da API passou.
+- **Pro grupo aprovar** (decisões fora do plano):
+  - A API ficou no padrão dela (rotas em inglês, resposta `{ success, data }`) e a tradução ficou em `src/api`. O plano propunha rotas em português.
+  - Entrega que falhou ou foi cancelada aparece como "Teve um imprevisto no caminho", sem motivo nem nova previsão: a API não tem esses dados.
+  - Sem previsão calculada, a tela mostra o prazo da entrega como previsão.
+  - O mapa do rastreio é sempre o ilustrado: a API não manda rota nem posição, pra não expor o endereço.
+  - O link de senha nova vale 30 minutos e aparece no terminal da API, porque não tem envio de e-mail. A lacuna "[tempo a definir]" da tela continua pro grupo preencher.
+  - "Manter conectado" guarda a sessão até o token vencer (8 h); sem ele, a sessão some ao fechar o navegador.
+  - A API passou a aceitar os assuntos e o tamanho de mensagem do formulário (10 a 1.000 caracteres), e o login não exige mais 8 caracteres na senha (senha curta errada dá "senha incorreta").
+- **Não medido:** Lighthouse com a API de verdade. Os códigos de entrega do seed são `ULF-2026-0001` a `ULF-2026-0024`.
 
 ```text
 Ligue rastreio, contato e login na API real (docs/plano/04-api-e-dados.md). Troque o mapa do
@@ -144,7 +156,7 @@ exemplos e rode npm run build: a trava de dados de exemplo tem que passar.
 
 - Feito em 04 e 05/11/2026, em branches `fase-5/*` mescladas na `dev`: correções da revisão (rodapé e mapa real do rastreamento, `robots.txt`), texto do hero visível embaixo da cortina, rolagem ao abrir uma página direto, jornada no celular e o README.
 - Medido em 04/11/2026 com o Lighthouse no build de produção: acessibilidade 100 em todas as rotas, desempenho no celular 91 na landing e 99 no rastreamento (este com dados de exemplo). Testado no Chrome, no Edge e no Firefox, em 1440 e 390 px.
-- **Falta:** Lighthouse em `/rastreamento/<código real>` (depende da fase 4), os itens "Não medido" da fase 3, teste com leitor de tela (NVDA ou VoiceOver), merge da `dev` na `main` e a tag `v1.0.0`.
+- **Falta:** Lighthouse em `/rastreamento/<código real>` (com `npm run dev:api` não vale: tem que ser o build), os itens "Não medido" da fase 3, teste com leitor de tela (NVDA ou VoiceOver), merge da `dev` na `main` e a tag `v1.0.0`.
 - **Sem registro no repositório:** o resultado do `design:accessibility-review` em todas as rotas e do `design:design-critique` desta fase.
 
 ```text
