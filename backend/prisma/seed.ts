@@ -18,6 +18,12 @@ const prisma = new PrismaClient({
 
 const hoursFrom = (base: Date, hours: number): Date => new Date(base.getTime() + hours * 3_600_000);
 
+// Mesma regra da função delivery_event_location do banco: do endereço, só "Cidade, UF".
+const cityOf = (address: string): string | null => {
+  const match = /,\s*([^,]+?)\s*-\s*([A-Z]{2})\s*$/.exec(address);
+  return match ? `${match[1]}, ${match[2]}` : null;
+};
+
 const deliveryPoints = [
   ['Av. Paulista, 1000 - Bela Vista', -23.5614, -46.6559, 18],
   ['R. Oscar Freire, 900 - Jardins', -23.5648, -46.6722, 12],
@@ -52,6 +58,7 @@ async function resetDatabase(): Promise<void> {
   await prisma.simulation.deleteMany();
   await prisma.routeStop.deleteMany();
   await prisma.route.deleteMany();
+  await prisma.deliveryEvent.deleteMany();
   await prisma.delivery.deleteMany();
   await prisma.distributionCenter.deleteMany();
   await prisma.vehicle.deleteMany();
@@ -268,6 +275,42 @@ async function main(): Promise<void> {
   const deliveries = await prisma.delivery.findMany({
     orderBy: { trackingCode: 'asc' },
     include: { originCenter: true },
+  });
+
+  // O trigger deliveries_record_event gravou um evento só, no status final de cada entrega.
+  // Pra demonstração, o histórico é refeito com as etapas anteriores em horários plausíveis.
+  await prisma.deliveryEvent.deleteMany();
+  await prisma.deliveryEvent.createMany({
+    data: deliveries.flatMap((delivery) => {
+      const origin = cityOf(delivery.originCenter.address);
+      const destination = cityOf(delivery.destinationAddress);
+      const created = delivery.createdAt;
+      // Entregues: as etapas cabem entre a postagem e a entrega. As outras: uma por hora.
+      const step = (fraction: number, hours: number): Date =>
+        delivery.deliveredAt === null
+          ? hoursFrom(created, hours)
+          : new Date(created.getTime() + (delivery.deliveredAt.getTime() - created.getTime()) * fraction);
+      const reached = (...statuses: string[]): boolean => statuses.includes(delivery.status);
+      const event = (status: typeof delivery.status, location: string | null, occurredAt: Date) => ({
+        deliveryId: delivery.id,
+        status,
+        location,
+        occurredAt,
+      });
+
+      return [
+        event('PENDING', origin, created),
+        ...(reached('ASSIGNED', 'IN_TRANSIT', 'DELIVERED', 'FAILED')
+          ? [event('ASSIGNED', origin, step(0.25, 1))]
+          : []),
+        ...(reached('IN_TRANSIT', 'DELIVERED', 'FAILED')
+          ? [event('IN_TRANSIT', destination, step(0.5, 2))]
+          : []),
+        ...(reached('FAILED') ? [event('FAILED', destination, hoursFrom(created, 3))] : []),
+        ...(reached('CANCELED') ? [event('CANCELED', origin, hoursFrom(created, 1))] : []),
+        ...(delivery.deliveredAt === null ? [] : [event('DELIVERED', destination, delivery.deliveredAt)]),
+      ];
+    }),
   });
 
   const completedRoute = await prisma.route.create({

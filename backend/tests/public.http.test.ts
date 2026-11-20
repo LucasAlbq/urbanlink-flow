@@ -13,7 +13,15 @@ describe('Site público', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       estimatedArrival: null,
+      serviceDeadline: new Date('2026-10-24T18:00:00Z'),
       deliveredAt: null,
+      events: [
+        {
+          status: 'PENDING',
+          location: 'São Paulo, SP',
+          occurredAt: new Date('2026-10-20T17:42:00Z'),
+        },
+      ],
     } as never);
     const response = await request(app).get('/api/public/tracking/ULF-2026-0001');
     expect(response.status).toBe(200);
@@ -23,13 +31,21 @@ describe('Site público', () => {
       trackingCode: true,
       status: true,
       estimatedArrival: true,
+      serviceDeadline: true,
       deliveredAt: true,
       createdAt: true,
       updatedAt: true,
+      events: {
+        select: { status: true, location: true, occurredAt: true },
+        orderBy: [{ occurredAt: 'asc' }, { id: 'asc' }],
+      },
     });
     const body = response.body as { data: Record<string, unknown> };
     expect(body.data).not.toHaveProperty('destinationAddress');
     expect(body.data).not.toHaveProperty('assignedVehicleId');
+    expect(body.data.events).toEqual([
+      { status: 'PENDING', location: 'São Paulo, SP', occurredAt: '2026-10-20T17:42:00.000Z' },
+    ]);
   });
 
   it('retorna 404 para código inexistente e rejeita código inválido antes de acessar o banco', async () => {

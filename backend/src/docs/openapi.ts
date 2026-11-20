@@ -430,7 +430,7 @@ export const openApiDocument = {
         tags: ['Public Website'],
         summary: 'Consulta pública do andamento de uma entrega',
         description:
-          'Retorna apenas trackingCode, status, createdAt, updatedAt, estimatedArrival e deliveredAt. Não expõe dados pessoais, endereço ou veículo. Limite de 60 consultas por IP a cada 15 minutos; Cache-Control: no-store.',
+          'Retorna trackingCode, status, estimatedArrival, serviceDeadline, deliveredAt, createdAt, updatedAt e events: o histórico de status em ordem, cada um com status, occurredAt e location (só "Cidade, UF"). O histórico é gravado pelo trigger deliveries_record_event a cada troca de status. Não expõe dados pessoais, endereço ou veículo. Limite de 60 consultas por IP a cada 15 minutos; Cache-Control: no-store.',
         parameters: [
           {
             name: 'code',
