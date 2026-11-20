@@ -10,6 +10,8 @@ Plataforma de gestão e simulação de logística urbana em tempo real, da Urban
 
 **Endereço:** _ainda não publicado_
 
+O site e a API ficam na Vercel e o banco no Neon. Como publicar está em [`arquivos-adicionais/PUBLICACAO.md`](arquivos-adicionais/PUBLICACAO.md).
+
 ## Objetivo do sistema
 
 Nas cidades inteligentes, a logística urbana precisa ser eficiente e acompanhar o que acontece em tempo real. O UrbanLink Flow existe pra:

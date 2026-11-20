@@ -15,6 +15,9 @@ const envSchema = z.object({
   // Endereço do site, pra montar o link de senha nova (APP_URL/nova-senha/<token>).
   APP_URL: z.string().url().default('http://localhost:5173'),
   PASSWORD_RESET_TTL_MINUTES: z.coerce.number().int().min(5).max(1440).default(30),
+  // Mostrar o link de senha nova no log, já que o projeto não envia e-mail. Sem valor: só fora de
+  // produção. Na demonstração publicada, "true" faz o link aparecer nos logs da Vercel.
+  PASSWORD_RESET_LOG_LINK: z.enum(['false', 'true']).optional(),
   TRUST_PROXY: z
     .enum(['false', 'true'])
     .default('false')
@@ -34,7 +37,13 @@ if (!parsed.success) {
   throw new Error(`Configuração de ambiente inválida: ${messages}`);
 }
 
-export const env = parsed.data;
+export const env = {
+  ...parsed.data,
+  PASSWORD_RESET_LOG_LINK:
+    parsed.data.PASSWORD_RESET_LOG_LINK === undefined
+      ? parsed.data.NODE_ENV !== 'production'
+      : parsed.data.PASSWORD_RESET_LOG_LINK === 'true',
+};
 export const allowedOrigins = env.CORS_ORIGIN.split(',')
   .map((origin) => origin.trim())
   .filter(Boolean);

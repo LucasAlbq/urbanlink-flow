@@ -3,6 +3,7 @@
 | Arquivo | O que tem |
 | --- | --- |
 | [INSTALACAO.md](INSTALACAO.md) | Como configurar, instalar, executar e usar o sistema |
+| [PUBLICACAO.md](PUBLICACAO.md) | Como o site, a API e o banco são publicados na internet (Vercel e Neon) |
 | [sql/01-criar-banco.sql](sql/01-criar-banco.sql) | Cria o banco `urbanlink` |
 | [sql/02-criar-tabelas.sql](sql/02-criar-tabelas.sql) | Cria as tabelas, enums, chaves, índices, funções e o trigger |
 | [sql/03-inserir-dados.sql](sql/03-inserir-dados.sql) | Insere os dados de demonstração |
