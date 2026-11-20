@@ -176,6 +176,12 @@ export const openApiDocument = {
         properties: {
           email: { type: 'string', format: 'email', example: 'admin@urbanlink.local' },
           password: { type: 'string', format: 'password', example: 'UrbanLink@2026' },
+          remember: {
+            type: 'boolean',
+            default: false,
+            description:
+              '"Manter conectado": o cookie da sessão dura até o token vencer. Sem ele, some ao fechar o navegador.',
+          },
         },
       },
       UserCreateInput: {
@@ -485,8 +491,10 @@ export const openApiDocument = {
             },
           },
         },
+        description:
+          'Devolve o JWT no corpo, pra usar no cabeçalho Authorization, e grava o mesmo token no cookie httpOnly urbanlink_session (SameSite=Lax), que é como o site guarda a sessão.',
         responses: {
-          '200': successResponse('JWT e usuário autenticado'),
+          '200': successResponse('JWT e usuário autenticado; cookie da sessão gravado'),
           '401': errorResponses['401'],
           '422': errorResponses['422'],
           '429': { description: 'Limite de tentativas excedido' },
@@ -497,8 +505,18 @@ export const openApiDocument = {
       get: {
         tags: ['Auth'],
         summary: 'Retorna o usuário autenticado',
+        description: 'Aceita o token pelo cabeçalho Authorization ou pelo cookie urbanlink_session.',
         security: bearer,
         responses: { '200': successResponse('Usuário'), ...errorResponses },
+      },
+    },
+    '/auth/logout': {
+      post: {
+        tags: ['Auth'],
+        summary: 'Encerra a sessão do site apagando o cookie urbanlink_session',
+        description:
+          'Não exige estar logado. O JWT em si continua válido até vencer: quem usa o cabeçalho Authorization só precisa descartá-lo.',
+        responses: { '204': { description: 'Cookie da sessão apagado' } },
       },
     },
     '/users': {
