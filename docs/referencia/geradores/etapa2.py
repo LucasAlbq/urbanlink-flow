@@ -1,6 +1,6 @@
 """Etapa 2 do canvas: página 404 e rastreamento 'não encontrado' (desktop + celular)."""
 import os, sys, json
-sys.path.insert(0, '/home/claude/ulgen')
+sys.path.insert(0, '/home/user/ulgen')
 import sitegen as S
 from land import NOITE, MARINHO, OURO, AMARELO, TEXTO2, NEVOA, BRANCO, ARROW, PADX, wrap
 
@@ -79,7 +79,7 @@ PAGES = {
 }
 
 if __name__ == '__main__':
-    hp = '/home/claude/ulgen/heights.json'
+    hp = '/home/user/ulgen/heights.json'
     H = json.load(open(hp))
     for key, (title, fn) in PAGES.items():
         body = fn()

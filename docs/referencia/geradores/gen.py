@@ -1,11 +1,11 @@
 import json, math, sys, os, random
 
-G = json.load(open('/home/claude/geom.json'))
+G = json.load(open('/home/user/geom.json'))
 D = G['ds']
 L = G['bbox']['L']
 CENTER = G['center']
 H = G['horiz']
-OUT = '/home/claude/ulcanvas/project'
+OUT = '/home/user/ulcanvas/project'
 
 NOITE = '#1A223C'
 MARINHO = '#242F62'
@@ -338,7 +338,7 @@ if __name__ == '__main__':
         write('Main.dc.html', build_main())
     elif which == 'frame':
         name, t = sys.argv[2], float(sys.argv[3])
-        pts = json.load(open('/home/claude/ulgen/points.json'))
+        pts = json.load(open('/home/user/ulgen/points.json'))
         write(f'{name}.dc.html', build_frame(name.lower().replace('-', ''), t, pts[str(t)]))
     elif which == 'a':
         write('Hero-A.dc.html', build_hero_a())
@@ -530,7 +530,7 @@ if __name__ == '__main__' and sys.argv[1] == 'code3':
     write('Abertura-Codigo.dc.html', build_code3())
 if __name__ == '__main__' and sys.argv[1] == 'frame3':
     name, t = sys.argv[2], float(sys.argv[3])
-    pts = json.load(open('/home/claude/ulgen/points.json'))
+    pts = json.load(open('/home/user/ulgen/points.json'))
     write(f'{name}.dc.html', build_frame3(name, t, pts[str(t)]))
 
 

@@ -2,8 +2,8 @@
 
 Uma etapa por vez. Cada uma cabe numa conversa e termina com algo pra revisar. Marca o `[x]` quando aprovar.
 
-- **Canvas (design):** https://claude.ai/artifact/XvNJyv2uBNWc24U7G1Gyd3
-- **Plano (doc com 5 abas):** https://claude.ai/artifact/4TsZtq2sDSD2SDhTdDv44U (cópia no repositório: `docs/plano/`)
+- **Canvas (design):** fora do repositório; as pranchas exportadas estão em `docs/referencia/`
+- **Plano (doc com 5 abas):** cópia no repositório em `docs/plano/`
 - **Skill do projeto:** `urbanlink-flow-web` (já salva na tua conta)
 
 ## Como retomar numa conversa nova
@@ -12,8 +12,8 @@ Cola isto no começo da conversa e troca o número da etapa:
 
 ```text
 Use a skill urbanlink-flow-web.
-Canvas: https://claude.ai/artifact/XvNJyv2uBNWc24U7G1Gyd3
-Plano: https://claude.ai/artifact/4TsZtq2sDSD2SDhTdDv44U
+Canvas: docs/referencia/
+Plano: docs/plano/
 Estamos na etapa X do ETAPAS.md: <cola aqui o texto da etapa>
 Faz só essa etapa e me mostra pra revisar antes de seguir.
 ```
@@ -58,16 +58,16 @@ Fechadas em 03/11/2026:
 
 ---
 
-## Parte 2: código do site (Claude Code, uma sessão nova por fase)
+## Parte 2: código do site (uma fase por vez)
 
 ### [x] Preparação
 
-Feita pelo Claude Code seguindo o `COMECE-AQUI.md`: projeto Vite criado, kit no lugar (`CLAUDE.md`, este arquivo, `docs/plano/`, `docs/referencia/`, skill do projeto), bibliotecas instaladas, `.env.exemplo`, Git com `main` e `dev`, skills do GSAP.
+Feita seguindo o `COMECE-AQUI.md`: projeto Vite criado, kit no lugar (este arquivo, `docs/plano/`, `docs/referencia/`, skill do projeto), bibliotecas instaladas, `.env.exemplo`, Git com `main` e `dev`, skills do GSAP.
 
 ### [x] Fase 0: base do projeto (tag `v0.1.0`)
 
 ```text
-Leia CLAUDE.md e docs/plano/01-plano.md (Stack, Rotas, Tokens).
+Leia docs/plano/01-plano.md (Stack, Rotas, Tokens).
 Monte a base: React Router com as rotas da tabela, src/styles/tokens.css com os
 tokens do plano, base.css, Fira Sans via @fontsource, Header e Rodape vazios, e as
 páginas só com o título. Me mostre o plano antes de escrever código.
