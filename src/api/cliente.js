@@ -19,13 +19,16 @@ const CODIGOS = {
 
 // `campos` vem no 422 e diz quais campos a API recusou, com o nome que a API usa
 // ({ email: '…' }). O texto de cada um é ignorado: a tela usa a mensagem dela pro campo.
+// `mensagem` é o texto da API. Só a plataforma (/app) mostra, e só nas recusas de regra de
+// negócio (409 CONFLICT), em que a API explica o motivo ("A entrega precisa ter veículo…").
 export class ErroApi extends Error {
-  constructor(erro, status, campos) {
+  constructor(erro, status, campos, mensagem) {
     super(erro)
     this.name = 'ErroApi'
     this.erro = erro
     this.status = status
     this.campos = campos ?? null
+    this.mensagem = mensagem ?? null
   }
 }
 
@@ -60,7 +63,12 @@ export async function pedir(caminho, { metodo = 'GET', corpo, sinal } = {}) {
   const dados = await resposta.json().catch(() => null)
   if (!resposta.ok) {
     const codigo = dados?.error?.code
-    throw new ErroApi(CODIGOS[codigo] ?? codigo ?? 'ERRO_SERVIDOR', resposta.status, camposRecusados(dados?.error?.details))
+    throw new ErroApi(
+      CODIGOS[codigo] ?? codigo ?? 'ERRO_SERVIDOR',
+      resposta.status,
+      camposRecusados(dados?.error?.details),
+      dados?.error?.message,
+    )
   }
   return dados?.data ?? null
 }

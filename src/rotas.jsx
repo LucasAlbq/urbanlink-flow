@@ -9,8 +9,13 @@ import { Login } from './pages/Login.jsx'
 import { Politica } from './pages/Politica.jsx'
 import { RecuperarSenha } from './pages/RecuperarSenha.jsx'
 import { NovaSenha } from './pages/NovaSenha.jsx'
-import { Plataforma } from './pages/Plataforma.jsx'
 import { NaoEncontrada } from './pages/NaoEncontrada.jsx'
+import { Moldura } from './pages/app/Moldura.jsx'
+import { Monitoramento } from './pages/app/Monitoramento.jsx'
+import { Rotas } from './pages/app/Rotas.jsx'
+import { Simulacao } from './pages/app/Simulacao.jsx'
+import { Cadastros } from './pages/app/Cadastros.jsx'
+import NaoEncontradaApp from './pages/app/NaoEncontradaApp.jsx'
 
 // Tabela de rotas de docs/plano/01-plano.md.
 export const rotas = createBrowserRouter([
@@ -27,7 +32,20 @@ export const rotas = createBrowserRouter([
       { path: '/privacidade', element: <Politica /> },
       { path: '/recuperar-senha', element: <RecuperarSenha />, handle: { soConteudo: true } },
       { path: '/nova-senha/:token', element: <NovaSenha />, handle: { soConteudo: true } },
-      { path: '/app/*', element: <Plataforma /> },
+      // Plataforma: sem o Header e o Rodape do site, com a moldura própria (barra e menu).
+      {
+        path: '/app',
+        element: <Moldura />,
+        handle: { soConteudo: true },
+        children: [
+          { index: true, element: <Monitoramento /> },
+          { path: 'rotas', element: <Rotas /> },
+          { path: 'simulacao', element: <Simulacao /> },
+          { path: 'cadastros', element: <Cadastros /> },
+          { path: 'cadastros/:aba', element: <Cadastros /> },
+          { path: '*', element: <NaoEncontradaApp /> },
+        ],
+      },
       { path: '*', element: <NaoEncontrada /> },
     ],
   },

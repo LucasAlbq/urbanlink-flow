@@ -1,0 +1,36 @@
+.caixa {
+  position: absolute;
+  inset: 0;
+  background: var(--mapa-quadra);
+}
+
+/* Enquanto o MapLibre abre, nada aparece (nem entra no Tab). */
+.carregando > * {
+  visibility: hidden;
+}
+
+.centro {
+  display: block;
+  width: var(--e-16);
+  height: var(--e-16);
+  background: var(--noite);
+  border: var(--sublinhado-forte) solid var(--branco);
+  outline: var(--linha) solid var(--noite);
+}
+
+.caixa :global(.maplibregl-ctrl-attrib) {
+  font: 400 0.75rem / 1.4 var(--fonte);
+  color: var(--cinza);
+  background: var(--branco);
+  border-top-left-radius: var(--r-botao);
+}
+
+.caixa :global(.maplibregl-ctrl-group button) {
+  width: var(--alvo);
+  height: var(--alvo);
+}
+
+.caixa :global(.maplibregl-ctrl-group button:focus-visible) {
+  outline: var(--sublinhado) solid var(--noite);
+  outline-offset: calc(var(--sublinhado) * -1);
+}

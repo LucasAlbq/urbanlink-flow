@@ -1,0 +1,100 @@
+.mapaEAlertas {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: var(--e-20);
+  align-items: start;
+}
+
+.duas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--e-20);
+}
+
+@media (max-width: 1100px) {
+  .mapaEAlertas,
+  .duas {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.mapa {
+  position: relative;
+  height: var(--mapa-operacao);
+  overflow: hidden;
+  background: var(--mapa-quadra);
+  border: var(--linha) solid var(--mapa-quadra);
+  border-radius: var(--r-campo);
+}
+
+.mapaFalhou {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--e-12);
+  height: 100%;
+  padding: var(--e-24);
+  font-size: var(--t-16);
+  text-align: center;
+  color: var(--noite);
+}
+
+.mapaFalhou p {
+  margin: 0;
+}
+
+.legenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-8) var(--e-20);
+  margin: var(--e-14) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--t-14);
+  color: var(--noite);
+}
+
+.legenda li {
+  display: flex;
+  align-items: center;
+  gap: var(--e-8);
+}
+
+.simboloCentro {
+  width: var(--e-14);
+  height: var(--e-14);
+  background: var(--noite);
+}
+
+.simboloVeiculo {
+  width: var(--e-14);
+  height: var(--e-14);
+  background: var(--noite);
+  border: var(--sublinhado-forte) solid var(--ouro);
+  border-radius: 50%;
+}
+
+.simboloEntrega {
+  width: var(--e-12);
+  height: var(--e-12);
+  border-radius: 50%;
+}
+
+.ok { background: var(--status-ok); }
+.andamento { background: var(--status-andamento); }
+.neutro { background: var(--status-neutro); }
+.critico { background: var(--status-critico); }
+
+.simboloRotaAtiva,
+.simboloRotaPlanejada {
+  width: var(--e-24);
+  height: 0;
+}
+
+.simboloRotaAtiva {
+  border-top: var(--e-4) solid var(--ouro);
+}
+
+.simboloRotaPlanejada {
+  border-top: var(--sublinhado-forte) dotted var(--status-andamento);
+}

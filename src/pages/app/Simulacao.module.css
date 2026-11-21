@@ -1,0 +1,65 @@
+.resultado {
+  display: grid;
+  gap: var(--e-20);
+  border: var(--borda-botao) solid var(--noite);
+}
+
+.comparacao {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--t-15);
+  color: var(--noite);
+}
+
+.comparacao th,
+.comparacao td {
+  padding: var(--e-10) var(--e-12);
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: var(--linha) solid var(--mapa-quadra);
+}
+
+.comparacao thead th {
+  font-size: var(--t-13);
+  font-weight: 600;
+  color: var(--cinza);
+}
+
+.comparacao tbody th {
+  font-weight: 600;
+}
+
+.valor {
+  display: block;
+  margin-bottom: var(--e-4);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.trilho {
+  display: block;
+  height: var(--e-8);
+  overflow: hidden;
+  background: var(--nevoa);
+  border-radius: var(--r-lacuna);
+}
+
+.barra {
+  display: block;
+  height: 100%;
+  border-radius: var(--r-lacuna);
+}
+
+.original {
+  background: var(--cinza);
+}
+
+.otimizada {
+  background: var(--ouro);
+}
+
+.diferenca {
+  font-weight: 800;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
