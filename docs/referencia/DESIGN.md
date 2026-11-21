@@ -63,7 +63,7 @@ TODO: lista de usos incorretos (o sumário do manual cita, mas não consta nas p
 - Um acento só: o **ouro**. O amarelo aparece em pontos minúsculos (a seta, o foco).
 - Fundos: Noite (#1A223C) e Marinho para as áreas escuras, Névoa e Branco para as claras.
 - Sem gradientes decorativos, sem brilho neon, sem vidro fosco.
-- As cores de status (no prazo, atraso, crítico) precisam diferir também em claridade, não só no tom. TODO: definir as três cores de status.
+- As cores de status (no prazo, atraso, crítico) precisam diferir também em claridade, não só no tom. **[proposto em 20/11/2026]** No prazo `#1E7B4A`, atraso `#A35200`, crítico `#8E1B14` (bem mais escuro que os outros dois), mais o Azul pra "em andamento" e o Cinza pra neutro. Todas com 4,5:1 ou mais com texto Branco e sobre Névoa. O selo sempre traz o texto, então a cor nunca é o único sinal. Valores em `src/styles/tokens.css` (`--status-*`).
 
 ### Contraste (WCAG, calculado)
 
@@ -158,7 +158,7 @@ Regras: no máximo 3 coisas se movendo ao mesmo tempo; nada de entrada animada e
 2. Versão da logo para fundo escuro em duas cores: validar.
 3. Tamanho mínimo da logo em pixels.
 4. Usos incorretos da logo.
-5. Três cores de status (no prazo, atraso, crítico).
+5. ~~Três cores de status (no prazo, atraso, crítico)~~: proposto em 20/11/2026 (seção 3), falta validar.
 6. Escala tipográfica completa.
 7. Conjunto de ícones.
 8. Raio de canto e escala de espaçamento.

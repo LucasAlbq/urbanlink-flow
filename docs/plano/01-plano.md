@@ -48,7 +48,7 @@ A regra dos efeitos:
 | `/privacidade` | Política de Privacidade | Politica | Nenhum |
 | `/recuperar-senha` | Pedir link e aviso de link enviado | Recuperar-Senha, Recuperar-Senha-Enviado | `POST /auth/recuperar-senha` |
 | `/nova-senha/:token` | Criar a senha nova | Nova-Senha | `POST /auth/nova-senha` |
-| `/app/*` | Plataforma (etapa seguinte) | Ainda não desenhada | Protegida por login |
+| `/app/*` | Plataforma: Monitoramento, Rotas, Simulação, Cadastros | Desenhada direto no código (20/11/2026), na moldura da ilustração da landing | Protegida por login |
 | Qualquer outra | Página não encontrada | Pagina-404 | Nenhum |
 
 O menu do celular é a prancha `Menu-Celular` (só 390 px).

@@ -1,0 +1,207 @@
+/* Mesma moldura da ilustração da landing (landing/Plataforma.module.css): barra Noite com a logo,
+   menu de 232 px com fundo Branco e item ativo em Névoa. */
+.app {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--nevoa);
+}
+
+.barra {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-16);
+  min-height: var(--app-barra);
+  padding: 0 var(--e-20);
+  background: var(--noite);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--alvo);
+  border-radius: var(--r-botao);
+}
+
+.logo:focus-visible,
+.sair:focus-visible {
+  outline: var(--sublinhado) solid var(--amarelo);
+  outline-offset: var(--sublinhado);
+}
+
+.logoSvg {
+  width: var(--logo-app);
+}
+
+.quem {
+  display: flex;
+  align-items: center;
+  gap: var(--e-16);
+  min-width: 0;
+}
+
+.nome {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--t-15);
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: right;
+  color: var(--branco);
+}
+
+.papel {
+  font-size: var(--t-13);
+  font-weight: 400;
+  color: var(--texto-2);
+}
+
+.sair {
+  min-height: var(--alvo);
+  padding: 0 var(--e-16);
+  font: inherit;
+  font-size: var(--t-15);
+  font-weight: 600;
+  color: var(--branco);
+  background: transparent;
+  border: var(--borda-botao) solid var(--borda-escura);
+  border-radius: var(--r-botao);
+  cursor: pointer;
+}
+
+.sair:hover {
+  box-shadow: inset 0 0 0 999px var(--brilho);
+}
+
+.corpo {
+  display: grid;
+  grid-template-columns: var(--app-menu) minmax(0, 1fr);
+  min-height: calc(100dvh - var(--app-barra));
+}
+
+.menu {
+  padding: var(--e-16) var(--e-10);
+  background: var(--branco);
+  border-right: var(--linha) solid var(--mapa-quadra);
+}
+
+.itens {
+  position: sticky;
+  top: calc(var(--app-barra) + var(--e-16));
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--e-12);
+  min-height: var(--alvo);
+  padding: 0 var(--e-12);
+  font-size: var(--t-16);
+  font-weight: 500;
+  color: var(--noite);
+  text-decoration: none;
+  border-radius: var(--r-campo);
+}
+
+.item:hover {
+  background: var(--nevoa);
+}
+
+.item:focus-visible {
+  outline: var(--sublinhado) solid var(--noite);
+  outline-offset: calc(var(--sublinhado) * -1);
+}
+
+.item[aria-current='page'] {
+  font-weight: 800;
+  background: var(--nevoa);
+  box-shadow: inset var(--sublinhado-forte) 0 0 var(--ouro);
+}
+
+.icone {
+  flex: none;
+  width: var(--e-22);
+  height: var(--e-22);
+  fill: none;
+  stroke: var(--noite);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.principal {
+  min-width: 0;
+  max-width: var(--app-conteudo);
+  padding: var(--e-32) var(--margem) var(--e-64);
+}
+
+.erroSessao {
+  display: grid;
+  gap: var(--e-16);
+}
+
+.erroSessao h1 {
+  margin: 0;
+  font-size: var(--h1-app);
+  font-weight: 800;
+  color: var(--noite);
+}
+
+/* Celular e tablet em pé: o menu vira uma faixa com as quatro áreas embaixo da barra. */
+@media (max-width: 860px) {
+  .corpo {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+  }
+
+  .menu {
+    position: sticky;
+    top: var(--app-barra);
+    z-index: 9;
+    padding: var(--e-6) var(--e-8);
+    overflow-x: auto;
+    border-right: 0;
+    border-bottom: var(--linha) solid var(--mapa-quadra);
+  }
+
+  .itens {
+    position: static;
+    flex-direction: row;
+  }
+
+  .item {
+    gap: var(--e-8);
+    padding: 0 var(--e-10);
+    font-size: var(--t-15);
+    white-space: nowrap;
+  }
+
+  .item[aria-current='page'] {
+    box-shadow: inset 0 calc(var(--sublinhado-forte) * -1) 0 var(--ouro);
+  }
+
+  .principal {
+    padding-top: var(--e-24);
+  }
+
+  .papel {
+    display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .nome {
+    display: none;
+  }
+}

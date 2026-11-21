@@ -178,4 +178,25 @@
                                  mostra dado */
   --voo-aro: 3px;             /* aro Noite do pacote voando até o hero (Passagem-2 a 4) */
   --pulso: 2s;                /* uma volta do pulso do anel do pacote (01-plano.md) */
+
+  /* plataforma (/app). [proposto em 20/11/2026] Pendência 5 do DESIGN.md: as três cores de
+     status, todas com 4,5:1 ou mais com texto Branco e sobre Névoa. O crítico é bem mais escuro
+     que os outros dois, e o selo sempre traz o texto: a cor nunca é o único sinal. */
+  --status-ok: #1E7B4A;       /* no prazo, entregue, disponível (5,27:1 com Branco) */
+  --status-atraso: #A35200;   /* atraso, atenção, manutenção (5,58:1) */
+  --status-critico: #8E1B14;  /* crítico, falhou (9,06:1) */
+  --status-andamento: var(--azul);   /* em trânsito, em rota, rodando */
+  --status-neutro: var(--cinza);     /* pendente, planejada, cancelada */
+  --app-barra: 56px;          /* barra Noite do topo, a mesma altura da ilustração da landing */
+  --app-conteudo: 1360px;     /* largura máxima do conteúdo da plataforma */
+  --t-13: 0.8125rem; --t-14: 0.875rem;
+  --t-numero: clamp(1.625rem, 2.4vw, 2.125rem); /* número das fichas de indicador */
+  --h1-app: clamp(1.75rem, 2.6vw, 2.375rem);
+  --mapa-operacao: clamp(320px, 52vh, 600px);
+  --app-campo-min: 240px;     /* largura mínima de uma coluna do formulário */
+  --app-marcar-min: 280px;    /* largura mínima de uma coluna da lista de caixas */
+  --app-marcar-altura: 320px; /* altura máxima da lista de caixas (rola por dentro) */
+  --app-rotulo-barra: 110px;  /* coluna do nome nas barras de contagem */
+  --app-espera: 240px;        /* altura do bloco "carregando" */
+  --app-coluna-nome: 180px;   /* largura mínima da primeira coluna das tabelas */
 }
