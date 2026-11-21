@@ -5,7 +5,6 @@ import { pedirLinkSenha } from '../api/auth.js'
 import { AvisoFormulario } from '../components/AvisoFormulario.jsx'
 import { Botao } from '../components/Botao.jsx'
 import { Campo } from '../components/Campo.jsx'
-import { Lacuna } from '../components/Lacuna.jsx'
 import { MiniEstrada } from '../components/MiniEstrada.jsx'
 import { MolduraLogin } from '../components/MolduraLogin.jsx'
 import { useTituloAba } from '../components/useTituloAba.js'
@@ -152,8 +151,8 @@ function LinkEnviado({ titulo, aoPedirOutro }) {
           Confira seu e-mail
         </h1>
         <p className={`${css.apoio} ${css.equilibrado}`}>
-          Se esse e-mail tiver uma conta, o link pra criar uma senha nova já está a caminho. Ele vale por{' '}
-          <Lacuna>[tempo a definir]</Lacuna>.
+          Se esse e-mail tiver uma conta, o link pra criar uma senha nova já está a caminho. Ele vale por 30
+          minutos.
         </p>
       </div>
       <p className={css.texto}>Não chegou em alguns minutos? Olhe a caixa de spam ou peça outro link.</p>
