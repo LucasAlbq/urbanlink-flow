@@ -81,7 +81,7 @@ Uma tela por sessão, nesta ordem: Landing → Rastreamento → Fale com a gente
 
 - Feita em 03/11/2026: as sete telas da lista e também Política, Recuperar senha e Senha nova, pra toda rota bater com a sua prancha. Handoffs em `docs/handoff/`.
 - O menu do celular já abre, fecha e prende o foco (sem isso não passava no teste de teclado); a animação fica pra fase 3.
-- **Pro grupo preencher:** as lacunas da Política ([data], [prazo a definir pelo grupo], [e-mail do responsável pelos dados]) e o [tempo a definir] do link de senha.
+- ~~Pro grupo preencher~~: preenchido em 20/11/2026 pelo usuário. Política: mensagens guardadas por 12 meses, responsável `contato@urbanlink.com`, atualizada em 20/11/2026. Link de senha nova: 30 minutos.
 
 ```text
 Use a skill design:design-handoff na prancha docs/referencia/<Tela>.html e depois
@@ -139,7 +139,7 @@ MODOS. Depois passe o teste de aceite dos efeitos e me diga o que não passou.
   - Entrega que falhou ou foi cancelada aparece como "Teve um imprevisto no caminho", sem motivo nem nova previsão: a API não tem esses dados.
   - Sem previsão calculada, a tela mostra o prazo da entrega como previsão.
   - O mapa do rastreio é sempre o ilustrado: a API não manda rota nem posição, pra não expor o endereço.
-  - O link de senha nova vale 30 minutos e aparece no terminal da API, porque não tem envio de e-mail. A lacuna "[tempo a definir]" da tela continua pro grupo preencher.
+  - O link de senha nova vale 30 minutos e aparece no terminal da API, porque não tem envio de e-mail. A tela diz "30 minutos" desde 20/11/2026.
   - "Manter conectado" guarda a sessão até o token vencer (8 h); sem ele, a sessão some ao fechar o navegador.
   - A API passou a aceitar os assuntos e o tamanho de mensagem do formulário (10 a 1.000 caracteres), e o login não exige mais 8 caracteres na senha (senha curta errada dá "senha incorreta").
 - **Não medido:** Lighthouse com a API de verdade. Os códigos de entrega do seed são `ULF-2026-0001` a `ULF-2026-0024`.
