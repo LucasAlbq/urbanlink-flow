@@ -1,6 +1,5 @@
 import { Link, useLocation } from 'react-router'
 
-import { Lacuna } from '../components/Lacuna.jsx'
 import { useTituloAba } from '../components/useTituloAba.js'
 import css from './politica/Politica.module.css'
 
@@ -51,7 +50,7 @@ const SECOES = [
     titulo: 'Por quanto tempo guardamos',
     texto: [
       <>
-        As mensagens do Fale com a gente ficam guardadas por <Lacuna>[prazo a definir pelo grupo]</Lacuna>. Os
+        As mensagens do Fale com a gente ficam guardadas por 12 meses. Os
         dados de login ficam guardados enquanto a conta existir.
       </>,
     ],
@@ -72,7 +71,11 @@ const SECOES = [
         <Link to="/contato" className={css.link}>
           Fale com a gente
         </Link>{' '}
-        e escolha o assunto "Outro assunto", ou escreva pra <Lacuna>[e-mail do responsável pelos dados]</Lacuna>.
+        e escolha o assunto "Outro assunto", ou escreva pra{' '}
+        <a href="mailto:contato@urbanlink.com" className={css.link}>
+          contato@urbanlink.com
+        </a>
+        .
       </>,
     ],
   },
@@ -93,7 +96,7 @@ export function Politica() {
           </h1>
           <p className={css.apoio}>Quais dados o site coleta, pra quê, e o que você pode pedir.</p>
           <p className={css.data}>
-            Última atualização: <Lacuna>[data]</Lacuna>
+            Última atualização: <time dateTime="2026-11-20">20 de novembro de 2026</time>
           </p>
         </div>
       </section>

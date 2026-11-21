@@ -18,6 +18,14 @@ Pra testar: rastreie o código `ULF-2026-0009` (outros códigos de demonstraçã
 
 O site e a API ficam na Vercel e o banco no Neon, em São Paulo. Como foi publicado e como publicar de novo está em [`arquivos-adicionais/PUBLICACAO.md`](arquivos-adicionais/PUBLICACAO.md).
 
+## Equipe
+
+- Lucas Albuquerque Belmonte
+- Isabella Oliveira da Silva
+- Emilly Guedes Leite
+- Breno Ferreira Ramos da Silva
+- Maria Olivia Xavier de Souza
+
 ## Objetivo do sistema
 
 Nas cidades inteligentes, a logística urbana precisa ser eficiente e acompanhar o que acontece em tempo real. O UrbanLink Flow existe pra:
