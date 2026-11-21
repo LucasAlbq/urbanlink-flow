@@ -1,14 +1,14 @@
 """Landing v1 do UrbanLink Flow: hero B reescrito, jornada com placas, plataforma por dentro,
 chamada final com o A gigante e rodapé. Um arquivo, duas pranchas (1440 e 390)."""
 import os, random, sys
-sys.path.insert(0, '/home/claude/ulgen')
+sys.path.insert(0, '/home/user/ulgen')
 import gen
 from gen import (D, NOITE, MARINHO, OURO, AMARELO, TEXTO2, FONT, FONT_LINK, PADX,
                  logo_h, skyline, tail)
 
 NEVOA = '#EDF0F7'
 BRANCO = '#FFFFFF'
-OUT = '/home/claude/ulcanvas/project'
+OUT = '/home/user/ulcanvas/project'
 
 CSS = f'''body{{margin:0}}
 a{{color:{AMARELO}}}a:hover{{color:#FFFFFF}}

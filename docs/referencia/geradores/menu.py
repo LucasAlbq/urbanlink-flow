@@ -1,6 +1,6 @@
 """Etapa 1 do canvas: menu do celular aberto (390 x 844)."""
 import os, sys, json
-sys.path.insert(0, '/home/claude/ulgen')
+sys.path.insert(0, '/home/user/ulgen')
 import sitegen as S
 from land import NOITE, MARINHO, OURO, AMARELO, TEXTO2, ARROW, logo_h
 
@@ -47,6 +47,6 @@ def menu():
 if __name__ == '__main__':
     with open(os.path.join(S.OUT, 'Menu-Celular.dc.html'), 'w') as fh:
         fh.write(S.page('Menu do celular', menu(), 390, 844))
-    hp = '/home/claude/ulgen/heights.json'
+    hp = '/home/user/ulgen/heights.json'
     S.write_all(json.load(open(hp)))
     print('ok')

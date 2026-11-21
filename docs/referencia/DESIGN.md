@@ -1,6 +1,6 @@
 # UrbanLink: DESIGN.md
 
-Arquivo de marca e de design do UrbanLink (UrbanLink Flow). Serve de fonte única para o design system no Claude e para o código.
+Arquivo de marca e de design do UrbanLink (UrbanLink Flow). Serve de fonte única para o design system e para o código.
 
 Legenda de origem de cada decisão:
 - **[manual]**: vem do Manual de Marca.
@@ -88,7 +88,7 @@ TODO: lista de usos incorretos (o sumário do manual cita, mas não consta nas p
 
 ## 4. Tipografia
 
-**Família [manual]:** Fira Sans, pesos Thin, ExtraLight, Light, Regular, Medium, SemiBold, Bold, ExtraBold e Black. Gratuita, licença aberta. Precisa dos arquivos de fonte carregados (o Claude não usa uma fonte que só está citada).
+**Família [manual]:** Fira Sans, pesos Thin, ExtraLight, Light, Regular, Medium, SemiBold, Bold, ExtraBold e Black. Gratuita, licença aberta. Precisa dos arquivos de fonte carregados (uma fonte só citada pelo nome não aparece).
 
 **Uso [proposto]:**
 - Títulos: ExtraBold ou Black, espaçamento levemente apertado, para ecoar o peso da logo.
@@ -126,7 +126,7 @@ Regras:
 
 Stack prevista: Lenis (scroll suave), GSAP com ScrollTrigger (animação ligada ao scroll), SVG. Sem 3D pesado no hero.
 
-### Micro-interações premium [proposto, base: "A page that feels expensive", Claude Design Blueprint]
+### Micro-interações premium [proposto, base: "A page that feels expensive"]
 
 Tokens: curva única `cubic-bezier(0.22, 1, 0.36, 1)` (ease-out), rápido 180 ms, médio 260 ms.
 
@@ -165,6 +165,6 @@ Regras: no máximo 3 coisas se movendo ao mesmo tempo; nada de entrada animada e
 
 ---
 
-## 9. Canvas no Claude Design
+## 9. Canvas de design
 
 Canvas "UrbanLink Landing": abertura animada da logo (o A vira rota), storyboard em cinco quadros (0,3 / 0,9 / 1,3 / 1,7 / 2,2 s) e três opções de hero (A Rota gigante, B Cidade em camadas, C Placa).
