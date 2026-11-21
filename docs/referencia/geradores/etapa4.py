@@ -1,6 +1,6 @@
 """Etapa 4 do canvas: quadros da passagem abertura -> hero (desktop, 1440x900)."""
 import os, sys, json
-sys.path.insert(0, '/home/claude/ulgen')
+sys.path.insert(0, '/home/user/ulgen')
 import gen
 import sitegen as S
 from land import NOITE, AMARELO

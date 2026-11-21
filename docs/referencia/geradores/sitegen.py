@@ -1,12 +1,12 @@
 """Site UrbanLink Flow v2: landing + login + rastreamento + fale com a gente + mensagem enviada.
 Funções vindas do Figma do grupo, visual da landing v1."""
 import os, sys
-sys.path.insert(0, '/home/claude/ulgen')
+sys.path.insert(0, '/home/user/ulgen')
 import land
 from land import (D, NOITE, MARINHO, OURO, AMARELO, TEXTO2, FONT, FONT_LINK, PADX, NEVOA, BRANCO,
                   logo_h, skyline, tail, ARROW, ICONS, wrap)
 
-OUT = '/home/claude/ulcanvas/project'
+OUT = '/home/user/ulcanvas/project'
 CINZA = '#5A6285'      # texto/borda secundária em fundo claro (5,9:1 no branco)
 LINHA = '#C5CBE3'      # estrada ainda não percorrida
 
@@ -474,5 +474,5 @@ def write_all(heights=None):
 
 if __name__ == '__main__':
     import json
-    hp = '/home/claude/ulgen/heights.json'
+    hp = '/home/user/ulgen/heights.json'
     write_all(json.load(open(hp)) if os.path.exists(hp) and '--h' in sys.argv else None)
