@@ -1,4 +1,4 @@
-import { useId, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 
 import { Botao } from '../../components/Botao.jsx'
 import { Campo } from '../../components/Campo.jsx'
@@ -91,6 +91,13 @@ export function Tabela({ legenda, colunas, linhas, chave = (linha) => linha.id }
 export function Formulario({ titulo, campos, inicial = {}, enviar, aoTerminar, textoBotao = 'Salvar' }) {
   const id = useId()
   const [valores, setValores] = useState(() => valoresIniciais(campos, inicial))
+  const formulario = useRef(null)
+
+  // O formulário abre no topo da tela; quem clicou numa linha lá embaixo não veria. O foco vai
+  // pro primeiro campo, e o navegador rola até ele.
+  useEffect(() => {
+    formulario.current?.querySelector('input, select, textarea')?.focus()
+  }, [])
   const [erros, setErros] = useState({})
   const { ocupado, erro, setErro, fazer } = useAcao()
 
@@ -120,7 +127,7 @@ export function Formulario({ titulo, campos, inicial = {}, enviar, aoTerminar, t
   }
 
   return (
-    <form className={css.formulario} onSubmit={aoEnviar} aria-labelledby={`${id}-titulo`} noValidate>
+    <form ref={formulario} className={css.formulario} onSubmit={aoEnviar} aria-labelledby={`${id}-titulo`} noValidate>
       <h2 id={`${id}-titulo`} className={css.h2}>
         {titulo}
       </h2>

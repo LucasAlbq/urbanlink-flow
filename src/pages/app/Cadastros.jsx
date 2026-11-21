@@ -23,7 +23,7 @@ import {
 import { Botao } from '../../components/Botao.jsx'
 import NaoEncontradaApp from './NaoEncontradaApp.jsx'
 import { Aviso, Cabecalho, Carregando, Formulario, Selo, Tabela, Vazio } from './pecas.jsx'
-import { ROTULOS, dataHora, numero, tomDaEntrega, useAcao, useDados, useSessao } from './uteis.js'
+import { ABERTAS, ROTULOS, atrasada, dataHora, numero, tomDaEntrega, useAcao, useDados, useSessao } from './uteis.js'
 import app from './app.module.css'
 
 const opcoesDe = (grupo) => Object.entries(ROTULOS[grupo])
@@ -208,7 +208,16 @@ function Entregas() {
               { titulo: 'Destino', valor: (e) => e.destinationAddress },
               { titulo: 'Peso', valor: (e) => `${numero(e.weightKg, 1)} kg`, numero: true },
               { titulo: 'Prioridade', valor: (e) => <Selo grupo="prioridade" valor={e.priority} /> },
-              { titulo: 'Status', valor: (e) => <Selo grupo="entrega" valor={e.status} tom={tomDaEntrega(e)} /> },
+              {
+                titulo: 'Status',
+                // Aberta e fora do prazo: o selo diz "atrasada" em texto, não só pela cor.
+                valor: (e) =>
+                  atrasada(e) && ABERTAS.includes(e.status) ? (
+                    <Selo tom="critico">{ROTULOS.entrega[e.status]}, atrasada</Selo>
+                  ) : (
+                    <Selo grupo="entrega" valor={e.status} tom={tomDaEntrega(e)} />
+                  ),
+              },
               { titulo: 'Veículo', valor: (e) => e.assignedVehicle?.plate ?? '–' },
               { titulo: 'Prazo', valor: (e) => dataHora(e.serviceDeadline), numero: true },
               {

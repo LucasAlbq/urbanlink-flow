@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 
 import { buscarEu, sair } from '../../api/auth.js'
@@ -35,6 +35,12 @@ export function Moldura() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // No celular o menu vira uma faixa que rola de lado: a área atual entra na vista.
+  const menu = useRef(null)
+  useEffect(() => {
+    menu.current?.querySelector('[aria-current="page"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+  }, [pathname, usuario])
+
   async function aoSair() {
     setSaindo(true)
     try {
@@ -65,7 +71,7 @@ export function Moldura() {
       </div>
 
       <div className={css.corpo}>
-        <nav className={css.menu} aria-label="Plataforma">
+        <nav ref={menu} className={css.menu} aria-label="Plataforma">
           <ul className={css.itens}>
             {AREAS_PLATAFORMA.map((area) => (
               <li key={area.caminho}>

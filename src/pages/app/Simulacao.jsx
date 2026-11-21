@@ -177,7 +177,7 @@ function Resultado({ simulacao, aoFechar }) {
         </button>
       </div>
 
-      <dl className={app.fichas}>
+      <dl className={`${app.fichas} ${app.fichasSeis}`}>
         <div className={app.ficha}>
           <dt>Melhora geral</dt>
           <dd>{numero(r.improvementPercentage, 1)}%</dd>

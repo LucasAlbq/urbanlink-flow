@@ -64,8 +64,11 @@
   margin-bottom: var(--e-16);
 }
 
+/* minmax(0, 1fr): sem isso a coluna cresce até a largura da tabela e a página inteira passa da
+   tela; com ele, a tabela rola por dentro da própria caixa. */
 .secoes {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--e-20);
 }
 
@@ -92,6 +95,11 @@
 
 @media (min-width: 1500px) {
   .fichas { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
+/* Seis fichas (resultado da simulação): 2, 3 ou 6 colunas, nunca 4. */
+@media (min-width: 1100px) and (max-width: 1499px) {
+  .fichasSeis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 .ficha {
@@ -145,7 +153,10 @@
 .neutro { background: var(--status-neutro); }
 
 /* ---- tabela ---- */
+/* position: relative prende dentro da caixa os textos .so-leitor (posição absoluta) das células;
+   sem isso eles escapam do recorte e alargam a página. */
 .tabelaCaixa {
+  position: relative;
   overflow-x: auto;
   border: var(--linha) solid var(--mapa-quadra);
   border-radius: var(--r-placa);
@@ -177,6 +188,11 @@
 
 .tabela tbody tr:last-child td {
   border-bottom: 0;
+}
+
+/* A primeira coluna (o nome) não encolhe até virar uma tira de uma palavra por linha. */
+.tabela td:first-child {
+  min-width: var(--app-coluna-nome);
 }
 
 .tabela .num {

@@ -184,7 +184,7 @@
      que os outros dois, e o selo sempre traz o texto: a cor nunca é o único sinal. */
   --status-ok: #1E7B4A;       /* no prazo, entregue, disponível (5,27:1 com Branco) */
   --status-atraso: #A35200;   /* atraso, atenção, manutenção (5,58:1) */
-  --status-critico: #8E1B14;  /* crítico, falhou (8,9:1) */
+  --status-critico: #8E1B14;  /* crítico, falhou (9,06:1) */
   --status-andamento: var(--azul);   /* em trânsito, em rota, rodando */
   --status-neutro: var(--cinza);     /* pendente, planejada, cancelada */
   --app-barra: 56px;          /* barra Noite do topo, a mesma altura da ilustração da landing */
@@ -198,4 +198,5 @@
   --app-marcar-altura: 320px; /* altura máxima da lista de caixas (rola por dentro) */
   --app-rotulo-barra: 110px;  /* coluna do nome nas barras de contagem */
   --app-espera: 240px;        /* altura do bloco "carregando" */
+  --app-coluna-nome: 180px;   /* largura mínima da primeira coluna das tabelas */
 }
