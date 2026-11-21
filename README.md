@@ -42,6 +42,14 @@ Público: gestores de logística, operadores de transporte, empresas de e-commer
 - Política de Privacidade e página de "não encontrado".
 - Layout responsivo, do celular ao desktop, e acessível: dá pra usar só com o teclado, e com "reduzir movimento" nenhum efeito anima.
 
+### Plataforma (`/app`, depois do login)
+
+- **Monitoramento:** indicadores do dia (entregas por situação, atrasadas, no prazo, nível de serviço, uso da frota, distância, custo, CO2 e economia das simulações), o mapa da operação com centros, veículos, entregas e rotas, os alertas abertos e a lista de entregas fora do prazo.
+- **Rotas:** criar a rota de um veículo com as entregas escolhidas, otimizar a ordem das paradas, iniciar, concluir e cancelar; cada rota mostra distância, tempo, custo e CO2, e as paradas em ordem.
+- **Simulação de cenários:** montar um cenário (trânsito, frota, combustível, CO2), rodar e comparar a ordem original com a otimizada.
+- **Cadastros:** entregas (com atribuir veículo, conferindo a capacidade, e mudar a situação só pelas transições válidas), veículos, centros de distribuição, as mensagens do Fale com a gente e os usuários.
+- As ações aparecem de acordo com o perfil: o operador acompanha e muda a situação das entregas; gestor e administrador cadastram, planejam e simulam; só o administrador cuida de usuários e centros.
+
 ### API (back-end)
 
 - Autenticação com JWT e três perfis com permissões diferentes: administrador, gestor e operador.
@@ -61,10 +69,6 @@ Público: gestores de logística, operadores de transporte, empresas de e-commer
 - PostgreSQL com 13 tabelas, criadas por migrations ou pelos scripts SQL de `arquivos-adicionais/sql/`.
 - Um **trigger** grava o histórico de cada entrega a cada troca de estado, e uma **sequência** gera o protocolo das mensagens do site.
 - Dados de demonstração: 3 usuários, 8 veículos, 24 entregas, 3 rotas e 2 simulações.
-
-### Em andamento
-
-- As telas internas da plataforma (`/app`): monitoramento com mapa, rotas, simulação e cadastros. A API já tem todas as rotas que elas vão usar; hoje, depois do login, a área `/app` só mostra o título.
 
 ## Tecnologias
 
@@ -249,7 +253,10 @@ docs/
 | `/recuperar-senha` | Pedir o link pra criar uma senha nova | `POST /auth/password-reset/request` |
 | `/nova-senha/:token` | Criar a senha nova | `POST /auth/password-reset/confirm` |
 | `/privacidade` | Política de Privacidade | Nenhum |
-| `/app/*` | Área da plataforma (em andamento) | Nenhum por enquanto |
+| `/app` | Monitoramento | `GET /auth/me`, `GET /dashboard/summary`, `GET /dashboard/map` |
+| `/app/rotas` | Rotas | `GET/POST /routes`, `POST /routes/:id/optimize`, `/start`, `/complete`, `DELETE /routes/:id` |
+| `/app/simulacao` | Simulação de cenários | `GET/POST /simulations`, `POST /simulations/:id/run`, `DELETE /simulations/:id` |
+| `/app/cadastros[/aba]` | Entregas, veículos, centros, mensagens e usuários | `/deliveries` (com `/assign` e `/status`), `/vehicles`, `/distribution-centers`, `GET /public/inquiries`, `/users` |
 | qualquer outra | Página não encontrada | Nenhum |
 
 O formato de cada pedido e de cada erro, e como o site traduz a API pros nomes das telas, está em `docs/plano/04-api-e-dados.md`. Todas as rotas da API estão no Swagger.

@@ -160,7 +160,7 @@ exemplos e rode npm run build: a trava de dados de exemplo tem que passar.
 - **Sem registro no repositório:** o resultado do `design:accessibility-review` em todas as rotas e do `design:design-critique` desta fase.
 - Feito em 20/11/2026, pros requisitos da entrega final da turma: README com nome, objetivo, funcionalidades, tecnologias, link do site e modelagem; `docs/banco-de-dados/` com a modelagem conceitual, a lógica e o DER, lidos do banco real; `arquivos-adicionais/` com o guia de instalação e uso e os scripts SQL de criação e de dados, testados num banco vazio.
 - Feito em 20/11/2026: repositório público em https://github.com/LucasAlbq/urbanlink-flow e site publicado em https://urbanlink-flow-vert.vercel.app, com a API e o banco Neon em São Paulo (`arquivos-adicionais/PUBLICACAO.md`). Conferido no ar: rastreio, login, recusa do contato com dados inválidos, CORS e a documentação da API.
-- **Falta pra entrega final:** as telas da plataforma (`/app`), que o enunciado pede e a entrega espera poder testar.
+- Feito em 20/11/2026: as telas da plataforma (`/app`), na Parte 3 abaixo.
 
 ```text
 Rode Lighthouse em / e em /rastreamento/<código real>, design:accessibility-review
@@ -176,7 +176,9 @@ tudo por gravidade antes de corrigir qualquer coisa.
 
 Primeiro o design no canvas, uma tela por etapa. Depois o código, no mesmo esquema de fases.
 
-- [ ] Etapa P1: Monitoramento (o mapa ao vivo, a tela que o PDF marca como crítica)
-- [ ] Etapa P2: Rotas
-- [ ] Etapa P3: Simulação de cenários
-- [ ] Etapa P4: Cadastros (entregas, veículos, motoristas)
+- [x] Etapa P1: Monitoramento (o mapa ao vivo, a tela que o PDF marca como crítica)
+- [x] Etapa P2: Rotas
+- [x] Etapa P3: Simulação de cenários
+- [x] Etapa P4: Cadastros (entregas, veículos, centros de distribuição, mensagens do site e usuários)
+
+Feito em 20/11/2026, na branch `fase-6/plataforma`. Por causa do prazo da entrega, o usuário decidiu desenhar direto no código, sem canvas antes, seguindo o DESIGN.md e a moldura da ilustração da landing. Testado com a API local, em 1440 e 390 px e só com o teclado. Ficaram sem teste pela tela, pra não mexer nos dados: iniciar e concluir rota (cobertos pelos testes da API). O mapa é 2D; a "visualização tridimensional" citada no resumo expandido não existe no site novo.
